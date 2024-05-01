@@ -168,6 +168,7 @@ function countEmailLen() {
 
 
 
+
 function checkValues() {
     if (validateFirstName() == 1) {
         return false;
