@@ -1,11 +1,11 @@
-document.getElementById("firstname").addEventListener("focusout", validateFirstName);
-document.getElementById("firstname").addEventListener("input", countNameLen);
+// document.getElementById("firstname").addEventListener("focusout", validateFirstName);
+// document.getElementById("firstname").addEventListener("input", countNameLen);
 
-document.getElementById("lastname").addEventListener("focusout", validateSurName);
-document.getElementById("lastname").addEventListener("input", countNameLen);
+// document.getElementById("lastname").addEventListener("focusout", validateSurName);
+// document.getElementById("lastname").addEventListener("input", countNameLen);
 
-document.getElementById("email").addEventListener("focusout", validateEmail);
-document.getElementById("email").addEventListener("input", countEmailLen);
+// document.getElementById("email").addEventListener("focusout", validateEmail);
+// document.getElementById("email").addEventListener("input", countEmailLen);
 
 document.getElementById("login").addEventListener("focusout", validateLogin);
 document.getElementById("login").addEventListener("input", countNameLen);
@@ -168,16 +168,17 @@ function countEmailLen() {
 
 
 
+
 function checkValues() {
-    if (validateFirstName() == 1) {
-        return false;
-    }
-    if (validateSurName() == 1) {
-        return false;
-    }
-    if (validateEmail() == 1) {
-        return false;
-    }
+    // if (validateFirstName() == 1) {
+    //     return false;
+    // }
+    // if (validateSurName() == 1) {
+    //     return false;
+    // }
+    // if (validateEmail() == 1) {
+    //     return false;
+    // }
     if (validateLogin() == 1) {
         return false;
     }
