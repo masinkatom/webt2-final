@@ -3,9 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// session_start();
+session_start();
 
-// require_once '../.config.php';
+require_once '../.config.php';
 
 function checkEmpty($field)
 {
@@ -41,26 +41,26 @@ function checkUsername($username)
     return true;
 }
 
-// function userExist($db, $nick)
-// {
-//     $exist = false;
+function userExist($db, $nick)
+{
+    $exist = false;
 
-//     $param_login = trim($nick);
+    $param_login = trim($nick);
 
-//     $sql = "SELECT id_user FROM user WHERE nick = :nick";
-//     $stmt = $db->prepare($sql);
-//     $stmt->bindParam(":nick", $param_login, PDO::PARAM_STR);
+    $sql = "SELECT id_user FROM user WHERE nick = :nick";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(":nick", $param_login, PDO::PARAM_STR);
 
-//     $stmt->execute();
+    $stmt->execute();
 
-//     if ($stmt->rowCount() == 1) {
-//         $exist = true;
-//     }
+    if ($stmt->rowCount() == 1) {
+        $exist = true;
+    }
 
-//     unset($stmt);
+    unset($stmt);
 
-//     return $exist;
-// }
+    return $exist;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $errmsg = "";
@@ -74,9 +74,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errmsg .= "<p>Meno moze obsahovat iba velke, male pismena, cislice a podtrznik.</p>";
     }
 
-    // if (userExist($pdo, $_POST['usernameReg'])) {
-    //     $errmsg .= "Pouzivatel s tymto loginom uz existuje.</p>";
-    // }
+    if (userExist($pdo, $_POST['usernameReg'])) {
+        $errmsg .= "Pouzivatel s tymto loginom uz existuje.</p>";
+    }
 
     if (checkEmpty($_POST['passwordReg']) === true) {
         $errmsg .= "<p>Zadajte Heslo.</p>";
@@ -86,27 +86,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errmsg .= "<p>Heslo moze obsahovat iba velke, male pismena, cislice a podtrznik.</p>";
     }
 
-    // if (empty($errmsg)) {
+    if (empty($errmsg)) {
 
-    //     $sql = "INSERT INTO user (nick, password) VALUES (:nick, :password)";
+        $sql = "INSERT INTO user (nick, password) VALUES (:nick, :password)";
 
-    //     $nick = $_POST['usernameReg'];
-    //     $hashed_password = password_hash($_POST['passwordReg'], PASSWORD_ARGON2ID);
+        $nick = $_POST['usernameReg'];
+        $hashed_password = password_hash($_POST['passwordReg'], PASSWORD_ARGON2ID);
 
-    //     $stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
 
-    //     $stmt->bindParam(":nick", $nick, PDO::PARAM_STR);
-    //     $stmt->bindParam(":password", $hashed_password, PDO::PARAM_STR);
+        $stmt->bindParam(":nick", $nick, PDO::PARAM_STR);
+        $stmt->bindParam(":password", $hashed_password, PDO::PARAM_STR);
 
-    //     if ($stmt->execute()) {
-    //         echo "Podarilo sa";
-    //     } else {
-    //         echo "Ups. Nieco sa pokazilo";
-    //     }
+        if ($stmt->execute()) {
+            header("location: login.php");
+            echo "Podarilo sa";
+        } else {
+            echo "Ups. Nieco sa pokazilo";
+        }
 
-    //     unset($stmt);
-    // }
-    // unset($pdo);
+        unset($stmt);
+    }
+    echo $errmsg;
+    unset($pdo);
 }
 ?>
 
@@ -121,11 +123,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+    <div class="container">
+        <div class="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a class="nav-item" href="#home">HomeXXX</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-item" href="login.php">PrihlásenieXXX</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-item" href="register.php">RegistráciaXXX</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <main class="container">
         <h2>RegistraciaXXX</h2>
 
         <div class="content-outline in-row centered">
-            
+
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="form-outline">
                 <label for="usernameReg">Používateľské menoXXX:</label>
                 <input id="login" name="usernameReg" required type="text" />
@@ -134,13 +151,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="passwordReg">HesloXXX:</label>
                 <input id="password" name="passwordReg" required type="password" />
                 <p id="err-password" class="err hidden"></p>
-                
-                <input id="submit-btn" name="register" type="button" value="Register" />
+
+                <input id="submit-btn" name="register" type="submit" value="Register" />
             </form>
         </div>
     </main>
 
-    
-<script src="js/register.js"></script>
+
+    <script src="js/register.js"></script>
 </body>
+
 </html>

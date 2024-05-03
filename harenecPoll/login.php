@@ -3,42 +3,46 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// session_start();
+session_start();
 
-// require_once '../.config.php';
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    header("location: index.php");
+}
 
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     $sql = "SELECT nick, password FROM user WHERE nick = :nick";
+require_once '../.config.php';
 
-//     $stmt = $pdo->prepare($sql);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $sql = "SELECT nick, password FROM user WHERE nick = :nick";
 
-//     $stmt->bindParam(":nick", $_POST["username"], PDO::PARAM_STR);
+    $stmt = $pdo->prepare($sql);
 
-//     if ($stmt->execute()) {
-//         if ($stmt->rowCount() == 1) {
-//             $row = $stmt->fetch();
+    $stmt->bindParam(":nick", $_POST["username"], PDO::PARAM_STR);
 
-//             $hashed_password = $row["password"];
+    if ($stmt->execute()) {
+        if ($stmt->rowCount() == 1) {
+            $row = $stmt->fetch();
 
-//             if (password_verify($_POST['password'], $hashed_password)) {
-//                 $_SESSION["loggedin"] = true;
-//                 $_SESSION["login"] = $row['nick'];
+            $hashed_password = $row["password"];
 
-//                 header("location: secure_page.php");
-//                 exit;
-//             } else {
-//                 $errmsg = "Nesprávne meno alebo heslo.";
-//             }
-//         } else {
-//             $errmsg = "Nesprávne meno alebo heslo.";
-//         }
-//     } else {
-//         $errmsg = "Nesprávne meno alebo heslo.";
-//     }
-// } else {
-//     $errmsg = "";
-// }
-// 
+            if (password_verify($_POST['password'], $hashed_password)) {
+                $_SESSION["loggedin"] = true;
+                $_SESSION["login"] = $row['nick'];
+                $_SESSION["logged"] = true;
+
+                header("location: index.php");
+                exit;
+            } else {
+                $errmsg = "Nesprávne meno alebo heslo.";
+            }
+        } else {
+            $errmsg = "Nesprávne meno alebo heslo.";
+        }
+    } else {
+        $errmsg = "Nesprávne meno alebo heslo.";
+    }
+} else {
+    $errmsg = "";
+}
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +56,21 @@ error_reporting(E_ALL);
 </head>
 
 <body>
+    <div class="container">
+        <div class="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a class="nav-item" href="index.php">HomeXXX</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-item" href="#">PrihlásenieXXX</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-item" href="register.php">RegistráciaXXX</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <main class="container">
         <h2>PrihlásenieXXX</h2>
 
@@ -60,16 +79,17 @@ error_reporting(E_ALL);
         <?php endif; ?>
         <div class="content-outline in-row centered">
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                <label for="username">UsernameXXX:</label>
+                <label class="margin-label" for="username">UsernameXXX:</label>
                 <input id="username" name="username" required="" type="text" />
                 <p id="err-login" class="err hidden"></p>
-                <label for="password">PasswordXXX:</label>
+                <label class="margin-label" for="password">PasswordXXX:</label>
                 <input id="password" name="password" required="" type="password" />
                 <p id="err-password" class="err hidden"></p>
-                <input id="submit-btn" name="login" type="button" value="Login" />
+                <input id="submit-btn" name="login" type="submit" value="Login" />
             </form>
         </div>
     </main>
 </body>
 <script src="js/login.js"></script>
+
 </html>
