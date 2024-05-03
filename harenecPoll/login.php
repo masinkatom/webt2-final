@@ -73,21 +73,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <main class="container">
         <h2>PrihlásenieXXX</h2>
-
-        <?php if (!empty($errmsg)) : ?>
-            <div><?php echo $errmsg; ?></div>
-        <?php endif; ?>
         <div class="content-outline in-row centered">
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <label class="margin-label" for="username">UsernameXXX:</label>
                 <input id="username" name="username" required="" type="text" />
                 <p id="err-login" class="err hidden"></p>
+
                 <label class="margin-label" for="password">PasswordXXX:</label>
                 <input id="password" name="password" required="" type="password" />
                 <p id="err-password" class="err hidden"></p>
+
                 <input id="submit-btn" name="login" type="submit" value="Login" />
+                
+                <?php if (!empty($errmsg)) : ?>
+                    <p class="err"><?php echo $errmsg; ?></p>
+                <?php endif; ?>
             </form>
-        </div>
+        </div>  
     </main>
 </body>
 <script src="js/login.js"></script>

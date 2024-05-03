@@ -64,26 +64,35 @@ function userExist($db, $nick)
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $errmsg = "";
+    $login_errmsg = "";
+    $password_errmsg = "";
 
     // Validacia username
     if (checkEmpty($_POST['usernameReg']) === true) {
-        $errmsg .= "<p>Zadajte meno.</p>";
+        $login_errmsg = "Zadajte meno";
+        $errmsg .= '<p>'.$login_errmsg.'</p>';
     } elseif (checkLength($_POST['usernameReg'], 6, 32) === false) {
-        $errmsg .= "<p>Meno musi mat min. 6 a max. 32 znakov.</p>";
+        $login_errmsg = "Login musi mat min. 6 a max. 32 znakov";
+        $errmsg .= '<p>'.$login_errmsg.'</p>';
     } elseif (checkUsername($_POST['usernameReg']) === false) {
-        $errmsg .= "<p>Meno moze obsahovat iba velke, male pismena, cislice a podtrznik.</p>";
+        $login_errmsg = "Login moze obsahovat iba velke, male pismena, cislice a podtrznik";
+        $errmsg .= '<p>'.$login_errmsg.'</p>';
     }
 
     if (userExist($pdo, $_POST['usernameReg'])) {
-        $errmsg .= "Pouzivatel s tymto loginom uz existuje.</p>";
+        $login_errmsg = "Pouzivatel s tymto loginom uz existuje";
+        $errmsg .= '<p>'.$login_errmsg.'</p>';
     }
 
     if (checkEmpty($_POST['passwordReg']) === true) {
-        $errmsg .= "<p>Zadajte Heslo.</p>";
+        $password_errmsg = "Zadajte Heslo";
+        $errmsg .= '<p>'.$password_errmsg.'</p>';
     } elseif (checkLength($_POST['passwordReg'], 6, 32) === false) {
-        $errmsg .= "<p>Heslo musi mat min. 6 a max. 32 znakov.</p>";
+        $password_errmsg = "Heslo musi mat min. 6 a max. 32 znakov";
+        $errmsg .= '<p>'.$password_errmsg.'</p>';
     } elseif (checkUsername($_POST['passwordReg']) === false) {
-        $errmsg .= "<p>Heslo moze obsahovat iba velke, male pismena, cislice a podtrznik.</p>";
+        $password_errmsg = "Heslo moze obsahovat iba velke, male pismena, cislice a podtrznik";
+        $errmsg .= '<p>'.$password_errmsg.'</p>';
     }
 
     if (empty($errmsg)) {
@@ -107,7 +116,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         unset($stmt);
     }
-    echo $errmsg;
     unset($pdo);
 }
 ?>
@@ -127,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="main-nav">
             <ul class="nav-list">
                 <li class="nav-item">
-                    <a class="nav-item" href="#home">HomeXXX</a>
+                    <a class="nav-item" href="index.php">HomeXXX</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-item" href="login.php">PrihlásenieXXX</a>
@@ -144,13 +152,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="content-outline in-row centered">
 
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="form-outline">
-                <label for="usernameReg">Používateľské menoXXX:</label>
+                <label for="usernameReg" class="margin-label">Používateľské menoXXX:</label>
                 <input id="login" name="usernameReg" required type="text" />
                 <p id="err-login" class="err hidden"></p>
+                <!-- /*JOJO*/  pridany <p> pre vypis chybovej hlasky po odoslani formulara -->
+                <?php if (!empty($login_errmsg)) : ?>
+                    <p id="login-errmsg-after-submit" class="err"> <?php echo $login_errmsg; ?> </p>
+                <?php else: ?>
+                    <p id="login-errmsg-after-submit" class="err hidden"></p>
+                <?php endif; ?>
+                <!-- /*JOJO*/ -->
 
-                <label for="passwordReg">HesloXXX:</label>
+                
+
+                <label for="passwordReg" class="margin-label">HesloXXX:</label>
                 <input id="password" name="passwordReg" required type="password" />
                 <p id="err-password" class="err hidden"></p>
+                <!-- /*JOJO*/ pridany <p> pre vypis chybovej hlasky po odoslani formulara -->
+                <?php if (!empty($password_errmsg)) : ?>
+                    <p id="password-errmsg-after-submit" class="err"> <?php echo $password_errmsg; ?> </p>
+                <?php else: ?>
+                    <p id="password-errmsg-after-submit" class="err hidden"></p>
+                <?php endif; ?>
+                <!-- /*JOJO*/ -->
+
+                
 
                 <input id="submit-btn" name="register" type="submit" value="Register" />
             </form>

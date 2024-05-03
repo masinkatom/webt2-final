@@ -11,12 +11,14 @@ document.getElementById("login").addEventListener("focusout", validateLogin);
 document.getElementById("login").addEventListener("input", countNameLen);
 
 document.getElementById("password").addEventListener("focusout", validatePassword);
+document.getElementById("password").addEventListener("input", countPasswordLen);
 
 document.getElementById("submit-btn").addEventListener("click", checkValues);
 
 
 function displayError(input, msg, errInput) {
     errInput.style.display = 'block';
+    errInput.style.color = 'red';
     errInput.innerHTML = msg;
     input.style.border = '3px solid red';
 }
@@ -116,11 +118,11 @@ function validateLogin() {
     let errInput = document.getElementById("err-login");
 
     hideCharCounter(input.nextElementSibling);
-    let output = validateInput("login", "Zadajte správny login.", "err-login");
+    let output = validateInput("login", "Zadajte login.", "err-login");
 
     if (output == 0) {
-        if (input.value.length < 5 || input.value.length > 32) {
-            displayError(input, "Login musi mat min. 5 a max. 32 znakov.", errInput);
+        if (input.value.length < 6 || input.value.length > 32) {
+            displayError(input, "Login musi mat min. 6 a max. 32 znakov.", errInput);
             return 1;
         } 
         if (!checkChars(input.value)) {
@@ -137,10 +139,10 @@ function validatePassword() {
     let input = document.getElementById("password");
     let errInput = document.getElementById("err-password");
 
-    let output = validateInput("password", "Zadajte správne heslo.", "err-password");
+    let output = validateInput("password", "Zadajte heslo.", "err-password");
 
     if (output == 0) {
-        if (input.value.length < 5 || input.value.length > 255) {
+        if (input.value.length < 6 || input.value.length > 255) {
             displayError(input, "Heslo musí mať min. 5 a max. 255 znakov.", errInput);
             return 1;
         } 
@@ -158,15 +160,43 @@ function checkChars(stringToCheck) {
     return true;
 }
 
+/* JOJO */
+    // funkcia skryje <p> pre chybovu hlasku po SUBMITE
+function hidePostSubmitMessage(id) {
+    document.getElementById(id).style.display = 'none';
+}
+/* JOJO */
+
 function countNameLen() {
+    hidePostSubmitMessage('login-errmsg-after-submit');
     countLenght(this.nextElementSibling, this, 32);
+    /* JOJO  
+        // pocitadlo pre username input ma ZELENU alebo CERVENU farbu
+        // takisto dolu pre heslo
+    */
+    if (this.value.length >= 6) {
+        this.nextElementSibling.style.color = "green";   
+    } else {
+        this.nextElementSibling.style.color = "red";
+    }
+    /* JOJO */
 }
 
 function countEmailLen() {
     countLenght(this.nextElementSibling, this, 64);
 }
 
-
+/* JOJO */
+function countPasswordLen() {
+    hidePostSubmitMessage('password-errmsg-after-submit');
+    countLenght(this.nextElementSibling, this, 255);
+    if (this.value.length >= 6) {
+        this.nextElementSibling.style.color = "green";   
+    } else {
+        this.nextElementSibling.style.color = "red";
+    }
+}
+/* JOJO */
 
 
 function checkValues() {
