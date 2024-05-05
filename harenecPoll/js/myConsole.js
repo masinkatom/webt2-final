@@ -10,7 +10,7 @@ var jsonData = `[
         "id_question": "2",
         "text_q": "What is capital of SK?",
         "active": "0",
-        "open": "0",
+        "open": "1",
         "creationDate": "2024-05-02"
     },
     {
@@ -24,18 +24,19 @@ var jsonData = `[
 var globalQuestions = JSON.parse(jsonData);
 console.log(globalQuestions);
 
+var globalQuestionSets = ["DBS", "AZA", "OOP"];
 
-
+console.log("CO DOPICI");
 createButtonsOfSets();
 
 
 function createButtonsOfSets(){
-    var arr = ["DBS", "AZA", "OOP"];
+    
     console.log("Creating buttons", sessionLogin);
     var container = document.getElementById("button-container");
     console.log(container);
 
-    arr.forEach(function(item) {
+    globalQuestionSets.forEach(function(item) {
         createSetSection(item, container);
     });
 
@@ -51,7 +52,7 @@ function createButton() {
     newQButton.setAttribute("data-bs-target", "#newQuestionCollapse");
     newQButton.setAttribute("aria-controls", "newQuestionCollapse"); // Set aria-controls attribute
     newQButton.style.fontSize = "1.6rem";
-    newQButton.textContent = "NEW QUESTIONXXX";
+    newQButton.textContent = "NEW QUESTIONWTFXXX";
     return newQButton;
 }
 function createNewQuestionCollapse(){
@@ -144,11 +145,7 @@ function insertQuestions(cardBodyDiv, item){
         copyButton.textContent = "CopyXXX";
 
         //CopyModal
-        collapseDiv.appendChild(createCopyCollapse(question.id_question));
-
-        copyButton.addEventListener("click", function() {
-            copyQ(question); //TODO
-        });
+        collapseDiv.appendChild(createCopyCollapse(question.id_question, question));
     
         // Edit
         var editButton = document.createElement("button");
@@ -176,9 +173,7 @@ function insertQuestions(cardBodyDiv, item){
 
         //DeleteModal
         collapseDiv.appendChild(createDeleteCollapse(question.id_question));
-        deleteButton.addEventListener("click", function() {
-            deleteQ(question); //TODO
-        });
+        
     
     
         buttonSection.appendChild(infoButton);
@@ -204,20 +199,24 @@ function createInfoCollapse(questionId, questionFull){
    var cardElement = document.createElement("div");
    cardElement.classList.add("card", "card-body");
    cardElement.classList.add("collapse-info-set");
-   cardElement.textContent = "Toto je pre info collapse"+JSON.stringify(questionFull);
+   
+   cardElement.appendChild(showInfoQ(questionFull));
+   
    collapseContainer.appendChild(cardElement);
+   
 
    return collapseContainer;
 }
 
-function createCopyCollapse(questionId){
+function createCopyCollapse(questionId, questionFull){
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
     collapseContainer.id = questionId+"CopyCollapse";
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-info-set");
-    cardElement.textContent = "TOTO JE PRE COPY COLLAPSE"+questionId;
+    
+    cardElement.appendChild(createCopyForm(questionFull));
     collapseContainer.appendChild(cardElement);
  
     return collapseContainer;
@@ -231,9 +230,51 @@ function createCopyCollapse(questionId){
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-info-set");
     cardElement.textContent = "TOTO JE PRE EDIT PANA BOHJA COLLAPSE" + JSON.stringify(questionFull);
+    
+    
     collapseContainer.appendChild(cardElement);
- 
     return collapseContainer;
+ }
+
+
+ function createCopyForm(questionFull){
+    var formElement = document.createElement("form");
+
+    var labelElement = document.createElement("label");
+    labelElement.setAttribute("for", "sets");
+    labelElement.textContent = "Choose where to copy:";
+    formElement.appendChild(labelElement);
+
+    var container = document.createElement("div");
+    container.classList.add("in-row");
+    container.classList.add("centered-v");
+
+    var selectElement = document.createElement("select");
+    selectElement.setAttribute("name", "sets");
+    selectElement.setAttribute("id", "sets");
+
+    globalQuestionSets.forEach(function(set) {
+        var optionElement = document.createElement("option");
+        optionElement.setAttribute("value", set.toLowerCase());
+        optionElement.textContent = set;
+        selectElement.appendChild(optionElement);
+    });
+
+    var copyButt = document.createElement("button");
+    copyButt.setAttribute("type", "button"); 
+    copyButt.classList.add("btn", "btn-success");
+    copyButt.classList.add("bigger-button-font");
+    copyButt.textContent = "CopyXXX";
+    copyButt.addEventListener("click", function() {
+        copyQ(questionFull, selectElement.value);
+});
+
+container.appendChild(selectElement);
+container.appendChild(copyButt);
+
+formElement.appendChild(container);
+
+return formElement;
  }
 
  function createDeleteCollapse(questionId){
@@ -243,17 +284,79 @@ function createCopyCollapse(questionId){
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-info-set");
-    cardElement.textContent = "Delete";
+    cardElement.classList.add("centered");
+    var italicText = document.createElement("h4");
+    italicText.textContent = "Are you sure?XXX";
+    italicText.classList.add("centered");
+    cardElement.appendChild(italicText);
+    //cardElement.textContent = "DeleteTA CO DOPICIDOPICIXdX";
     collapseContainer.appendChild(cardElement);
- 
+
+
+    var deleteReally = document.createElement("button");
+    deleteReally.type = "button";
+    deleteReally.classList.add("btn", "btn-danger");
+    deleteReally.textContent = "DeleteXXX";
+    deleteReally.classList.add("bigger-button-font");
+    deleteReally.addEventListener("click", function() {
+        deleteQ(questionId);
+    });
+
+    cardElement.appendChild(deleteReally);
+
     return collapseContainer;
  }
 
-function deleteQ(question){
-
+function deleteQ(questionId){
+    console.log("DELETE QUESTION"+questionId);
 }
 
 function showInfoQ(question){
+    if(question.open === "0"){
+        return showQuestionsWithAnswers(question);
+    }
+    else{
+        return showQuestionWithoutAnswes(question);
+    }
+}
+
+function showQuestionWithoutAnswes(question){
+    var infoElement = document.createElement("i");
+    infoElement.textContent = question.text_q;
+    return infoElement;
+}
+
+function showQuestionsWithAnswers(question){
+    var answersData = [
+        { id_answer: 1, text_a: "Option A", correct: "1", id_question: 1 },
+        { id_answer: 2, text_a: "Option B", correct: "0", id_question: 1 },
+        { id_answer: 3, text_a: "Option C", correct: "0", id_question: 1 },
+    ]; //TODO BORO TU MUSI DODAT TOTEOTAZKY
+
+  
+    var returnDiv = document.createElement("div");
+    returnDiv.classList.add("in-column");
+
+    var infoElement = document.createElement("h4");
+    infoElement.textContent =  question.text_q;
+    returnDiv.appendChild(infoElement);
+    infoElement.classList.add("bigger-font");
+
+    var ulElement = document.createElement("ul");
+
+
+    answersData.forEach(function(answer) {
+        var liElement = document.createElement("li");
+        liElement.textContent = answer.text_a;
+        liElement.classList.add("bigger-font");
+        var correctness = answer.correct === "1" ? "correctXXX" : "incorectXXX";
+        liElement.textContent += " (" + correctness + ")";
+
+        ulElement.appendChild(liElement);
+    });
+
+    returnDiv.appendChild(ulElement);
+    return returnDiv;
 
 }
 
@@ -261,8 +364,9 @@ function editQ(question){
 
 }
 
-function copyQ(question){
-
+function copyQ(questionFull, whereToCopy){
+    console.log("COPYING questionFUll " + JSON.stringify(questionFull));
+    console.log("where to copy: "+whereToCopy);
 }
 
 function hello(value) {
