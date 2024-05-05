@@ -63,6 +63,14 @@ function createNewQuestionCollapse(){
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-set");
     cardElement.textContent = "NEW QUSTION";
+
+    var divkoDoKtorehoBudeJozkoRobit = document.createElement("div") //TODO JOZKO
+    //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
+    //momentalny user je ulozeny v premennej globalnej  SSS var sessionLogin (nevidis ju v .js subore lebo ju taham z phpcka kde ju inicializujem)
+    //tvoja robota
+    //tvoja robota
+    //tu vidis ze to divko pridavam do velkeho viditelneho divka, preto robis len v tom svojom divku...
+    cardElement.appendChild(divkoDoKtorehoBudeJozkoRobit);
     collapseContainer.appendChild(cardElement);
  
     return collapseContainer;
@@ -231,7 +239,12 @@ function createCopyCollapse(questionId, questionFull){
     cardElement.classList.add("collapse-info-set");
     cardElement.textContent = "TOTO JE PRE EDIT PANA BOHJA COLLAPSE" + JSON.stringify(questionFull);
     
-    
+    var divkoDoKtorehoJozkoRobiEdit = document.createElement("div"); //TODO JOZKO
+    //question id mas ako parameter
+    //aj znenie celej specifickej otazky ktoru chceme upravovat mas v parametru questionFull 
+
+
+    cardElement.appendChild(divkoDoKtorehoJozkoRobiEdit);
     collapseContainer.appendChild(cardElement);
     return collapseContainer;
  }
