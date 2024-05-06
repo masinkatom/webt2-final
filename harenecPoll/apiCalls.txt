@@ -1,0 +1,29 @@
+//return all QuestionSets
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets
+
+//return all user sets (by user name)
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?username='name'
+
+//return all user sets (by user id)
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?userid='id'
+
+//return all questions (by set name)
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?setname='setName'
+
+//return all answers (by question)
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/answer?questionAnswer='question'
+
+//return question (by code)
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/question?questionCode='questionCode'
+
+//return true/false active question
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/question?questionActive='question'
+
+//delete question (by question name)
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/questions?questionName='question'
+
+//create new question
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/create='data.json'
+
+//update question
+https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/update?questionUpdate='QuestionToUpdate'
