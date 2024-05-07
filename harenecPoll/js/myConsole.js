@@ -130,12 +130,29 @@ function createNewQuestionCollapse(){
     var questionInput = document.createElement("input");
     questionInput.setAttribute("type", "text");
 
+    var selectSetLabel = document.createElement("label");
+    selectSetLabel.innerHTML = "Choose set: ";
+    var setSelectBox = document.createElement("select");
+    
+    // INFORMACIA PRE JURAJA
+    // TU SA NAPLNI SELECT BOX MENAMI SETOV
+    // MNE globalSets nefetchne - ja mam prazdne hodnoty na node40
+    // ty by si mal vidiet OOP,AZA....
+    globalSets.forEach(iitemSet => {
+        var opt = document.createElement('option');
+        opt.value = iitemSet.name_set;
+        opt.textContent = iitemSet.name_set;
+        setSelectBox.appendChild(opt);
+    });
+
     // otvorena otazka? + checkbox
     var labelOpen = document.createElement("label");
     labelOpen.innerHTML = "Open question: ";
     var openQuestionCheckbox = document.createElement("input");
     openQuestionCheckbox.setAttribute("type", "checkbox");
     divkoDoKtorehoBudeJozkoRobit.appendChild(questionInput);
+    divkoDoKtorehoBudeJozkoRobit.appendChild(selectSetLabel);
+    divkoDoKtorehoBudeJozkoRobit.appendChild(setSelectBox);
     divkoDoKtorehoBudeJozkoRobit.appendChild(labelOpen);
     divkoDoKtorehoBudeJozkoRobit.appendChild(openQuestionCheckbox);
 
@@ -162,6 +179,11 @@ function createNewQuestionCollapse(){
     var divkoMoznosti = document.createElement("div");
     divkoMoznosti.id = "newQuestionOptions";
     // // div pre otazku s moznostami --$$
+
+    var selectedSetValue = setSelectBox.value;
+    setSelectBox.addEventListener('change', function() {
+        selectedSetValue = this.value;
+    });
 
     openQuestionCheckbox.addEventListener('change', function() {
         if (this.checked) {
@@ -203,6 +225,7 @@ function createNewQuestionCollapse(){
     divkoDoKtorehoBudeJozkoRobit.appendChild(createQuestionButton);
 
     createQuestionButton.addEventListener('click', function() {
+        // ODTIALTO SA BUDU ODOSIELAT DATA
         let usefulOptionsData = [];
         options.forEach(option => {
             option.inputText = option.inputField.value
@@ -216,6 +239,7 @@ function createNewQuestionCollapse(){
         if (openQuestionCheckbox.checked === true) {
             dataToSend = {
                 question: questionInput.value,
+                name_set: selectedSetValue,
                 open: 1,
                 creationDate: getCurrentTimestamp(),
                 active: 0
@@ -223,6 +247,7 @@ function createNewQuestionCollapse(){
         } else {
             dataToSend = {
                 question: questionInput.value,
+                name_set: selectedSetValue,
                 options: usefulOptionsData,
                 open: 0,
                 creationDate: getCurrentTimestamp(),
@@ -246,12 +271,28 @@ function createNewQuestionCollapse(){
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-set");
+    cardElement.textContent = "NEW SET";
 
     var tuRobis = document.createElement("div") //TODO JOZKO
     //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
     //momentalny user je ulozeny v premennej globalnej  SSS var sessionLogin (nevidis ju v .js subore lebo ju taham z phpcka kde ju inicializujem)
     //tvoja robota
     tuRobis.id = "newSetCreateInputs";
+    var newSetInput = document.createElement("input");
+    newSetInput.setAttribute("type", "text");
+    tuRobis.appendChild(newSetInput);
+
+    var createSetButton = document.createElement("button");
+    createSetButton.classList.add("btn", "btn-primary");
+    createSetButton.textContent = "Create Set";
+    tuRobis.appendChild(createSetButton);
+
+    createSetButton.addEventListener('click', function() {
+        // ODTIALTO SA BUDU ODOSIELAT DATA
+        var createdSet = newSetInput.value; // NOVY SET
+        console.log(createdSet);
+    })
+    //
 
     cardElement.appendChild(tuRobis);
     collapseContainer.appendChild(cardElement);
@@ -515,6 +556,7 @@ function createCopyCollapse(questionId, questionFull){
     divkoDoKtorehoJozkoRobiEdit.appendChild(updateQuestionBtn);
 
     updateQuestionBtn.addEventListener('click', function() {
+        // ODTIALTO SA BUDU ODOSIELAT DATA
         let fakeJson = {
             "id_question": questionId,
             "creationDate": getCurrentTimestamp(),
