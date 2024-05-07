@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost';
+/*$host = 'localhost';
 $username = 'xvelickab';
 $password = 'najbezpecnejsieHesloNaCelomSvete';
 $dbname = 'finaltestik';
@@ -22,4 +22,18 @@ try {
 } catch (PDOException $e) {
     // Connection failed, handle the error
     echo "Connection failed: " . $e->getMessage();
+}*/
+
+$host = 'localhost';
+$username = 'xvelickab';
+$password = 'najbezpecnejsieHesloNaCelomSvete';
+$dbname = 'finaltestik';
+
+$mysqli = new mysqli($host, $username, $password, $dbname);
+
+
+if ($mysqli->connect_errno) {
+    echo "Chyba pripojenia k MySQL: " . $mysqli->connect_error;
+    exit();
 }
+
