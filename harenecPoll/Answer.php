@@ -3,25 +3,24 @@
 class Answer
 {
 
-    private $conn;
+    private $pdo;
 
-    public function __construct($conn)
+    public function __construct($pdo)
     {
-        $this->conn = $conn;
+        $this->pdo = $pdo;
     }
 
     public function getAnswersByQuestionId($questionId)
     {
         /*
-        Return all answers related to question (MyCOnsole -> info button)
+        Return all answers related to question (MyConsole -> info button)
         */
 
-        $query = "SELECT * FROM answer where id_question = $questionId";
-        $result = mysqli_query($this->conn, $query);
-        $answers = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $answers[] = $row;
-        }
+        $query = "SELECT * FROM answer WHERE id_question = :questionId";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':questionId', $questionId, PDO::PARAM_INT);
+        $stmt->execute();
+        $answers = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $answers;
     }
 
@@ -29,18 +28,17 @@ class Answer
     public function getAnswersByQuestionName($questionName)
     {
         /*
-        Return all answers related to question (MyCOnsole -> info button)
+        Return all answers related to question (MyConsole -> info button)
         */
 
-        $query = "SELECT text_a 
+        $query = "SELECT ans.text_a 
             FROM answer ans
             INNER JOIN question q ON ans.id_question = q.id_question
-            WHERE q.text_q = '$questionName'";
-        $result = mysqli_query($this->conn, $query);
-        $answers = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $answers[] = $row;
-        }
+            WHERE q.text_q = :questionName";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':questionName', $questionName, PDO::PARAM_STR);
+        $stmt->execute();
+        $answers = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $answers;
     }
 
@@ -50,10 +48,14 @@ class Answer
         $correct = $data['CORRECT'];
 
         $query = "UPDATE answer 
-                  SET text_a = '$textA', correct = $correct 
-                  WHERE text_a = '$answerText'";
+                  SET text_a = :textA, correct = :correct 
+                  WHERE text_a = :answerText";
 
-        $result = mysqli_query($this->conn, $query);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':textA', $textA, PDO::PARAM_STR);
+        $stmt->bindParam(':correct', $correct, PDO::PARAM_INT);
+        $stmt->bindParam(':answerText', $answerText, PDO::PARAM_STR);
+        $result = $stmt->execute();
 
         if ($result) {
             return true;
@@ -68,14 +70,14 @@ class Answer
         $correct = $data['CORRECT'];
         $idQuestion = $data['ID_QUESTION'];
 
-        $textA = mysqli_real_escape_string($this->conn, $textA);
-        $correct = mysqli_real_escape_string($this->conn, $correct);
-        $idQuestion = mysqli_real_escape_string($this->conn, $idQuestion);
-
         $query = "INSERT INTO answer (text_a, correct, id_question) 
-                  VALUES ('$textA', $correct, $idQuestion)";
+                  VALUES (:textA, :correct, :idQuestion)";
 
-        $result = mysqli_query($this->conn, $query);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':textA', $textA, PDO::PARAM_STR);
+        $stmt->bindParam(':correct', $correct, PDO::PARAM_INT);
+        $stmt->bindParam(':idQuestion', $idQuestion, PDO::PARAM_INT);
+        $result = $stmt->execute();
 
         if ($result) {
             return true;

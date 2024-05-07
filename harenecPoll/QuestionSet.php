@@ -3,11 +3,11 @@
 class QuestionSet
 {
 
-    private $conn;
+    private $pdo;
 
-    public function __construct($conn)
+    public function __construct($pdo)
     {
-        $this->conn = $conn;
+        $this->pdo = $pdo;
     }
 
 
@@ -18,11 +18,8 @@ class QuestionSet
         */
 
         $query = "SELECT * FROM question_set";
-        $result = mysqli_query($this->conn, $query);
-        $questionSets = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $questionSets[] = $row;
-        }
+        $stmt = $this->pdo->query($query);
+        $questionSets = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $questionSets;
     }
 
@@ -33,15 +30,14 @@ class QuestionSet
     Return question sets by their owner (userId)
     */
 
-        $query = "SELECT name_set FROM question_set WHERE id_user = $userId";
+        $query = "SELECT name_set FROM question_set WHERE id_user = :userId";
 
-        $result = mysqli_query($this->conn, $query);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
 
-        if (mysqli_num_rows($result) > 0) {
-            $userSets = array();
-            while ($row = mysqli_fetch_assoc($result)) {
-                $userSets[] = $row['name_set'];
-            }
+        if ($stmt->rowCount() > 0) {
+            $userSets = $stmt->fetchAll(PDO::FETCH_COLUMN);
             return $userSets;
         } else {
             return [];
@@ -50,36 +46,37 @@ class QuestionSet
 
     public function getQuestionSetByUserName($userName)
     {
-    /*
+        /*
     Return question sets by their owner (userName)
     */
 
         $query = "SELECT name_set
             FROM question_set qs
             INNER JOIN user u ON qs.id_user = u.id_user
-            WHERE u.nick = '$userName'";
-        $result = mysqli_query($this->conn, $query);
+            WHERE u.nick = :userName";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':userName', $userName, PDO::PARAM_STR);
+        $stmt->execute();
 
-        $questionSets = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $questionSets[] = $row;
-        }
+        $questionSets = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $questionSets;
     }
 
-    public function
-    getQuestionsBySetName($setname){
+    public function getQuestionsBySetName($setName)
+    {
         $query = "SELECT *
             FROM question
             WHERE id_set IN (
                 SELECT id_set
                 FROM question_set
-                WHERE name_set = '$setname'
-        )";
+                WHERE name_set = :setName
+            )";
 
-        $result = mysqli_query($this->conn, $query);
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':setName', $setName, PDO::PARAM_STR);
+        $stmt->execute();
 
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getQuestionSetIdByItsName($nameSet)
@@ -88,9 +85,12 @@ class QuestionSet
         Return question set ID by its name
         */
 
-        $query = "SELECT question_set.id_set FROM question_set where name_set = $nameSet";
-        $result = mysqli_query($this->conn, $query);
-        $idByName = mysqli_fetch_assoc($result);
+        $query = "SELECT id_set FROM question_set WHERE name_set = :nameSet";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':nameSet', $nameSet, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $idByName = $stmt->fetchColumn();
         return $idByName;
     }
 }
