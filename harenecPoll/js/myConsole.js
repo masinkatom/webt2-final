@@ -26,33 +26,38 @@ console.log("KURVA DOPICICICICII");
 var globalQuestions = JSON.parse(jsonData);
 console.log(globalQuestions);
 
-var globalSets = getGlobalSets();
-
-function getGlobalSetss(){
-//sessionLogin is variable for username
-//call this api https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?username=joseph
-//this will be output
-/*
-[
+var globalSets = `[
     {
         "name_set": "Math"
     },
     {
         "name_set": "English"
     }
-]
-make return value suitable for this continue in code...
-var globalSets = getGlobalSets();
-globalSets.forEach(function(item) {
-        createSetSection(item, container);
-    });
-*/
-}
+]`; 
+
+getGlobalSets().then(data => {
+    // Do something with the received data
+    globalSets = data;
+    console.log('Received data:', data);
+    console.log("CO DOPICI");
+    createButtonsOfSets();
+    // Call another function or perform any action here
+})
+.catch(error => {
+    // Handle errors
+    console.error('Error:', error);
+});
+
+
+console.log(globalSets);
+console.log("JOJ")
+
 
 
 async function getGlobalSets() {
     try {
-        const response = await fetch(`https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?username=${sessionLogin}`);
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/webt2-final/harenecPoll/api.php/sets?username=${sessionLogin}`,
+        {mode: "no-cors"} );
         const data = await response.json();
         return data;
     } catch (error) {
@@ -63,8 +68,6 @@ async function getGlobalSets() {
 
 var globalQuestionSets = ["DBS", "AZA", "OOP"];
 
-console.log("CO DOPICI");
-createButtonsOfSets();
 
 
 function createButtonsOfSets(){
@@ -74,7 +77,7 @@ function createButtonsOfSets(){
     console.log(container);
 
     globalSets.forEach(function(item) {
-        createSetSection(item, container);
+        createSetSection(item.name_set, container);
     });
 
     container.appendChild(createButton());
@@ -269,8 +272,10 @@ function createSetSection(item, container){
 
 async function getQuestionsBySet(setname) {
     try {
-      const response = await fetch(`https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?setname=${setname}`);
+      const response = await fetch(`https://node24.webte.fei.stuba.sk/webt2-final/harenecPoll/api.php/sets?setname=${setname}`);
       const data = await response.json();
+      console.log(data);
+      console.log("WOTAHEL");
       return data;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -285,8 +290,13 @@ async function getQuestionsBySet(setname) {
 
 function insertQuestions(cardBodyDiv, item){
 
-    questions = getQuestionsBySet(item); //TODO
-    console.log(globalQuestions);
+    //questions = getQuestionsBySet(item); //TODO
+
+    getQuestionsBySet(item).then(data => {
+        console.log('Received data:', data);
+        questions = data;
+        console.log(globalQuestions);
+
     questions.forEach(function(question) {
         // Create a new div element
         var div = document.createElement("div");
@@ -380,6 +390,13 @@ function insertQuestions(cardBodyDiv, item){
         div.appendChild(columnDiv);
         cardBodyDiv.appendChild(div);
     });
+
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+    });
+
 }
 
 function createInfoCollapse(questionId, questionFull){
@@ -505,6 +522,7 @@ function createCopyCollapse(questionId, questionFull){
     selectElement.setAttribute("id", "sets");
 
     globalSets.forEach(function(set) {
+        set = set.name_set;
         var optionElement = document.createElement("option");
         optionElement.setAttribute("value", set.toLowerCase());
         optionElement.textContent = set;
