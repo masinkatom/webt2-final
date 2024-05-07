@@ -68,6 +68,113 @@ function createNewQuestionCollapse(){
     //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
     //momentalny user je ulozeny v premennej globalnej  SSS var sessionLogin (nevidis ju v .js subore lebo ju taham z phpcka kde ju inicializujem)
     //tvoja robota
+    divkoDoKtorehoBudeJozkoRobit.id = "newQuestionInputs";
+    
+    // text otazky
+    var questionInput = document.createElement("input");
+    questionInput.setAttribute("type", "text");
+
+    // otvorena otazka? + checkbox
+    var labelOpen = document.createElement("label");
+    labelOpen.innerHTML = "Open question: ";
+    var openQuestionCheckbox = document.createElement("input");
+    openQuestionCheckbox.setAttribute("type", "checkbox");
+    divkoDoKtorehoBudeJozkoRobit.appendChild(questionInput);
+    divkoDoKtorehoBudeJozkoRobit.appendChild(labelOpen);
+    divkoDoKtorehoBudeJozkoRobit.appendChild(openQuestionCheckbox);
+
+    // // div pre otazku s moznostami --$$
+    var divkoPocetMoznosti = document.createElement("div");
+    divkoPocetMoznosti.id = "OptionsAmount";
+    divkoDoKtorehoBudeJozkoRobit.appendChild(divkoPocetMoznosti);
+
+    // input number - pocet odpovedi na otazku
+    var numberOptionsLabel = document.createElement("label");
+    numberOptionsLabel.innerHTML = "Number of options: ";
+    var numOfOptions = document.createElement("input");
+    numOfOptions.setAttribute("type", "number");
+    numOfOptions.setAttribute("min", 1);
+    numOfOptions.setAttribute("max", 4);
+    numOfOptions.setAttribute("value", 1);
+
+    openQuestionCheckbox.checked = true;
+    // tlacidlo na odoslanie poctu monznosti (a,b,c,d)
+    var setOptionsBtn = document.createElement("button");
+    setOptionsBtn.classList.add("btn", "btn-danger");
+    setOptionsBtn.textContent = "Add options";
+
+    var divkoMoznosti = document.createElement("div");
+    divkoMoznosti.id = "newQuestionOptions";
+    // // div pre otazku s moznostami --$$
+
+    openQuestionCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            console.log("Checkbox is checked!");
+            divkoPocetMoznosti.removeChild(numberOptionsLabel);
+            divkoPocetMoznosti.removeChild(numOfOptions);
+            divkoPocetMoznosti.removeChild(setOptionsBtn);
+            divkoPocetMoznosti.removeChild(divkoMoznosti);
+        } else {
+            console.log("Checkbox is not checked.");
+            divkoPocetMoznosti.appendChild(numberOptionsLabel);
+            divkoPocetMoznosti.appendChild(numOfOptions);
+            divkoPocetMoznosti.appendChild(setOptionsBtn);
+            divkoPocetMoznosti.appendChild(divkoMoznosti);
+        }
+    });
+
+    var options = [];
+
+    setOptionsBtn.addEventListener('click', function() {
+        for (let i = 0; i < numOfOptions.value; i++) {
+            let option = {};
+            option.id = i;
+            option.inputField = createOption(divkoMoznosti);
+            option.btn = createButtonForOption(divkoMoznosti);
+            option.correct = 0;
+            options.push(option);
+        }
+        options.forEach(option => {
+            option.btn.addEventListener('click', function() {
+                option.correct = 1;
+            })
+        });
+    })
+
+    var createQuestionButton = document.createElement("button");
+    createQuestionButton.classList.add("btn", "btn-primary");
+    createQuestionButton.textContent = "Create Question";
+    divkoDoKtorehoBudeJozkoRobit.appendChild(createQuestionButton);
+
+    createQuestionButton.addEventListener('click', function() {
+        let usefulOptionsData = [];
+        options.forEach(option => {
+            option.inputText = option.inputField.value
+            usefulOptionsData.push({
+                id: option.id,
+                optionText: option.inputText,
+                correct: option.correct
+            })
+        });
+        let dataToSend;
+        if (openQuestionCheckbox.checked === true) {
+            dataToSend = {
+                question: questionInput.value,
+                open: 1,
+                creationDate: getCurrentTimestamp(),
+                active: 0
+            };
+        } else {
+            dataToSend = {
+                question: questionInput.value,
+                options: usefulOptionsData,
+                open: 0,
+                creationDate: getCurrentTimestamp(),
+                active: 0
+            };
+        }
+        console.log(dataToSend);
+    })
     //tvoja robota
     //tu vidis ze to divko pridavam do velkeho viditelneho divka, preto robis len v tom svojom divku...
     cardElement.appendChild(divkoDoKtorehoBudeJozkoRobit);
@@ -76,6 +183,24 @@ function createNewQuestionCollapse(){
     return collapseContainer;
  }
 
+function createOption(parentDiv) {
+    var optionLabel = document.createElement("label");
+    optionLabel.innerHTML = "Option: ";
+    var answerText = document.createElement("input");
+    answerText.setAttribute("type", "text");
+    parentDiv.appendChild(optionLabel);
+    parentDiv.appendChild(answerText);
+    
+    return answerText;
+}
+
+function createButtonForOption(parentDiv) {
+    var correctAnswerBtn = document.createElement("button");
+    correctAnswerBtn.classList.add("btn", "btn-secondary");
+    correctAnswerBtn.textContent = "Correct";
+    parentDiv.appendChild(correctAnswerBtn);
+    return correctAnswerBtn;
+}
 
 function createSetSection(item, container){
     var button = document.createElement("button");
@@ -230,6 +355,13 @@ function createCopyCollapse(questionId, questionFull){
     return collapseContainer;
  }
 
+ function createInputField(textValue) {
+    let inputField = document.createElement("input");
+    inputField.setAttribute("type", "text");
+    inputField.setAttribute("value", textValue);
+    return inputField;
+ }
+
  function createEditCollapse(questionId, questionFull){
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
@@ -237,18 +369,67 @@ function createCopyCollapse(questionId, questionFull){
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-info-set");
-    cardElement.textContent = "TOTO JE PRE EDIT PANA BOHJA COLLAPSE" + JSON.stringify(questionFull);
-    
+
     var divkoDoKtorehoJozkoRobiEdit = document.createElement("div"); //TODO JOZKO
     //question id mas ako parameter
     //aj znenie celej specifickej otazky ktoru chceme upravovat mas v parametru questionFull 
 
+    var labelQuestionText = document.createElement("label");
+    labelQuestionText.innerHTML = "Question : ";
+    var QuestionTextEdit = createInputField(questionFull.text_q);
+    divkoDoKtorehoJozkoRobiEdit.appendChild(labelQuestionText);
+    divkoDoKtorehoJozkoRobiEdit.appendChild(QuestionTextEdit);
+
+    var labelOpen = document.createElement("label");
+    labelOpen.innerHTML = "Open: ";
+    var OpenQuestionEdit = createInputField(questionFull.open);
+    // var OpenQuestionEdit = document.createElement("input");
+    // OpenQuestionEdit.setAttribute("type", "checkbox");
+    // if (questionFull.open === '1') {
+    //     OpenQuestionEdit.checked = true;
+    // } else {
+    //     OpenQuestionEdit.checked = false;
+    // }
+    divkoDoKtorehoJozkoRobiEdit.appendChild(labelOpen);
+    divkoDoKtorehoJozkoRobiEdit.appendChild(OpenQuestionEdit);
+
+    var labelActive = document.createElement("label");
+    labelActive.innerHTML = "Active: ";
+    var activeQuestionEdit = createInputField(questionFull.active);
+    divkoDoKtorehoJozkoRobiEdit.appendChild(labelActive);
+    divkoDoKtorehoJozkoRobiEdit.appendChild(activeQuestionEdit);
+
+    var updateQuestionBtn = document.createElement("button");
+    updateQuestionBtn.classList.add("btn", "btn-primary");
+    updateQuestionBtn.textContent = "Update Question";
+    divkoDoKtorehoJozkoRobiEdit.appendChild(updateQuestionBtn);
+
+    updateQuestionBtn.addEventListener('click', function() {
+        let fakeJson = {
+            "id_question": questionId,
+            "creationDate": getCurrentTimestamp(),
+            "text_q": QuestionTextEdit.value,
+            "open": OpenQuestionEdit.value,
+            "active": activeQuestionEdit.value
+        }
+        console.log(fakeJson)
+    })
+    // ############
+    // ############
 
     cardElement.appendChild(divkoDoKtorehoJozkoRobiEdit);
     collapseContainer.appendChild(cardElement);
     return collapseContainer;
  }
 
+ function getCurrentTimestamp() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + currentDate.getDate()).slice(-2);
+    const currentTimestamp = year.toString() + '-' + month + '-' + day;
+    return currentTimestamp;
+ }
 
  function createCopyForm(questionFull){
     var formElement = document.createElement("form");
