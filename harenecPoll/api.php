@@ -74,7 +74,11 @@ switch ($method) {
                         $question = urldecode($_GET['questionActive']);
                         $isActiveQuestion = $QuestionObj->getActiveQuestion($question);
                         echo json_encode($isActiveQuestion);
-                    }   
+                    }elseif(isset($_GET['info'])){
+                        $info = urldecode($_GET['info']);
+                        $getQuestionInfo = $QuestionObj->getQuestionInfo($info);
+                        echo json_encode($getQuestionInfo);
+                    } 
                     break;
                 break;
             default:

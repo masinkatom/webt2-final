@@ -115,6 +115,16 @@ class Question
         }
     }
 
+    public function getQuestionInfo($info){
+        $query = "SELECT * FROM question where text_q = '$info'";
+        $result = mysqli_query($this->conn, $query);
+        $questionsBySet = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $questionInfo[] = $row;
+        }
+        return $questionInfo;
+    }
+
     public function addQuestion($data)
     {
         $textQ = $data['text_q'];
