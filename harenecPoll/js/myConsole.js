@@ -81,7 +81,9 @@ function createButtonsOfSets(){
     });
 
     container.appendChild(createButton());
+    container.appendChild(createNewSetButton());
     container.appendChild(createNewQuestionCollapse())
+    container.appendChild(createNewSetCollapse());
 
 }
 
@@ -95,6 +97,20 @@ function createButton() {
     newQButton.textContent = "NEW QUESTIONWTFXXX";
     return newQButton;
 }
+
+function createNewSetButton() {
+    var newQButton = document.createElement("button");
+    newQButton.classList.add("btn", "btn-success");
+    newQButton.setAttribute("data-bs-toggle", "collapse");
+    newQButton.setAttribute("data-bs-target", "#newSetCreateCollapse");
+    newQButton.setAttribute("aria-controls", "newSetCreateCollapse"); // Set aria-controls attribute
+    newQButton.style.fontSize = "1.6rem";
+    newQButton.textContent = "NEW SETWTFXXX";
+    return newQButton;
+}
+
+
+
 function createNewQuestionCollapse(){
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
@@ -218,6 +234,26 @@ function createNewQuestionCollapse(){
     //tvoja robota
     //tu vidis ze to divko pridavam do velkeho viditelneho divka, preto robis len v tom svojom divku...
     cardElement.appendChild(divkoDoKtorehoBudeJozkoRobit);
+    collapseContainer.appendChild(cardElement);
+ 
+    return collapseContainer;
+ }
+
+ function createNewSetCollapse(){
+    var collapseContainer = document.createElement("div");
+    collapseContainer.classList.add("collapse"); ///OOO
+    collapseContainer.id = "newSetCreateCollapse";
+    var cardElement = document.createElement("div");
+    cardElement.classList.add("card", "card-body");
+    cardElement.classList.add("collapse-set");
+
+    var tuRobis = document.createElement("div") //TODO JOZKO
+    //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
+    //momentalny user je ulozeny v premennej globalnej  SSS var sessionLogin (nevidis ju v .js subore lebo ju taham z phpcka kde ju inicializujem)
+    //tvoja robota
+    tuRobis.id = "newSetCreateInputs";
+
+    cardElement.appendChild(tuRobis);
     collapseContainer.appendChild(cardElement);
  
     return collapseContainer;
