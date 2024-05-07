@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
-$username = 'xvelickab';
-$password = 'najbezpecnejsieHesloNaCelomSvete';
-$dbname = 'finaltestik';
+$username = 'xbrilla';
+$password = 'presovskaBorka22';
+$dbname = 'WIAH';
 
 try {
     // Create a new PDO instance
