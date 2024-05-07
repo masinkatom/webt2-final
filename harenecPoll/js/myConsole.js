@@ -1,3 +1,4 @@
+
 var jsonData = `[
     {
         "id_question": "1",
@@ -21,13 +22,52 @@ var jsonData = `[
         "creationDate": "2024-05-02"
     }
 ]`;
+console.log("KURVA DOPICICICICII");
 var globalQuestions = JSON.parse(jsonData);
 console.log(globalQuestions);
 
+var globalSets = `[
+    {
+        "name_set": "Math"
+    },
+    {
+        "name_set": "English"
+    }
+]`; 
+
+getGlobalSets().then(data => {
+    // Do something with the received data
+    globalSets = data;
+    console.log('Received data:', data);
+    console.log("CO DOPICI");
+    createButtonsOfSets();
+    // Call another function or perform any action here
+})
+.catch(error => {
+    // Handle errors
+    console.error('Error:', error);
+});
+
+
+console.log(globalSets);
+console.log("JOJ")
+
+
+
+async function getGlobalSets() {
+    try {
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/webt2-final/harenecPoll/api.php/sets?username=${sessionLogin}`,
+        {mode: "no-cors"} );
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching sets:', error);
+        return [];
+    }
+}
+
 var globalQuestionSets = ["DBS", "AZA", "OOP"];
 
-console.log("CO DOPICI");
-createButtonsOfSets();
 
 
 function createButtonsOfSets(){
@@ -36,8 +76,8 @@ function createButtonsOfSets(){
     var container = document.getElementById("button-container");
     console.log(container);
 
-    globalQuestionSets.forEach(function(item) {
-        createSetSection(item, container);
+    globalSets.forEach(function(item) {
+        createSetSection(item.name_set, container);
     });
 
     container.appendChild(createButton());
@@ -228,9 +268,36 @@ function createSetSection(item, container){
         container.appendChild(collapseDiv);
 }
 
+
+
+async function getQuestionsBySet(setname) {
+    try {
+      const response = await fetch(`https://node24.webte.fei.stuba.sk/webt2-final/harenecPoll/api.php/sets?setname=${setname}`);
+      const data = await response.json();
+      console.log(data);
+      console.log("WOTAHEL");
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  }
+
+
+
+
+      
+
 function insertQuestions(cardBodyDiv, item){
-    console.log(globalQuestions);
-    globalQuestions.forEach(function(question) {
+
+    //questions = getQuestionsBySet(item); //TODO
+
+    getQuestionsBySet(item).then(data => {
+        console.log('Received data:', data);
+        questions = data;
+        console.log(globalQuestions);
+
+    questions.forEach(function(question) {
         // Create a new div element
         var div = document.createElement("div");
         div.classList.add("content-outline");
@@ -305,7 +372,7 @@ function insertQuestions(cardBodyDiv, item){
         deleteButton.textContent = "DeleteXXX";
 
         //DeleteModal
-        collapseDiv.appendChild(createDeleteCollapse(question.id_question));
+        collapseDiv.appendChild(createDeleteCollapse(question.id_question, question.text_q));
         
     
     
@@ -323,6 +390,13 @@ function insertQuestions(cardBodyDiv, item){
         div.appendChild(columnDiv);
         cardBodyDiv.appendChild(div);
     });
+
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+    });
+
 }
 
 function createInfoCollapse(questionId, questionFull){
@@ -447,7 +521,8 @@ function createCopyCollapse(questionId, questionFull){
     selectElement.setAttribute("name", "sets");
     selectElement.setAttribute("id", "sets");
 
-    globalQuestionSets.forEach(function(set) {
+    globalSets.forEach(function(set) {
+        set = set.name_set;
         var optionElement = document.createElement("option");
         optionElement.setAttribute("value", set.toLowerCase());
         optionElement.textContent = set;
@@ -471,7 +546,7 @@ formElement.appendChild(container);
 return formElement;
  }
 
- function createDeleteCollapse(questionId){
+ function createDeleteCollapse(questionId, questionName){
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
     collapseContainer.id = questionId+"DeleteCollapse";
@@ -493,7 +568,7 @@ return formElement;
     deleteReally.textContent = "DeleteXXX";
     deleteReally.classList.add("bigger-button-font");
     deleteReally.addEventListener("click", function() {
-        deleteQ(questionId);
+        deleteQ(questionId, questionName);
     });
 
     cardElement.appendChild(deleteReally);
@@ -501,8 +576,21 @@ return formElement;
     return collapseContainer;
  }
 
-function deleteQ(questionId){
+function deleteQ(questionId, questionName){ //TODO APINY
     console.log("DELETE QUESTION"+questionId);
+    console.log("Deleting quesiton"+questionName);
+    fetch(`https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/questions?questionName=${encodeURIComponent(questionName)}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete question');
+        }
+        console.log('Question deleted successfully');
+    })
+    .catch(error => {
+        console.error('Error deleting question:', error);
+    });
 }
 
 function showInfoQ(question){
