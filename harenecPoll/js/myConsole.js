@@ -1,3 +1,4 @@
+
 var jsonData = `[
     {
         "id_question": "1",
@@ -21,8 +22,44 @@ var jsonData = `[
         "creationDate": "2024-05-02"
     }
 ]`;
+console.log("KURVA DOPICICICICII");
 var globalQuestions = JSON.parse(jsonData);
 console.log(globalQuestions);
+
+var globalSets = getGlobalSets();
+
+function getGlobalSetss(){
+//sessionLogin is variable for username
+//call this api https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?username=joseph
+//this will be output
+/*
+[
+    {
+        "name_set": "Math"
+    },
+    {
+        "name_set": "English"
+    }
+]
+make return value suitable for this continue in code...
+var globalSets = getGlobalSets();
+globalSets.forEach(function(item) {
+        createSetSection(item, container);
+    });
+*/
+}
+
+
+async function getGlobalSets() {
+    try {
+        const response = await fetch(`https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?username=${sessionLogin}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching sets:', error);
+        return [];
+    }
+}
 
 var globalQuestionSets = ["DBS", "AZA", "OOP"];
 
@@ -36,7 +73,7 @@ function createButtonsOfSets(){
     var container = document.getElementById("button-container");
     console.log(container);
 
-    globalQuestionSets.forEach(function(item) {
+    globalSets.forEach(function(item) {
         createSetSection(item, container);
     });
 
@@ -228,9 +265,29 @@ function createSetSection(item, container){
         container.appendChild(collapseDiv);
 }
 
+
+
+async function getQuestionsBySet(setname) {
+    try {
+      const response = await fetch(`https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/sets?setname=${setname}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  }
+
+
+
+
+      
+
 function insertQuestions(cardBodyDiv, item){
+
+    questions = getQuestionsBySet(item); //TODO
     console.log(globalQuestions);
-    globalQuestions.forEach(function(question) {
+    questions.forEach(function(question) {
         // Create a new div element
         var div = document.createElement("div");
         div.classList.add("content-outline");
@@ -305,7 +362,7 @@ function insertQuestions(cardBodyDiv, item){
         deleteButton.textContent = "DeleteXXX";
 
         //DeleteModal
-        collapseDiv.appendChild(createDeleteCollapse(question.id_question));
+        collapseDiv.appendChild(createDeleteCollapse(question.id_question, question.text_q));
         
     
     
@@ -447,7 +504,7 @@ function createCopyCollapse(questionId, questionFull){
     selectElement.setAttribute("name", "sets");
     selectElement.setAttribute("id", "sets");
 
-    globalQuestionSets.forEach(function(set) {
+    globalSets.forEach(function(set) {
         var optionElement = document.createElement("option");
         optionElement.setAttribute("value", set.toLowerCase());
         optionElement.textContent = set;
@@ -471,7 +528,7 @@ formElement.appendChild(container);
 return formElement;
  }
 
- function createDeleteCollapse(questionId){
+ function createDeleteCollapse(questionId, questionName){
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
     collapseContainer.id = questionId+"DeleteCollapse";
@@ -493,7 +550,7 @@ return formElement;
     deleteReally.textContent = "DeleteXXX";
     deleteReally.classList.add("bigger-button-font");
     deleteReally.addEventListener("click", function() {
-        deleteQ(questionId);
+        deleteQ(questionId, questionName);
     });
 
     cardElement.appendChild(deleteReally);
@@ -501,8 +558,21 @@ return formElement;
     return collapseContainer;
  }
 
-function deleteQ(questionId){
+function deleteQ(questionId, questionName){ //TODO APINY
     console.log("DELETE QUESTION"+questionId);
+    console.log("Deleting quesiton"+questionName);
+    fetch(`https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/questions?questionName=${encodeURIComponent(questionName)}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete question');
+        }
+        console.log('Question deleted successfully');
+    })
+    .catch(error => {
+        console.error('Error deleting question:', error);
+    });
 }
 
 function showInfoQ(question){
