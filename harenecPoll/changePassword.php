@@ -47,13 +47,16 @@ echo $output;
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     echo '<li class="nav-item">
-                        <a class="nav-item nav-item-current" href="#">DomXXX</a>
+                        <a class="nav-item nav-item-current" href="index.php">DomXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="myConsole.php">KonzXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="logout.php">OdhláseXXX</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-item" href="changePassword.php">zmenaHeslaXXX</a>
                         </li>
                         ';
                         echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';

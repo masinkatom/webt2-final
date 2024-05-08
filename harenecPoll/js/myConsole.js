@@ -187,6 +187,46 @@ function createNewSetButton() {
     return newQButton;
 }
 
+function createDatatable(questionsData) {
+    let table = document.createElement('table');
+    table.id = 'example';
+    table.classList.add('display');
+
+    const thead = document.createElement('thead');
+    const trHeader = document.createElement('tr');
+    
+    const keys = Object.keys(questionsData[0]);
+    keys.forEach(key => {
+        const th = document.createElement('th');
+        th.textContent = key;
+        trHeader.appendChild(th);
+    });
+    thead.appendChild(trHeader);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    questionsData.forEach(item => {
+        const tr = document.createElement('tr');
+        keys.forEach(key => {
+            const td = document.createElement('td');
+            td.textContent = item[key];
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+
+    initDatatable();
+
+    return table;
+}
+
+function initDatatable() {
+    $(document).ready( function () {
+        $('#example').DataTable();
+    } );
+}
+
 function createSeeAllQuestionCollapse() {
     var collapseContainer = document.createElement("div");
     getAllQuestionByName(sessionLogin)
@@ -199,10 +239,12 @@ function createSeeAllQuestionCollapse() {
             cardElement.textContent = "See all question";
 
             var allQuestionJozkoDivko = document.createElement("div")
+            allQuestionJozkoDivko.id = "allQuestionJozkoDivko";
             var allQbyName;
             allQbyName = JSON.parse(data);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
-
+            var myTable = createDatatable(allQbyName);
+            allQuestionJozkoDivko.appendChild(myTable);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
             cardElement.appendChild(allQuestionJozkoDivko);
             collapseContainer.appendChild(cardElement);
@@ -252,7 +294,7 @@ function createNewQuestionCollapse() {
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-set");
-    cardElement.textContent = "NEW QUSTION";
+    cardElement.textContent = "NEW QUSTIONXXX";
 
     var divkoDoKtorehoBudeJozkoRobit = document.createElement("div") //TODO JOZKO
     //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
@@ -265,7 +307,7 @@ function createNewQuestionCollapse() {
     questionInput.setAttribute("type", "text");
 
     var selectSetLabel = document.createElement("label");
-    selectSetLabel.innerHTML = "Choose set: ";
+    selectSetLabel.innerHTML = "Choose setXXX: ";
     var setSelectBox = document.createElement("select");
 
     // INFORMACIA PRE JURAJA
@@ -281,7 +323,7 @@ function createNewQuestionCollapse() {
 
     // otvorena otazka? + checkbox
     var labelOpen = document.createElement("label");
-    labelOpen.innerHTML = "Open question: ";
+    labelOpen.innerHTML = "Open questionXXX: ";
     var openQuestionCheckbox = document.createElement("input");
     openQuestionCheckbox.setAttribute("type", "checkbox");
     divkoDoKtorehoBudeJozkoRobit.appendChild(questionInput);
@@ -290,25 +332,36 @@ function createNewQuestionCollapse() {
     divkoDoKtorehoBudeJozkoRobit.appendChild(labelOpen);
     divkoDoKtorehoBudeJozkoRobit.appendChild(openQuestionCheckbox);
 
+    var labelCloudmap = document.createElement("label");
+    labelCloudmap.innerHTML = "Cloudmap?XXX: ";
+    var cloudmapCheckbox = document.createElement("input");
+    cloudmapCheckbox.setAttribute("type", "checkbox");
+
     // // div pre otazku s moznostami --$$
     var divkoPocetMoznosti = document.createElement("div");
     divkoPocetMoznosti.id = "OptionsAmount";
     divkoDoKtorehoBudeJozkoRobit.appendChild(divkoPocetMoznosti);
 
+    openQuestionCheckbox.checked = true;
+    // po nacitani stranky checkbox ZASKRTNUTY
+    if (openQuestionCheckbox.checked) {
+        divkoPocetMoznosti.appendChild(labelCloudmap);
+        divkoPocetMoznosti.appendChild(cloudmapCheckbox);
+    }
+
     // input number - pocet odpovedi na otazku
     var numberOptionsLabel = document.createElement("label");
-    numberOptionsLabel.innerHTML = "Number of options: ";
+    numberOptionsLabel.innerHTML = "Number of optionsXXX: ";
     var numOfOptions = document.createElement("input");
     numOfOptions.setAttribute("type", "number");
     numOfOptions.setAttribute("min", 1);
     numOfOptions.setAttribute("max", 4);
     numOfOptions.setAttribute("value", 1);
 
-    openQuestionCheckbox.checked = true;
     // tlacidlo na odoslanie poctu monznosti (a,b,c,d)
     var setOptionsBtn = document.createElement("button");
     setOptionsBtn.classList.add("btn", "btn-danger");
-    setOptionsBtn.textContent = "Add options";
+    setOptionsBtn.textContent = "Add optionsXXX";
 
     var divkoMoznosti = document.createElement("div");
     divkoMoznosti.id = "newQuestionOptions";
@@ -325,11 +378,25 @@ function createNewQuestionCollapse() {
             divkoPocetMoznosti.removeChild(numOfOptions);
             divkoPocetMoznosti.removeChild(setOptionsBtn);
             divkoPocetMoznosti.removeChild(divkoMoznosti);
+            divkoPocetMoznosti.appendChild(labelCloudmap);
+            divkoPocetMoznosti.appendChild(cloudmapCheckbox);
         } else {
             divkoPocetMoznosti.appendChild(numberOptionsLabel);
             divkoPocetMoznosti.appendChild(numOfOptions);
             divkoPocetMoznosti.appendChild(setOptionsBtn);
             divkoPocetMoznosti.appendChild(divkoMoznosti);
+            divkoPocetMoznosti.removeChild(labelCloudmap);
+            divkoPocetMoznosti.removeChild(cloudmapCheckbox);
+        }
+    });
+
+    // defalut NEZASKRKNUTE
+    var cloudmapValue = 0;
+    cloudmapCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            cloudmapValue = 1;   
+        } else {
+            cloudmapValue = 0;
         }
     });
 
@@ -361,7 +428,7 @@ function createNewQuestionCollapse() {
 
     var createQuestionButton = document.createElement("button");
     createQuestionButton.classList.add("btn", "btn-primary");
-    createQuestionButton.textContent = "Create Question";
+    createQuestionButton.textContent = "Create QuestionXXX";
     divkoDoKtorehoBudeJozkoRobit.appendChild(createQuestionButton);
 
     createQuestionButton.addEventListener('click', function () {
@@ -383,7 +450,7 @@ function createNewQuestionCollapse() {
                 open: 1,
                 creationDate: getCurrentTimestamp(),
                 active: 0,
-                couldmap: 1 //TODO JOZKO TU DAS TOTEN UDAJ Z CLOUDMAP SELECTBOXE
+                cloudmap: cloudmapValue //TODO JOZKO TU DAS TOTEN UDAJ Z CLOUDMAP SELECTBOXE
             };
         } else {
             dataToSend = {
@@ -457,7 +524,7 @@ function createNewSetCollapse() {
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-set");
-    cardElement.textContent = "NEW SET";
+    cardElement.textContent = "NEW SETXXX";
 
     var tuRobis = document.createElement("div") //TODO JOZKO
     //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
@@ -470,7 +537,7 @@ function createNewSetCollapse() {
 
     var createSetButton = document.createElement("button");
     createSetButton.classList.add("btn", "btn-primary");
-    createSetButton.textContent = "Create Set";
+    createSetButton.textContent = "Create SetXXX";
     tuRobis.appendChild(createSetButton);
 
     createSetButton.addEventListener('click', function () {
@@ -491,7 +558,7 @@ function createNewSetCollapse() {
 
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");
-    optionLabel.innerHTML = "Option: ";
+    optionLabel.innerHTML = "OptionXXX: ";
     var answerText = document.createElement("input");
     answerText.setAttribute("type", "text");
     parentDiv.appendChild(optionLabel);
@@ -503,7 +570,7 @@ function createOption(parentDiv) {
 function createButtonForOption(parentDiv) {
     var correctAnswerBtn = document.createElement("button");
     correctAnswerBtn.classList.add("btn", "btn-secondary");
-    correctAnswerBtn.textContent = "Correct";
+    correctAnswerBtn.textContent = "CorrectXXX";
     parentDiv.appendChild(correctAnswerBtn);
     return correctAnswerBtn;
 }

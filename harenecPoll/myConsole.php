@@ -35,6 +35,7 @@ echo $output;
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css">
 
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/toast.css">
@@ -49,13 +50,16 @@ echo $output;
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     echo '<li class="nav-item">
-                        <a class="nav-item" href="changePassword.php">DomXXX</a>
+                        <a class="nav-item" href="index.php">DomXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item nav-item-current" href="myConsole.php">KonzXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="logout.php">OdhláseXXX</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-item" href="changePassword.php">zmenaHeslaXXX</a>
                         </li>
                         ';
                         echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
@@ -100,7 +104,8 @@ echo $output;
 </body>
 
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
 <script src="js/myConsole.js"></script>
 
 

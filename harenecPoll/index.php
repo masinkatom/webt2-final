@@ -50,10 +50,13 @@ echo $output;
                         <li class="nav-item">
                             <a class="nav-item" href="logout.php">OdhlásenieXXX</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-item" href="changePassword.php">zmenaHeslaXXX</a>
+                        </li>
                         ';
                 } else {
                     echo '<li class="nav-item">
-                        <a class="nav-item nav-item-current" href="#">DomovXXX</a>
+                        <a class="nav-item nav-item-current" href="index.php">DomovXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="login.php">PrihlásenieXXX</a>
@@ -61,11 +64,22 @@ echo $output;
                         <li class="nav-item">
                             <a class="nav-item" href="register.php">RegistráciaXXX</a>
                         </li>';
-                }
-                ?>
+                ?>        
             </ul>
         </div>
     </div>
+    <?php 
+        echo '<div class="container">
+                <div class="content-outline centered">
+                    <form action="">
+                        <label for="code" class="margin-label">Zadaj kodXXX:</label>
+                        <input type="text" name="code" placeholder="po zadani kodu redirect na otazku">
+                        <button>Odoslat kodXXX</button>
+                    </form>
+                </div>
+            </div>';
+    }
+    ?>
 
     
 </body>
