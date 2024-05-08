@@ -1,3 +1,63 @@
+let btnModalClose = document.getElementById("close-modal");
+let modalQR = document.getElementById("modalQR");
+window.onclick = function (event) {
+    if (event.target == modalQR || event.target == btnModalClose) {
+        modalQR.classList.add("hidden");
+    }
+
+}
+
+let flag = 0;
+
+
+var testDataDelete = `[
+    {
+      "id_question": 1,
+      "text_q": "What is the capital of France?",
+      "active": 1,
+      "open": 0,
+      "id_set": 1,
+      "creationDate": "2024-05-01",
+      "code": null
+    },
+    {
+      "id_question": 2,
+      "text_q": "Who wrote 'Romeo and Juliet'?",
+      "active": 1,
+      "open": 0,
+      "id_set": 1,
+      "creationDate": "2024-05-02",
+      "code": null
+    },
+    {
+      "id_question": 3,
+      "text_q": "What is the symbol for gold?",
+      "active": 1,
+      "open": 0,
+      "id_set": 2,
+      "creationDate": "2024-05-03",
+      "code": null
+    },
+    {
+      "id_question": 4,
+      "text_q": "Which planet is known as the Red Planet?",
+      "active": 1,
+      "open": 0,
+      "id_set": 2,
+      "creationDate": "2024-05-04",
+      "code": null
+    },
+    {
+      "id_question": 5,
+      "text_q": "Who painted the Mona Lisa?",
+      "active": 1,
+      "open": 0,
+      "id_set": 3,
+      "creationDate": "2024-05-05",
+      "code": null
+    }
+  ]`;
+
 
 var jsonData = `[
     {
@@ -33,7 +93,7 @@ var globalSets = `[
     {
         "name_set": "English"
     }
-]`; 
+]`;
 
 getGlobalSets().then(data => {
     // Do something with the received data
@@ -43,10 +103,10 @@ getGlobalSets().then(data => {
     createButtonsOfSets();
     // Call another function or perform any action here
 })
-.catch(error => {
-    // Handle errors
-    console.error('Error:', error);
-});
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+    });
 
 
 console.log(globalSets);
@@ -57,7 +117,7 @@ console.log("JOJ")
 async function getGlobalSets() {
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${sessionLogin}`,
-        {mode: "no-cors"} );
+            { mode: "no-cors" });
         const data = await response.json();
         return data;
     } catch (error) {
@@ -70,21 +130,48 @@ var globalQuestionSets = ["DBS", "AZA", "OOP"];
 
 
 
-function createButtonsOfSets(){
-    
+function createButtonsOfSets() {
+
     console.log("Creating buttons", sessionLogin);
     var container = document.getElementById("button-container");
     console.log(container);
 
-    globalSets.forEach(function(item) {
+    globalSets.forEach(function (item) {
         createSetSection(item.name_set, container);
     });
 
     container.appendChild(createButton());
-    container.appendChild(createNewSetButton());
     container.appendChild(createNewQuestionCollapse())
+    container.appendChild(createNewSetButton());
     container.appendChild(createNewSetCollapse());
+    container.appendChild(createSeeAllQuestionButton());
+    container.appendChild(createSeeAllQuestionCollapse());
+    container.appendChild(createStatsButton());
+    container.appendChild(creatseeStatsCollapse())
 
+}
+
+function createStatsButton() {
+    var statsButton = document.createElement("button");
+    statsButton.classList.add("btn", "btn-info");
+    statsButton.setAttribute("data-bs-toggle", "collapse");
+    statsButton.setAttribute("data-bs-target", "#seeStatsCollapse");
+    statsButton.setAttribute("aria-controls", "seeStatsCollapse");
+    statsButton.style.fontSize = "1.6rem";
+    statsButton.textContent = "SEE STATSXXX";
+    return statsButton;
+}
+
+
+function createSeeAllQuestionButton() {
+    var newQButton = document.createElement("button");
+    newQButton.classList.add("btn", "btn-info");
+    newQButton.setAttribute("data-bs-toggle", "collapse");
+    newQButton.setAttribute("data-bs-target", "#seeAllQuestionCollapse");
+    newQButton.setAttribute("aria-controls", "seeAllQuestionCollapse");
+    newQButton.style.fontSize = "1.6rem";
+    newQButton.textContent = "SEE ALL QUESTIONXXX";
+    return newQButton;
 }
 
 function createButton() {
@@ -109,9 +196,68 @@ function createNewSetButton() {
     return newQButton;
 }
 
+function createSeeAllQuestionCollapse() {
+    var collapseContainer = document.createElement("div");
+    getAllQuestionByName(sessionLogin)
+        .then(data => {
+            console.log("000009");
+
+            //var collapseContainer = document.createElement("div");
+            collapseContainer.classList.add("collapse");
+            collapseContainer.id = "seeAllQuestionCollapse";
+            var cardElement = document.createElement("div");
+            cardElement.classList.add("card", "card-body");
+            cardElement.classList.add("collapse-set");
+            cardElement.textContent = "See all question";
+
+            var allQuestionJozkoDivko = document.createElement("div")
+            var allQbyName;
+            allQbyName = JSON.parse(data);
+            //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
+
+            //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
+            cardElement.appendChild(allQuestionJozkoDivko);
+            collapseContainer.appendChild(cardElement);
+            return collapseContainer;
+        })
+
+    return collapseContainer;
+}
+
+async function getAllQuestionByName(user) {
+    //TU DURI UPRAVIS SPOJAZDNIS BOROVE API A VRATIS DATA
+    /*try {
+        const response = await fetch(`GET Q BY USER=${user}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return testDataDelete; //9999
+    }*/
+    console.log("00000");
+    return testDataDelete;
+}
 
 
-function createNewQuestionCollapse(){
+function creatseeStatsCollapse() {
+    var collapseContainer = document.createElement("div");
+    collapseContainer.classList.add("collapse");
+    collapseContainer.id = "seeStatsCollapse"; 
+    var cardElement = document.createElement("div");
+    cardElement.classList.add("card", "card-body");
+    cardElement.classList.add("collapse-set");
+    cardElement.textContent = "STATS";
+
+    var divkoDoKtorehoBudeAdamkoStatsRobit = document.createElement("div") //TODO ADAMKO STATS DIV
+    //tvoja robota v divku pojde tu
+    divkoDoKtorehoBudeAdamkoStatsRobit.id = "statsDiv";
+    cardElement.appendChild(divkoDoKtorehoBudeAdamkoStatsRobit);
+    collapseContainer.appendChild(cardElement);
+
+    return collapseContainer;
+}
+
+function createNewQuestionCollapse() {
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
     collapseContainer.id = "newQuestionCollapse";
@@ -125,7 +271,7 @@ function createNewQuestionCollapse(){
     //momentalny user je ulozeny v premennej globalnej  SSS var sessionLogin (nevidis ju v .js subore lebo ju taham z phpcka kde ju inicializujem)
     //tvoja robota
     divkoDoKtorehoBudeJozkoRobit.id = "newQuestionInputs";
-    
+
     // text otazky
     var questionInput = document.createElement("input");
     questionInput.setAttribute("type", "text");
@@ -133,7 +279,7 @@ function createNewQuestionCollapse(){
     var selectSetLabel = document.createElement("label");
     selectSetLabel.innerHTML = "Choose set: ";
     var setSelectBox = document.createElement("select");
-    
+
     // INFORMACIA PRE JURAJA
     // TU SA NAPLNI SELECT BOX MENAMI SETOV
     // MNE globalSets nefetchne - ja mam prazdne hodnoty na node40
@@ -181,11 +327,11 @@ function createNewQuestionCollapse(){
     // // div pre otazku s moznostami --$$
 
     var selectedSetValue = setSelectBox.value;
-    setSelectBox.addEventListener('change', function() {
+    setSelectBox.addEventListener('change', function () {
         selectedSetValue = this.value;
     });
 
-    openQuestionCheckbox.addEventListener('change', function() {
+    openQuestionCheckbox.addEventListener('change', function () {
         if (this.checked) {
             console.log("Checkbox is checked!");
             divkoPocetMoznosti.removeChild(numberOptionsLabel);
@@ -203,7 +349,7 @@ function createNewQuestionCollapse(){
 
     var options = [];
 
-    setOptionsBtn.addEventListener('click', function() {
+    setOptionsBtn.addEventListener('click', function () {
         for (let i = 0; i < numOfOptions.value; i++) {
             let option = {};
             option.id = i;
@@ -213,9 +359,16 @@ function createNewQuestionCollapse(){
             options.push(option);
         }
         options.forEach(option => {
-            option.btn.addEventListener('click', function() {
-                option.btn.style.color = "green"; //TUTUTU
-                option.correct = 1;
+            option.btn.addEventListener('click', function () {
+                if (option.correct === 1) {
+                    option.correct = 0;
+                    option.btn.style.backgroundColor = "grey";
+                } else {
+                    option.correct = 1;
+                    option.btn.style.backgroundColor = "green";
+                }
+                //option.btn.style.color = "green"; //TUTUTU
+                //option.correct = 1;
             })
         });
     })
@@ -225,7 +378,7 @@ function createNewQuestionCollapse(){
     createQuestionButton.textContent = "Create Question";
     divkoDoKtorehoBudeJozkoRobit.appendChild(createQuestionButton);
 
-    createQuestionButton.addEventListener('click', function() {
+    createQuestionButton.addEventListener('click', function () {
         // ODTIALTO SA BUDU ODOSIELAT DATA
         let usefulOptionsData = [];
         options.forEach(option => {
@@ -243,7 +396,8 @@ function createNewQuestionCollapse(){
                 name_set: selectedSetValue,
                 open: 1,
                 creationDate: getCurrentTimestamp(),
-                active: 0
+                active: 0,
+                couldmap: 1 //TODO JOZKO TU DAS TOTEN UDAJ Z CLOUDMAP SELECTBOXE
             };
         } else {
             dataToSend = {
@@ -252,20 +406,23 @@ function createNewQuestionCollapse(){
                 options: usefulOptionsData,
                 open: 0,
                 creationDate: getCurrentTimestamp(),
-                active: 0
+                active: 0,
+                cloudmap: 0
             };
         }
+        console.log("CREATE QUESTION DONE");
         console.log(dataToSend);
+        console.log("CREATE QUESTION DONE");
     })
     //tvoja robota
     //tu vidis ze to divko pridavam do velkeho viditelneho divka, preto robis len v tom svojom divku...
     cardElement.appendChild(divkoDoKtorehoBudeJozkoRobit);
     collapseContainer.appendChild(cardElement);
- 
-    return collapseContainer;
- }
 
- function createNewSetCollapse(){
+    return collapseContainer;
+}
+
+function createNewSetCollapse() {
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse"); ///OOO
     collapseContainer.id = "newSetCreateCollapse";
@@ -288,18 +445,21 @@ function createNewQuestionCollapse(){
     createSetButton.textContent = "Create Set";
     tuRobis.appendChild(createSetButton);
 
-    createSetButton.addEventListener('click', function() {
+    createSetButton.addEventListener('click', function () {
         // ODTIALTO SA BUDU ODOSIELAT DATADOPICI
         var createdSet = newSetInput.value; // NOVY SET
+        console.log("CREATE SET DONE");
+        createdSet = createdSet.replace(/\s+/g, '_')
         console.log(createdSet);
+        console.log("CREATE SET DONE");
     })
     //s
 
     cardElement.appendChild(tuRobis);
     collapseContainer.appendChild(cardElement);
- 
+
     return collapseContainer;
- }
+}
 
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");
@@ -308,7 +468,7 @@ function createOption(parentDiv) {
     answerText.setAttribute("type", "text");
     parentDiv.appendChild(optionLabel);
     parentDiv.appendChild(answerText);
-    
+
     return answerText;
 }
 
@@ -320,53 +480,53 @@ function createButtonForOption(parentDiv) {
     return correctAnswerBtn;
 }
 
-function createSetSection(item, container){
+function createSetSection(item, container) {
     var button = document.createElement("button");
 
-        button.setAttribute("type", "button");
-        button.setAttribute("data-bs-toggle", "collapse");
-        button.setAttribute("data-bs-target", `#${item}`);
-        button.setAttribute("aria-expanded", "false");
-        button.textContent = item;
+    button.setAttribute("type", "button");
+    button.setAttribute("data-bs-toggle", "collapse");
+    button.setAttribute("data-bs-target", `#${item}`);
+    button.setAttribute("aria-expanded", "false");
+    button.textContent = item;
 
-        container.appendChild(button);
+    container.appendChild(button);
 
-        var collapseDiv = document.createElement("div");
-        collapseDiv.classList.add("collapse");
-        collapseDiv.id = item;
+    var collapseDiv = document.createElement("div");
+    collapseDiv.classList.add("collapse");
+    collapseDiv.id = item;
 
-        var cardBodyDiv = document.createElement("div");
-        cardBodyDiv.classList.add("card", "card-body");
-        cardBodyDiv.classList.add("collapse-set");
-        cardBodyDiv.id = item+"Div";
-        collapseDiv.appendChild(cardBodyDiv);
+    var cardBodyDiv = document.createElement("div");
+    cardBodyDiv.classList.add("card", "card-body");
+    cardBodyDiv.classList.add("collapse-set");
+    cardBodyDiv.id = item + "Div";
+    collapseDiv.appendChild(cardBodyDiv);
 
-        insertQuestions(cardBodyDiv, item);
+    insertQuestions(cardBodyDiv, item);
 
-        container.appendChild(collapseDiv);
+    container.appendChild(collapseDiv);
 }
 
 
 
 async function getQuestionsBySet(setname) {
     try {
-      const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?setname=${setname}`);
-      const data = await response.json();
-      console.log(data);
-      console.log("WOTAHEL");
-      return data;
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?setname=${setname}`);
+        const data = await response.json();
+        console.log(data);
+        console.log("WOTAHEL");
+        return data;
     } catch (error) {
-      console.error('Error fetching data:', error);
-      return null;
+        console.error('Error fetching data:', error);
+        return null;
     }
-  }
+}
 
 
 
 
-      
 
-function insertQuestions(cardBodyDiv, item){
+
+function insertQuestions(cardBodyDiv, item) {
 
     //questions = getQuestionsBySet(item); //TODO
 
@@ -375,149 +535,199 @@ function insertQuestions(cardBodyDiv, item){
         questions = data;
         console.log(globalQuestions);
 
-    questions.forEach(function(question) {
-        // Create a new div element
-        var div = document.createElement("div");
-        div.classList.add("content-outline");
+        questions.forEach(function (question) {
+            // Create a new div element
+            var div = document.createElement("div");
+            div.classList.add("content-outline");
 
-        var columnDiv = document.createElement("div");
-        columnDiv.classList.add("in-column");
+            var columnDiv = document.createElement("div");
+            columnDiv.classList.add("in-column");
 
-        var questionDiv = document.createElement("div");
-        questionDiv.classList.add("content-question-outline");
-        var collapseDiv = document.createElement("div");
+            var questionDiv = document.createElement("div");
+            questionDiv.classList.add("content-question-outline");
+            var collapseDiv = document.createElement("div");
 
 
-        var textSection = document.createElement("div");
-        textSection.classList.add("in-row-q");
+            var textSection = document.createElement("div");
+            textSection.classList.add("in-row-q");
 
-        var questionElement = document.createElement("h4");
-        questionElement.textContent = question.text_q;
-        
-        textSection.appendChild(questionElement);
+            var questionElement = document.createElement("h4");
+            questionElement.textContent = question.text_q;
 
-        // Append the text node to the div
-        div.appendChild(textSection);
-    
-        var buttonSection = document.createElement("div");
-        buttonSection.classList.add("in-row-q");
-        
-        
-        //Info
-        var infoButton = document.createElement("button");
-        infoButton.classList.add("btn", "btn-primary");
-        infoButton.setAttribute("data-bs-toggle", "collapse");
-        infoButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
-        infoButton.style.fontSize = "1.6rem";
-        infoButton.textContent = "InfoXXX";
+            textSection.appendChild(questionElement);
 
-        //InfoModal
-        collapseDiv.appendChild(createInfoCollapse(question.id_question, question));
-        
-        // Copy
-        var copyButton = document.createElement("button");
-        copyButton.classList.add("btn", "btn-secondary");
-        copyButton.setAttribute("data-bs-toggle", "collapse");
-        copyButton.setAttribute("data-bs-target", `#${question.id_question}CopyCollapse`);
-        copyButton.style.fontSize = "1.6rem";
-        copyButton.textContent = "CopyXXX";
+            // Append the text node to the div
+            div.appendChild(textSection);
 
-        //CopyModal
-        collapseDiv.appendChild(createCopyCollapse(question.id_question, question));
-    
-        // Edit
-        var editButton = document.createElement("button");
-        editButton.classList.add("btn", "btn-warning");
-        editButton.setAttribute("data-bs-toggle", "collapse");
-        editButton.setAttribute("data-bs-target", `#${question.id_question}EditCollapse`);
-        editButton.style.fontSize = "1.6rem";
-        editButton.textContent = "EditXX";
+            var buttonSection = document.createElement("div");
+            buttonSection.classList.add("in-row-q");
 
-        //EditModal
-        collapseDiv.appendChild(createEditCollapse(question.id_question, question));
-        
-        editButton.addEventListener("click", function() {
-            //editQ(question); //TODO
+            //Play
+            var playButton = document.createElement("button");
+            playButton.classList.add("btn", "btn-success");
+            //playButton.setAttribute("data-bs-toggle", "collapse");
+            //playButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
+            playButton.style.fontSize = "1.6rem";
+            playButton.textContent = "ONXXX";
+            playButton.addEventListener("click", () => {
+                console.log(question);
+                console.log("LLL")
+                if(question.active === 0){
+
+                    question.active = 1;
+                    playButton.textContent = "STOPXXX";
+                    playButton.style.backgroundColor = "red";
+                    playQuestionWithQR(question);
+                }else{
+                    question.active = 0;
+                    playButton.textContent = "STARTXXX";
+                    playButton.style.backgroundColor = "green";
+                    stopQuestionWithQR(question);
+                }
+
+            });
+            //DDD
+
+            //Info
+            var infoButton = document.createElement("button");
+            infoButton.classList.add("btn", "btn-primary");
+            infoButton.setAttribute("data-bs-toggle", "collapse");
+            infoButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
+            infoButton.style.fontSize = "1.6rem";
+            infoButton.textContent = "InfoXXX";
+
+            //InfoModal
+            collapseDiv.appendChild(createInfoCollapse(question.id_question, question));
+
+            // Copy
+            var copyButton = document.createElement("button");
+            copyButton.classList.add("btn", "btn-secondary");
+            copyButton.setAttribute("data-bs-toggle", "collapse");
+            copyButton.setAttribute("data-bs-target", `#${question.id_question}CopyCollapse`);
+            copyButton.style.fontSize = "1.6rem";
+            copyButton.textContent = "CopyXXX";
+
+            //CopyModal
+            collapseDiv.appendChild(createCopyCollapse(question.id_question, question));
+
+            // Edit
+            var editButton = document.createElement("button");
+            editButton.classList.add("btn", "btn-warning");
+            editButton.setAttribute("data-bs-toggle", "collapse");
+            editButton.setAttribute("data-bs-target", `#${question.id_question}EditCollapse`);
+            editButton.style.fontSize = "1.6rem";
+            editButton.textContent = "EditXX";
+
+            //EditModal
+            collapseDiv.appendChild(createEditCollapse(question.id_question, question));
+
+            editButton.addEventListener("click", function () {
+                //editQ(question); //TODO
+            });
+
+
+            //Delete
+            var deleteButton = document.createElement("button");
+            deleteButton.classList.add("btn", "btn-danger");
+            deleteButton.setAttribute("data-bs-toggle", "collapse");
+            deleteButton.setAttribute("data-bs-target", `#${question.id_question}DeleteCollapse`);
+            deleteButton.style.fontSize = "1.6rem";
+            deleteButton.textContent = "DeleteXXX";
+
+            //DeleteModal
+            collapseDiv.appendChild(createDeleteCollapse(question.id_question, question.text_q));
+
+
+
+            buttonSection.appendChild(playButton);
+            buttonSection.appendChild(infoButton);
+            buttonSection.appendChild(copyButton);
+            buttonSection.appendChild(editButton);
+            buttonSection.appendChild(deleteButton);
+
+
+
+            questionDiv.appendChild(textSection);
+            questionDiv.appendChild(buttonSection);
+            columnDiv.appendChild(questionDiv);
+            columnDiv.appendChild(collapseDiv);
+            div.appendChild(columnDiv);
+            cardBodyDiv.appendChild(div);
         });
 
-
-        //Delete
-        var deleteButton = document.createElement("button");
-        deleteButton.classList.add("btn", "btn-danger");
-        deleteButton.setAttribute("data-bs-toggle", "collapse");
-        deleteButton.setAttribute("data-bs-target", `#${question.id_question}DeleteCollapse`);
-        deleteButton.style.fontSize = "1.6rem";
-        deleteButton.textContent = "DeleteXXX";
-
-        //DeleteModal
-        collapseDiv.appendChild(createDeleteCollapse(question.id_question, question.text_q));
-        
-    
-    
-        buttonSection.appendChild(infoButton);
-        buttonSection.appendChild(copyButton);
-        buttonSection.appendChild(editButton);
-        buttonSection.appendChild(deleteButton);
-
-
-
-        questionDiv.appendChild(textSection);
-        questionDiv.appendChild(buttonSection);
-        columnDiv.appendChild(questionDiv);
-        columnDiv.appendChild(collapseDiv);
-        div.appendChild(columnDiv);
-        cardBodyDiv.appendChild(div);
-    });
-
     })
-    .catch(error => {
-        // Handle errors
-        console.error('Error:', error);
-    });
+        .catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+        });
 
 }
 
-function createInfoCollapse(questionId, questionFull){
-   var collapseContainer = document.createElement("div");
-   collapseContainer.classList.add("collapse");
-   collapseContainer.id = questionId+"InfoCollapse";
-   var cardElement = document.createElement("div");
-   cardElement.classList.add("card", "card-body");
-   cardElement.classList.add("collapse-info-set");
-   
-   cardElement.appendChild(showInfoQ(questionFull));
-   
-   collapseContainer.appendChild(cardElement);
-   
+function stopQuestionWithQR(quesiton){
+    console.log("STOP NA OTAZKU");
+    console.log(quesiton);
+    console.log("STOP NA OTAZKU");
+    //nastavit flag active na 0
+    //dajak vysledky riesit este neviem
 
-   return collapseContainer;
+
 }
 
-function createCopyCollapse(questionId, questionFull){
+
+function playQuestionWithQR(question){
+    modalQR.classList.remove("hidden");
+    console.log("SPUSTAM PLAY NA OTAZKU");
+    console.log(question);
+    console.log("SPUSTAM PLAY NA OTAZKU");
+    //nastav flag aktivna na 1
+    //vygeneruj QR kod
+    //vygeneruj kodik
+    //kodik hod do databazy (prepis udaj ktory tam uz je)
+    //nastartuj adamkove websockey nwm co 
+    
+}
+
+function createInfoCollapse(questionId, questionFull) {
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
-    collapseContainer.id = questionId+"CopyCollapse";
+    collapseContainer.id = questionId + "InfoCollapse";
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-info-set");
-    
+
+    cardElement.appendChild(showInfoQ(questionFull));
+
+    collapseContainer.appendChild(cardElement);
+
+
+    return collapseContainer;
+}
+
+function createCopyCollapse(questionId, questionFull) {
+    var collapseContainer = document.createElement("div");
+    collapseContainer.classList.add("collapse");
+    collapseContainer.id = questionId + "CopyCollapse";
+    var cardElement = document.createElement("div");
+    cardElement.classList.add("card", "card-body");
+    cardElement.classList.add("collapse-info-set");
+
     cardElement.appendChild(createCopyForm(questionFull));
     collapseContainer.appendChild(cardElement);
- 
-    return collapseContainer;
- }
 
- function createInputField(textValue) {
+    return collapseContainer;
+}
+
+function createInputField(textValue) {
     let inputField = document.createElement("input");
     inputField.setAttribute("type", "text");
     inputField.setAttribute("value", textValue);
     return inputField;
- }
+}
 
- function createEditCollapse(questionId, questionFull){
+function createEditCollapse(questionId, questionFull) {
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
-    collapseContainer.id = questionId+"EditCollapse";
+    collapseContainer.id = questionId + "EditCollapse";
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-info-set");
@@ -532,9 +742,9 @@ function createCopyCollapse(questionId, questionFull){
     divkoDoKtorehoJozkoRobiEdit.appendChild(labelQuestionText);
     divkoDoKtorehoJozkoRobiEdit.appendChild(QuestionTextEdit);
 
-    var labelOpen = document.createElement("label");
-    labelOpen.innerHTML = "Open: ";
-    var OpenQuestionEdit = createInputField(questionFull.open);
+    //XX var labelOpen = document.createElement("label");
+    //XX labelOpen.innerHTML = "Open: ";
+    //XX var OpenQuestionEdit = createInputField(questionFull.open);
     // var OpenQuestionEdit = document.createElement("input");
     // OpenQuestionEdit.setAttribute("type", "checkbox");
     // if (questionFull.open === '1') {
@@ -542,31 +752,31 @@ function createCopyCollapse(questionId, questionFull){
     // } else {
     //     OpenQuestionEdit.checked = false;
     // }
-    divkoDoKtorehoJozkoRobiEdit.appendChild(labelOpen);
-    divkoDoKtorehoJozkoRobiEdit.appendChild(OpenQuestionEdit);
+    //XX divkoDoKtorehoJozkoRobiEdit.appendChild(labelOpen);
+    //XX divkoDoKtorehoJozkoRobiEdit.appendChild(OpenQuestionEdit);
 
-    var labelActive = document.createElement("label");
-    labelActive.innerHTML = "Active: ";
-    var activeQuestionEdit = createInputField(questionFull.active);
-    divkoDoKtorehoJozkoRobiEdit.appendChild(labelActive);
-    divkoDoKtorehoJozkoRobiEdit.appendChild(activeQuestionEdit);
+    //XX var labelActive = document.createElement("label");
+    //XX labelActive.innerHTML = "Active: ";
+    //XX var activeQuestionEdit = createInputField(questionFull.active);
+    //XX divkoDoKtorehoJozkoRobiEdit.appendChild(labelActive);
+    //XX divkoDoKtorehoJozkoRobiEdit.appendChild(activeQuestionEdit);
 
     var updateQuestionBtn = document.createElement("button");
     updateQuestionBtn.classList.add("btn", "btn-primary");
     updateQuestionBtn.textContent = "Update Question";
     divkoDoKtorehoJozkoRobiEdit.appendChild(updateQuestionBtn);
 
-    updateQuestionBtn.addEventListener('click', function() {
+    updateQuestionBtn.addEventListener('click', function () {
         // ODTIALTO SA BUDU ODOSIELAT DATA
         let fakeJson = {
             "creationDate": getCurrentTimestamp(),
             "text_q": QuestionTextEdit.value,
-            "open": OpenQuestionEdit.value,
-            "active": activeQuestionEdit.value
+            "originName": questionFull.text_q
+            /*"open": OpenQuestionEdit.value,
+            "active": activeQuestionEdit.value*/
         }
-        console.log("PRE DFAKE QUESTION")
-        console.log(fakeJson)
-        editQ(questionFull.text_q,fakeJson); //TODO JURAJ
+
+        editQ(questionFull.text_q, fakeJson); //TODO JURAJ
     })
     // ############
     // ############
@@ -574,18 +784,18 @@ function createCopyCollapse(questionId, questionFull){
     cardElement.appendChild(divkoDoKtorehoJozkoRobiEdit);
     collapseContainer.appendChild(cardElement);
     return collapseContainer;
- }
+}
 
- function getCurrentTimestamp() {
+function getCurrentTimestamp() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
     const day = ('0' + currentDate.getDate()).slice(-2);
     const currentTimestamp = year.toString() + '-' + month + '-' + day;
     return currentTimestamp;
- }
+}
 
- function createCopyForm(questionFull){
+function createCopyForm(questionFull) {
     var formElement = document.createElement("form");
 
     var labelElement = document.createElement("label");
@@ -601,7 +811,7 @@ function createCopyCollapse(questionId, questionFull){
     selectElement.setAttribute("name", "sets");
     selectElement.setAttribute("id", "sets");
 
-    globalSets.forEach(function(set) {
+    globalSets.forEach(function (set) {
         set = set.name_set;
         var optionElement = document.createElement("option");
         optionElement.setAttribute("value", set.toLowerCase());
@@ -610,26 +820,26 @@ function createCopyCollapse(questionId, questionFull){
     });
 
     var copyButt = document.createElement("button");
-    copyButt.setAttribute("type", "button"); 
+    copyButt.setAttribute("type", "button");
     copyButt.classList.add("btn", "btn-success");
     copyButt.classList.add("bigger-button-font");
     copyButt.textContent = "CopyXXX";
-    copyButt.addEventListener("click", function() {
+    copyButt.addEventListener("click", function () {
         copyQ(questionFull, selectElement.value);
-});
+    });
 
-container.appendChild(selectElement);
-container.appendChild(copyButt);
+    container.appendChild(selectElement);
+    container.appendChild(copyButt);
 
-formElement.appendChild(container);
+    formElement.appendChild(container);
 
-return formElement;
- }
+    return formElement;
+}
 
- function createDeleteCollapse(questionId, questionName){
+function createDeleteCollapse(questionId, questionName) {
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
-    collapseContainer.id = questionId+"DeleteCollapse";
+    collapseContainer.id = questionId + "DeleteCollapse";
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-info-set");
@@ -638,8 +848,7 @@ return formElement;
     italicText.textContent = "Are you sure?XXX";
     italicText.classList.add("centered");
     cardElement.appendChild(italicText);
-    //cardElement.textContent = "DeleteTA CO DOPICIDOPICIXdX";
-    collapseContainer.appendChild(cardElement);
+   collapseContainer.appendChild(cardElement);
 
 
     var deleteReally = document.createElement("button");
@@ -647,21 +856,21 @@ return formElement;
     deleteReally.classList.add("btn", "btn-danger");
     deleteReally.textContent = "DeleteXXX";
     deleteReally.classList.add("bigger-button-font");
-    deleteReally.addEventListener("click", function() {
+    deleteReally.addEventListener("click", function () {
         deleteQ(questionId, questionName)
-        .then(() => {
-            //TODO ADAMKO SHOW DAJAKY OZNAM MODAL INFO ZE BOLO VYMAZANE
-        })
+            .then(() => {
+                //TODO ADAMKO SHOW DAJAKY OZNAM MODAL INFO ZE BOLO VYMAZANE
+            })
     });
 
     cardElement.appendChild(deleteReally);
 
     return collapseContainer;
- }
+}
 
-async function deleteQ(questionId, questionName){ //TODO BORO Dokoncit aby islo delete
-    console.log("DELETE QUESTION"+questionId);
-    console.log("Deleting quesiton"+questionName);
+async function deleteQ(questionId, questionName) { //TODO BORO Dokoncit aby islo delete
+    console.log("DELETE QUESTION" + questionId);
+    console.log("Deleting quesiton" + questionName);
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/questions?questionName=${questionName}`, {
             method: 'DELETE'
@@ -674,32 +883,32 @@ async function deleteQ(questionId, questionName){ //TODO BORO Dokoncit aby islo 
     } //PPPPPP
 }
 
-function showInfoQ(question){
+function showInfoQ(question) {
     console.log(question);
     console.log(question.open.toString());
     console.log(question.open.toString() === "0")
-    if(question.open.toString() === "0"){
+    if (question.open.toString() === "0") {
         console.log("TA JA SA T NEDOSTANEM");
         console.log(showQuestionsWithAnswers(question));
         console.log("HALO DOPICI");
 
         return showQuestionsWithAnswers(question);
     }
-    else{
+    else {
         console.log("A TU HEJ KURVA")
         return showQuestionWithoutAnswes(question);
     }
 }
 
-function showQuestionWithoutAnswes(question){
+function showQuestionWithoutAnswes(question) {
     var infoElement = document.createElement("i");
     infoElement.textContent = question.text_q;
     return infoElement;
 }
 
-async function getAnswersByQuestion(questionText){
+async function getAnswersByQuestion(questionText) {
     try {
-        console.log("ta co dopici"+ questionText);
+        console.log("ta co dopici" + questionText);
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/answer?questionAnswer=${questionText}`);
         const data = await response.json();
         console.log(data);
@@ -714,7 +923,7 @@ async function getAnswersByQuestion(questionText){
 
 
 
-function showQuestionsWithAnswers(question){
+function showQuestionsWithAnswers(question) {
     var returnDiv = document.createElement("div");
     console.log("KURVA KOKOT FIX");
     /*var answersData = [
@@ -728,47 +937,47 @@ function showQuestionsWithAnswers(question){
 
             console.log(data);
             //var returnDiv = document.createElement("div");
-    returnDiv.classList.add("in-column");
+            returnDiv.classList.add("in-column");
 
-    var infoElement = document.createElement("h4");
-    infoElement.textContent =  question.text_q;
-    returnDiv.appendChild(infoElement);
-    infoElement.classList.add("bigger-font");
+            var infoElement = document.createElement("h4");
+            infoElement.textContent = question.text_q;
+            returnDiv.appendChild(infoElement);
+            infoElement.classList.add("bigger-font");
 
-    var ulElement = document.createElement("ul");
+            var ulElement = document.createElement("ul");
 
 
-    data.forEach(function(answer) {
-        console.log(answer);
-        console.log(" OCH TA JA SOM SKRATENY");
+            data.forEach(function (answer) {
+                console.log(answer);
+                console.log(" OCH TA JA SOM SKRATENY");
 
-        var liElement = document.createElement("li");
-        liElement.textContent = answer.text_a;
-        liElement.classList.add("bigger-font");
-        //TODO BORO //var correctness = answer.correct === "1" ? "correctXXX" : "incorectXXX";
-        //liElement.textContent += " (" + correctness + ")";
+                var liElement = document.createElement("li");
+                liElement.textContent = answer.text_a;
+                liElement.classList.add("bigger-font");
+                //TODO BORO //var correctness = answer.correct === "1" ? "correctXXX" : "incorectXXX";
+                //liElement.textContent += " (" + correctness + ")";
 
-        ulElement.appendChild(liElement);
-    });
+                ulElement.appendChild(liElement);
+            });
 
-    returnDiv.appendChild(ulElement);
-    console.log(returnDiv);
-    return returnDiv;
-    })
-    .catch(error => {
-        // Handle errors
-        console.error('Error:', error);
-    });
-  
+            returnDiv.appendChild(ulElement);
+            console.log(returnDiv);
+            return returnDiv;
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+        });
+
     return returnDiv;
 
 }
 
-function editQ(originName,question){
-console.log("CO");
-console.log(question);
-console.log("CO");
-const data = JSON.stringify(question);
+function editQ(originName, question) {
+    console.log("Poslem toto");
+    console.log(question);
+    console.log("Posielam toto hore");
+    const data = JSON.stringify(question);
 
     // Send a POST request to the server
     fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionUpdate=${originName}`, {
@@ -779,25 +988,25 @@ const data = JSON.stringify(question);
         // Convert the data object to JSON string and send it in the request body
         body: JSON.stringify(data)
     })
-    .then(response => {
-        // Check if the request was successful
-        if (response.ok) {
-            console.log('Question updated successfully');
-            // Handle further actions if needed
-        } else {
-            console.error('Failed to update question');
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('Question updated successfully');
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update question');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
             // Handle errors if needed
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Handle errors if needed
-    });
+        });
 }
 
-function copyQ(questionFull, whereToCopy){
+function copyQ(questionFull, whereToCopy) {
     console.log(questionFull);
-    
+
     var mergedObject = {
         "text_q": questionFull.text_q,
         "active": questionFull.active,
@@ -808,5 +1017,5 @@ function copyQ(questionFull, whereToCopy){
     };
     console.log("TOTO JEBNEM DO API CALLU")
     console.log(mergedObject); //TODO JURAJ DOKONCI API CALL NA COPY
-    
+
 }   
