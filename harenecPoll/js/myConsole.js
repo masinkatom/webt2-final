@@ -82,9 +82,7 @@ var jsonData = `[
         "creationDate": "2024-05-02"
     }
 ]`;
-console.log("KURVA DOPICICICICII");
-var globalQuestions = JSON.parse(jsonData);
-console.log(globalQuestions);
+
 
 var globalSets = `[
     {
@@ -96,21 +94,15 @@ var globalSets = `[
 ]`;
 
 getGlobalSets().then(data => {
-    // Do something with the received data
     globalSets = data;
-    console.log('Received data:', data);
-    console.log("CO DOPICI");
     createButtonsOfSets();
-    // Call another function or perform any action here
 })
     .catch(error => {
-        // Handle errors
         console.error('Error:', error);
     });
 
 
-console.log(globalSets);
-console.log("JOJ")
+
 
 
 
@@ -132,9 +124,7 @@ var globalQuestionSets = ["DBS", "AZA", "OOP"];
 
 function createButtonsOfSets() {
 
-    console.log("Creating buttons", sessionLogin);
     var container = document.getElementById("button-container");
-    console.log(container);
 
     globalSets.forEach(function (item) {
         createSetSection(item.name_set, container);
@@ -200,9 +190,6 @@ function createSeeAllQuestionCollapse() {
     var collapseContainer = document.createElement("div");
     getAllQuestionByName(sessionLogin)
         .then(data => {
-            console.log("000009");
-
-            //var collapseContainer = document.createElement("div");
             collapseContainer.classList.add("collapse");
             collapseContainer.id = "seeAllQuestionCollapse";
             var cardElement = document.createElement("div");
@@ -234,7 +221,6 @@ async function getAllQuestionByName(user) {
         console.error('Error fetching data:', error);
         return testDataDelete; //9999
     }*/
-    console.log("00000");
     return testDataDelete;
 }
 
@@ -333,13 +319,11 @@ function createNewQuestionCollapse() {
 
     openQuestionCheckbox.addEventListener('change', function () {
         if (this.checked) {
-            console.log("Checkbox is checked!");
             divkoPocetMoznosti.removeChild(numberOptionsLabel);
             divkoPocetMoznosti.removeChild(numOfOptions);
             divkoPocetMoznosti.removeChild(setOptionsBtn);
             divkoPocetMoznosti.removeChild(divkoMoznosti);
         } else {
-            console.log("Checkbox is not checked.");
             divkoPocetMoznosti.appendChild(numberOptionsLabel);
             divkoPocetMoznosti.appendChild(numOfOptions);
             divkoPocetMoznosti.appendChild(setOptionsBtn);
@@ -512,8 +496,6 @@ async function getQuestionsBySet(setname) {
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?setname=${setname}`);
         const data = await response.json();
-        console.log(data);
-        console.log("WOTAHEL");
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -531,9 +513,7 @@ function insertQuestions(cardBodyDiv, item) {
     //questions = getQuestionsBySet(item); //TODO
 
     getQuestionsBySet(item).then(data => {
-        console.log('Received data:', data);
         questions = data;
-        console.log(globalQuestions);
 
         questions.forEach(function (question) {
             // Create a new div element
@@ -570,10 +550,7 @@ function insertQuestions(cardBodyDiv, item) {
             playButton.style.fontSize = "1.6rem";
             playButton.textContent = "ONXXX";
             playButton.addEventListener("click", () => {
-                console.log(question);
-                console.log("LLL")
                 if(question.active === 0){
-
                     question.active = 1;
                     playButton.textContent = "STOPXXX";
                     playButton.style.backgroundColor = "red";
@@ -884,18 +861,11 @@ async function deleteQ(questionId, questionName) { //TODO BORO Dokoncit aby islo
 }
 
 function showInfoQ(question) {
-    console.log(question);
-    console.log(question.open.toString());
-    console.log(question.open.toString() === "0")
     if (question.open.toString() === "0") {
-        console.log("TA JA SA T NEDOSTANEM");
-        console.log(showQuestionsWithAnswers(question));
-        console.log("HALO DOPICI");
-
+        //console.log(showQuestionsWithAnswers(question));
         return showQuestionsWithAnswers(question);
     }
     else {
-        console.log("A TU HEJ KURVA")
         return showQuestionWithoutAnswes(question);
     }
 }
@@ -908,11 +878,8 @@ function showQuestionWithoutAnswes(question) {
 
 async function getAnswersByQuestion(questionText) {
     try {
-        console.log("ta co dopici" + questionText);
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/answer?questionAnswer=${questionText}`);
         const data = await response.json();
-        console.log(data);
-        console.log("TA MNE UZ JEBE");
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -925,7 +892,6 @@ async function getAnswersByQuestion(questionText) {
 
 function showQuestionsWithAnswers(question) {
     var returnDiv = document.createElement("div");
-    console.log("KURVA KOKOT FIX");
     /*var answersData = [
         { id_answer: 1, text_a: "Option A", correct: "1", id_question: 1 },
         { id_answer: 2, text_a: "Option B", correct: "0", id_question: 1 },
@@ -934,9 +900,6 @@ function showQuestionsWithAnswers(question) {
 */
     getAnswersByQuestion(question.text_q)
         .then(data => {
-
-            console.log(data);
-            //var returnDiv = document.createElement("div");
             returnDiv.classList.add("in-column");
 
             var infoElement = document.createElement("h4");
@@ -948,8 +911,6 @@ function showQuestionsWithAnswers(question) {
 
 
             data.forEach(function (answer) {
-                console.log(answer);
-                console.log(" OCH TA JA SOM SKRATENY");
 
                 var liElement = document.createElement("li");
                 liElement.textContent = answer.text_a;
@@ -961,7 +922,6 @@ function showQuestionsWithAnswers(question) {
             });
 
             returnDiv.appendChild(ulElement);
-            console.log(returnDiv);
             return returnDiv;
         })
         .catch(error => {
@@ -1005,8 +965,6 @@ function editQ(originName, question) {
 }
 
 function copyQ(questionFull, whereToCopy) {
-    console.log(questionFull);
-
     var mergedObject = {
         "text_q": questionFull.text_q,
         "active": questionFull.active,
