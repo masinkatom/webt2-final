@@ -136,8 +136,8 @@ function createButtonsOfSets() {
     container.appendChild(createNewSetCollapse());
     container.appendChild(createSeeAllQuestionButton());
     container.appendChild(createSeeAllQuestionCollapse());
-    container.appendChild(createStatsButton());
-    container.appendChild(creatseeStatsCollapse())
+    //container.appendChild(createStatsButton());
+    //container.appendChild(creatseeStatsCollapse())
 
 }
 
@@ -225,7 +225,7 @@ async function getAllQuestionByName(user) {
 }
 
 
-function creatseeStatsCollapse() {
+function creatseeStatsCollapse(question) {
     var collapseContainer = document.createElement("div");
     collapseContainer.classList.add("collapse");
     collapseContainer.id = "seeStatsCollapse"; 
@@ -235,6 +235,7 @@ function creatseeStatsCollapse() {
     cardElement.textContent = "STATS";
 
     var divkoDoKtorehoBudeAdamkoStatsRobit = document.createElement("div") //TODO ADAMKO STATS DIV
+    divkoDoKtorehoBudeAdamkoStatsRobit.textContent = JSON.stringify(question)
     //tvoja robota v divku pojde tu
     divkoDoKtorehoBudeAdamkoStatsRobit.id = "statsDiv";
     cardElement.appendChild(divkoDoKtorehoBudeAdamkoStatsRobit);
@@ -673,6 +674,8 @@ function createInfoCollapse(questionId, questionFull) {
     cardElement.classList.add("collapse-info-set");
 
     cardElement.appendChild(showInfoQ(questionFull));
+    cardElement.appendChild(createStatsButton());
+    cardElement.appendChild(creatseeStatsCollapse(questionFull));
 
     collapseContainer.appendChild(cardElement);
 
