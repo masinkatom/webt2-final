@@ -133,4 +133,23 @@ class Question
             return false;
         }
     }
+
+
+    public function addSet($data)
+    {
+        print_r($data);
+        $query = "INSERT INTO question_set (name_set, id_user) 
+                  VALUES (:setName, :id_user)";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':setName', $data['setName'], PDO::PARAM_STR);
+        $stmt->bindParam(':id_user', $data['userName'], PDO::PARAM_STR);
+        $result = $stmt->execute();
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

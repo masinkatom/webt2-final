@@ -59,6 +59,7 @@ echo $output;
                         </li>
                         ';
                         echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
+                        echo '<script>var sessionLoginID = "' . $_SESSION['loginID'] . '";</script>';
                 } else {
                     echo '<li class="nav-item">
                             <a class="nav-item" href="#">DomovXXX</a>

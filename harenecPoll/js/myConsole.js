@@ -9,6 +9,7 @@ window.onclick = function (event) {
 
 let flag = 0;
 
+console.log("PICI JA SOM GENIUS", sessionLoginID)
 
 var testDataDelete = `[
     {
@@ -483,6 +484,11 @@ function createNewSetCollapse() {
         console.log("CREATE SET DONE");
         createdSet = createdSet.replace(/\s+/g, '_')
         console.log(createdSet);
+        let createdSetToSend = { 
+            setName: createdSet,
+            userName: sessionLoginID
+        }; 
+        createNewSetDatabase(createdSetToSend); //********
         console.log("CREATE SET DONE");
     })
     //s
@@ -492,6 +498,37 @@ function createNewSetCollapse() {
 
     return collapseContainer;
 }
+
+async function createNewSetDatabase(dataToSend) {
+
+    
+    console.log(dataToSend);
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createSet`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        body: JSON.stringify(dataToSend)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('Question updated successfully');
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update question');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
+}
+
+
+
 
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");

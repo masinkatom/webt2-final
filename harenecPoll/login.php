@@ -12,7 +12,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 require_once '../.config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $sql = "SELECT nick, password FROM user WHERE nick = :nick";
+    $sql = "SELECT nick, id_user, password FROM user WHERE nick = :nick";
 
     $stmt = $pdo->prepare($sql);
 
@@ -27,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($_POST['password'], $hashed_password)) {
                 $_SESSION["loggedin"] = true;
                 $_SESSION["login"] = $row['nick'];
+                $_SESSION["loginID"] = $row['id_user'];
                 $_SESSION["logged"] = true;
 
                 header("location: index.php");
