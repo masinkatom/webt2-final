@@ -19,9 +19,7 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     $output .= '<div id="snackbar">Operácia sa podarila</div>';
 }
 
-
 echo $output;
-
 
 ?>
 
@@ -49,10 +47,10 @@ echo $output;
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     echo '<li class="nav-item">
-                        <a class="nav-item" href="changePassword.php">DomXXX</a>
+                        <a class="nav-item nav-item-current" href="#">DomXXX</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item nav-item-current" href="myConsole.php">KonzXXX</a>
+                            <a class="nav-item" href="myConsole.php">KonzXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="logout.php">OdhláseXXX</a>
@@ -73,25 +71,27 @@ echo $output;
                 ?>
             </ul>
         </div>
-    </div>
+    </div>  
+    <main class="container">
+        <h2>Zmena HeslaXXX</h2>
+        <div class="content-outline in-row centered">
+            <form>
+                <label class="margin-label" for="old-password">OldPasswordXXX:</label>
+                <input id="old-password" name="old-password" required="" type="password" />
+                <p id="err-old-password" class="err hidden"></p>
 
-    <div class = "container">
-        <div id="button-container" class="content-outline">
-            <div id="x">
-            </div>    
-        <div>
-    <div>    
+                <label class="margin-label" for="new-password">NewPasswordXXX:</label>
+                <input id="new-password" name="new-password" required="" type="password" />
+                <p id="err-new-password" class="err hidden"></p>
 
-    
+                <label class="margin-label" for="new-password">ConfirmNewPasswordXXX:</label>
+                <input id="confirm-new-password" name="confirm-new-password" required="" type="password" />
+                <p id="err-confirm-new-password" class="err hidden"></p>
+
+                <input id="submit-btn" name="login" type="button" value="Change password" />
+            </form>
+        </div>  
+    </main>
 </body>
-
-
-
-<script src="js/myConsole.js"></script>
-
-
-
-
-
-
+<script src="js/confirmPassword.js"></script>
 </html>
