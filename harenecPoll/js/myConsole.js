@@ -974,6 +974,7 @@ function copyQ(questionFull, whereToCopy) {
         "code": questionFull.code
     };
     console.log("TOTO JEBNEM DO API CALLU")
+    console.log("KOPIROVANIE OTAZKY DO NOVEHO SETU")
     console.log(mergedObject); //TODO JURAJ DOKONCI API CALL NA COPY
-
+    console.log("KOPIROVANIE OTAZKY DO NOVEHO SETU")
 }   
