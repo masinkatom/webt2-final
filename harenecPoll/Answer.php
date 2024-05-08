@@ -31,7 +31,7 @@ class Answer
         Return all answers related to question (MyConsole -> info button)
         */
 
-        $query = "SELECT ans.text_a 
+        $query = "SELECT ans.text_a, ans.correct 
             FROM answer ans
             INNER JOIN question q ON ans.id_question = q.id_question
             WHERE q.text_q = :questionName";

@@ -95,6 +95,7 @@ var globalSets = `[
 
 getGlobalSets().then(data => {
     globalSets = data;
+    console.log(globalSets);
     createButtonsOfSets();
 })
     .catch(error => {
@@ -378,7 +379,7 @@ function createNewQuestionCollapse() {
         if (openQuestionCheckbox.checked === true) {
             dataToSend = {
                 question: questionInput.value,
-                name_set: selectedSetValue,
+                name_set: findIdByName(selectedSetValue),
                 open: 1,
                 creationDate: getCurrentTimestamp(),
                 active: 0,
@@ -387,7 +388,7 @@ function createNewQuestionCollapse() {
         } else {
             dataToSend = {
                 question: questionInput.value,
-                name_set: selectedSetValue,
+                name_set: findIdByName(selectedSetValue),
                 options: usefulOptionsData,
                 open: 0,
                 creationDate: getCurrentTimestamp(),
@@ -396,7 +397,8 @@ function createNewQuestionCollapse() {
             };
         }
         console.log("CREATE QUESTION DONE");
-        console.log(dataToSend);
+        console.log(dataToSend); //KKKKKKKK
+        createNewQuestionDatabase(dataToSend)
         console.log("CREATE QUESTION DONE");
     })
     //tvoja robota
@@ -406,6 +408,47 @@ function createNewQuestionCollapse() {
 
     return collapseContainer;
 }
+
+function findIdByName(name) {
+    // Iterate through the globalSets array
+    for (let i = 0; i < globalSets.length; i++) {
+        // If the name_set matches, return the corresponding id_set
+        if (globalSets[i].name_set === name) {
+            return globalSets[i].id_set;
+        }
+    }
+    // If the name_set is not found, return null or handle it as needed
+    return null;
+}
+
+async function createNewQuestionDatabase(dataToSend) {
+
+    
+    console.log(dataToSend);
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/create`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        body: JSON.stringify(dataToSend)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('Question updated successfully');
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update question');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
+}
+
 
 function createNewSetCollapse() {
     var collapseContainer = document.createElement("div");
@@ -751,12 +794,12 @@ function createEditCollapse(questionId, questionFull) {
         let fakeJson = {
             "creationDate": getCurrentTimestamp(),
             "text_q": QuestionTextEdit.value,
-            "originName": questionFull.text_q
+            //"originName": questionFull.text_q
             /*"open": OpenQuestionEdit.value,
             "active": activeQuestionEdit.value*/
         }
 
-        editQ(questionFull.text_q, fakeJson); //TODO JURAJ
+        editQ(questionFull.text_q, fakeJson, questionFull.id_question); //TODO JURAJ
     })
     // ############
     // ############
@@ -918,8 +961,8 @@ function showQuestionsWithAnswers(question) {
                 var liElement = document.createElement("li");
                 liElement.textContent = answer.text_a;
                 liElement.classList.add("bigger-font");
-                //TODO BORO //var correctness = answer.correct === "1" ? "correctXXX" : "incorectXXX";
-                //liElement.textContent += " (" + correctness + ")";
+                var correctness = answer.correct === 1 ? "correctXXX" : "incorectXXX";
+                liElement.textContent += " (" + correctness + ")";
 
                 ulElement.appendChild(liElement);
             });
@@ -936,20 +979,23 @@ function showQuestionsWithAnswers(question) {
 
 }
 
-function editQ(originName, question) {
+function editQ(originName, question, id) {
     console.log("Poslem toto");
+    console.log(id)
     console.log(question);
+    console.log(originName);
     console.log("Posielam toto hore");
-    const data = JSON.stringify(question);
+    console.log(JSON.stringify(question));
+    //const data = question;
 
     // Send a POST request to the server
-    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionUpdate=${originName}`, {
-        method: 'POST',
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionUpdate=${id}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         // Convert the data object to JSON string and send it in the request body
-        body: JSON.stringify(data)
+        body: JSON.stringify(question)
     })
         .then(response => {
             // Check if the request was successful

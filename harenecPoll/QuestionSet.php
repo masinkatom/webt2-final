@@ -50,7 +50,7 @@ class QuestionSet
     Return question sets by their owner (userName)
     */
 
-        $query = "SELECT name_set
+        $query = "SELECT name_set, id_set
             FROM question_set qs
             INNER JOIN user u ON qs.id_user = u.id_user
             WHERE u.nick = :userName";

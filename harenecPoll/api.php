@@ -89,7 +89,7 @@ switch ($method) {
         break;
     case 'POST':
         //data from fetch function in js
-        $data = file_get_contents('php://input');
+        //$data = file_get_contents('php://input');
 
         //TEMPORARY
         /*$data = array(
@@ -100,16 +100,19 @@ switch ($method) {
             'creation_date' => '2024-05-05'
         );*/
 
-        $jsonData = json_encode($data);
-        $dataArray = json_decode($jsonData, true);
+        //$jsonData = json_encode($data);
+        //$dataArray = json_decode($jsonData, true);
         //TEMPORARY 
 
         //print_r($dataArray) ;
 
+        $data = json_decode(file_get_contents('php://input'), true);
+
+
         switch ($endpoint_without_query) {
             case 'create':
-                $postNewQuestion = $QuestionObj->addQuestion($dataArray);
-                echo json_encode($postNewQuestion);
+                $postNewQuestion = $QuestionObj->addQuestion($data);
+                //echo json_encode($postNewQuestion);
                 break;
             default:
                 break;
@@ -119,23 +122,25 @@ switch ($method) {
         //TEMPORARY
         /*$data = array(
             'text_q' => 'vyborne',
-            'active' => 1,
-            'open' => 1,
-            'id_set' => 1,
-            'creation_date' => '2024-05-05'
+            'creation_date' => '2024-05-05',
+            'originName' => 'origiginal meno otakzy';
         );*/
 
-        $data = file_get_contents('php://input');
+        //$data = file_get_contents('php://input');
 
-        $jsonData = json_encode($data);
-        $dataArray = json_decode($jsonData, true);
+        //$jsonData = json_encode($data);
+        //$dataArray = json_decode($jsonData, true);
+        $data = json_decode(file_get_contents('php://input'), true);
+        //echo $data;
+        //$data = file_get_contents('php://input');
         //TEMPORARY 
-
+        //echo $dataArray;
+        print_r($data);
         switch ($endpoint_without_query) {
             case 'update':
                 if (isset($_GET['questionUpdate'])) {
                     $questionUpdate = urldecode($_GET['questionUpdate']);
-                    $updateQuestion = $QuestionObj->editQuestionByName($questionUpdate, $dataArray);
+                    $updateQuestion = $QuestionObj->editQuestionByName(intval($questionUpdate), $data);
                     echo json_encode($updateQuestion);
                 }
                 break;
