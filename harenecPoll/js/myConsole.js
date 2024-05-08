@@ -56,7 +56,7 @@ console.log("JOJ")
 
 async function getGlobalSets() {
     try {
-        const response = await fetch(`https://node24.webte.fei.stuba.sk/webt2-final/harenecPoll/api.php/sets?username=${sessionLogin}`,
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${sessionLogin}`,
         {mode: "no-cors"} );
         const data = await response.json();
         return data;
@@ -214,6 +214,7 @@ function createNewQuestionCollapse(){
         }
         options.forEach(option => {
             option.btn.addEventListener('click', function() {
+                option.btn.style.color = "green"; //TUTUTU
                 option.correct = 1;
             })
         });
@@ -288,11 +289,11 @@ function createNewQuestionCollapse(){
     tuRobis.appendChild(createSetButton);
 
     createSetButton.addEventListener('click', function() {
-        // ODTIALTO SA BUDU ODOSIELAT DATA
+        // ODTIALTO SA BUDU ODOSIELAT DATADOPICI
         var createdSet = newSetInput.value; // NOVY SET
         console.log(createdSet);
     })
-    //
+    //s
 
     cardElement.appendChild(tuRobis);
     collapseContainer.appendChild(cardElement);
@@ -349,7 +350,7 @@ function createSetSection(item, container){
 
 async function getQuestionsBySet(setname) {
     try {
-      const response = await fetch(`https://node24.webte.fei.stuba.sk/webt2-final/harenecPoll/api.php/sets?setname=${setname}`);
+      const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?setname=${setname}`);
       const data = await response.json();
       console.log(data);
       console.log("WOTAHEL");
@@ -436,7 +437,7 @@ function insertQuestions(cardBodyDiv, item){
         collapseDiv.appendChild(createEditCollapse(question.id_question, question));
         
         editButton.addEventListener("click", function() {
-            editQ(question); //TODO
+            //editQ(question); //TODO
         });
 
 
@@ -558,13 +559,14 @@ function createCopyCollapse(questionId, questionFull){
     updateQuestionBtn.addEventListener('click', function() {
         // ODTIALTO SA BUDU ODOSIELAT DATA
         let fakeJson = {
-            "id_question": questionId,
             "creationDate": getCurrentTimestamp(),
             "text_q": QuestionTextEdit.value,
             "open": OpenQuestionEdit.value,
             "active": activeQuestionEdit.value
         }
+        console.log("PRE DFAKE QUESTION")
         console.log(fakeJson)
+        editQ(questionFull.text_q,fakeJson); //TODO JURAJ
     })
     // ############
     // ############
@@ -646,7 +648,10 @@ return formElement;
     deleteReally.textContent = "DeleteXXX";
     deleteReally.classList.add("bigger-button-font");
     deleteReally.addEventListener("click", function() {
-        deleteQ(questionId, questionName);
+        deleteQ(questionId, questionName)
+        .then(() => {
+            //TODO ADAMKO SHOW DAJAKY OZNAM MODAL INFO ZE BOLO VYMAZANE
+        })
     });
 
     cardElement.appendChild(deleteReally);
@@ -654,28 +659,34 @@ return formElement;
     return collapseContainer;
  }
 
-function deleteQ(questionId, questionName){ //TODO APINY
+async function deleteQ(questionId, questionName){ //TODO BORO Dokoncit aby islo delete
     console.log("DELETE QUESTION"+questionId);
     console.log("Deleting quesiton"+questionName);
-    fetch(`https://node119.webte.fei.stuba.sk/temp-final/endpoints/api.php/questions?questionName=${encodeURIComponent(questionName)}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to delete question');
-        }
-        console.log('Question deleted successfully');
-    })
-    .catch(error => {
-        console.error('Error deleting question:', error);
-    });
+    try {
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/questions?questionName=${questionName}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    } //PPPPPP
 }
 
 function showInfoQ(question){
-    if(question.open === "0"){
+    console.log(question);
+    console.log(question.open.toString());
+    console.log(question.open.toString() === "0")
+    if(question.open.toString() === "0"){
+        console.log("TA JA SA T NEDOSTANEM");
+        console.log(showQuestionsWithAnswers(question));
+        console.log("HALO DOPICI");
+
         return showQuestionsWithAnswers(question);
     }
     else{
+        console.log("A TU HEJ KURVA")
         return showQuestionWithoutAnswes(question);
     }
 }
@@ -686,15 +697,37 @@ function showQuestionWithoutAnswes(question){
     return infoElement;
 }
 
+async function getAnswersByQuestion(questionText){
+    try {
+        console.log("ta co dopici"+ questionText);
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/answer?questionAnswer=${questionText}`);
+        const data = await response.json();
+        console.log(data);
+        console.log("TA MNE UZ JEBE");
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+}
+
+
+
+
 function showQuestionsWithAnswers(question){
-    var answersData = [
+    var returnDiv = document.createElement("div");
+    console.log("KURVA KOKOT FIX");
+    /*var answersData = [
         { id_answer: 1, text_a: "Option A", correct: "1", id_question: 1 },
         { id_answer: 2, text_a: "Option B", correct: "0", id_question: 1 },
         { id_answer: 3, text_a: "Option C", correct: "0", id_question: 1 },
     ]; //TODO BORO TU MUSI DODAT TOTEOTAZKY
+*/
+    getAnswersByQuestion(question.text_q)
+        .then(data => {
 
-  
-    var returnDiv = document.createElement("div");
+            console.log(data);
+            //var returnDiv = document.createElement("div");
     returnDiv.classList.add("in-column");
 
     var infoElement = document.createElement("h4");
@@ -705,39 +738,75 @@ function showQuestionsWithAnswers(question){
     var ulElement = document.createElement("ul");
 
 
-    answersData.forEach(function(answer) {
+    data.forEach(function(answer) {
+        console.log(answer);
+        console.log(" OCH TA JA SOM SKRATENY");
+
         var liElement = document.createElement("li");
         liElement.textContent = answer.text_a;
         liElement.classList.add("bigger-font");
-        var correctness = answer.correct === "1" ? "correctXXX" : "incorectXXX";
-        liElement.textContent += " (" + correctness + ")";
+        //TODO BORO //var correctness = answer.correct === "1" ? "correctXXX" : "incorectXXX";
+        //liElement.textContent += " (" + correctness + ")";
 
         ulElement.appendChild(liElement);
     });
 
     returnDiv.appendChild(ulElement);
+    console.log(returnDiv);
+    return returnDiv;
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+    });
+  
     return returnDiv;
 
 }
 
-function editQ(question){
+function editQ(originName,question){
+console.log("CO");
+console.log(question);
+console.log("CO");
+const data = JSON.stringify(question);
 
+    // Send a POST request to the server
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionUpdate=${originName}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        // Check if the request was successful
+        if (response.ok) {
+            console.log('Question updated successfully');
+            // Handle further actions if needed
+        } else {
+            console.error('Failed to update question');
+            // Handle errors if needed
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle errors if needed
+    });
 }
 
 function copyQ(questionFull, whereToCopy){
-    console.log("COPYING questionFUll " + JSON.stringify(questionFull));
-    console.log("where to copy: "+whereToCopy);
-}
-
-function hello(value) {
-    console.log("Hello", value);
-}
-
-function remove(value) {
-    console.log("Remove", value);
-}
-
-function add(value) {
-    console.log("Add", value);
-}
+    console.log(questionFull);
     
+    var mergedObject = {
+        "text_q": questionFull.text_q,
+        "active": questionFull.active,
+        "open": questionFull.open,
+        "id_set": whereToCopy,
+        "creationDate": questionFull.creationDate,
+        "code": questionFull.code
+    };
+    console.log("TOTO JEBNEM DO API CALLU")
+    console.log(mergedObject); //TODO JURAJ DOKONCI API CALL NA COPY
+    
+}   

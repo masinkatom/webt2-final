@@ -89,16 +89,16 @@ switch ($method) {
         break;
     case 'POST':
         //data from fetch function in js
-        //$data = file_get_contents('php://input');
+        $data = file_get_contents('php://input');
 
         //TEMPORARY
-        $data = array(
+        /*$data = array(
             'text_q' => 'jurajbrilla ako sa mas?',
             'active' => 1,
             'open' => 1,
             'id_set' => 1,
             'creation_date' => '2024-05-05'
-        );
+        );*/
 
         $jsonData = json_encode($data);
         $dataArray = json_decode($jsonData, true);
@@ -117,13 +117,15 @@ switch ($method) {
         break;
     case 'PUT':
         //TEMPORARY
-        $data = array(
+        /*$data = array(
             'text_q' => 'vyborne',
             'active' => 1,
             'open' => 1,
             'id_set' => 1,
             'creation_date' => '2024-05-05'
-        );
+        );*/
+
+        $data = file_get_contents('php://input');
 
         $jsonData = json_encode($data);
         $dataArray = json_decode($jsonData, true);
