@@ -78,7 +78,7 @@ class Question
         /*
         Delete question by name (MyConsole -> Delete Button)
         */
-        $query = "DELETE FROM question WHERE text_q = :questionName";
+        $query = "DELETE FROM question WHERE id_question = :questionName";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':questionName', $questionName, PDO::PARAM_STR);
         $result = $stmt->execute();

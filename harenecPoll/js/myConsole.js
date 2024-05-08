@@ -899,7 +899,7 @@ async function deleteQ(questionId, questionName) { //TODO BORO Dokoncit aby islo
     console.log("DELETE QUESTION" + questionId);
     console.log("Deleting quesiton" + questionName);
     try {
-        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/questions?questionName=${questionName}`, {
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/questions?questionName=${questionId}`, {
             method: 'DELETE'
         });
         const data = await response.json();
