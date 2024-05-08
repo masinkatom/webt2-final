@@ -201,6 +201,8 @@ function createSeeAllQuestionCollapse() {
             var allQuestionJozkoDivko = document.createElement("div")
             var allQbyName;
             allQbyName = JSON.parse(data);
+            console.log("HJIJI");
+            console.log(allQbyName);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
 
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
@@ -411,7 +413,9 @@ function createNewQuestionCollapse() {
 
 function findIdByName(name) {
     // Iterate through the globalSets array
+    console.log(globalSets.length, name);
     for (let i = 0; i < globalSets.length; i++) {
+        console.log(globalSets[i].name_set, globalSets[i].name_set === name);
         // If the name_set matches, return the corresponding id_set
         if (globalSets[i].name_set === name) {
             return globalSets[i].id_set;
@@ -1018,10 +1022,33 @@ function copyQ(questionFull, whereToCopy) {
         "text_q": questionFull.text_q,
         "active": questionFull.active,
         "open": questionFull.open,
-        "id_set": whereToCopy,
+        "id_set": findIdByName(whereToCopy),
         "creationDate": questionFull.creationDate,
         "code": questionFull.code
+    }; //TODO IDEM TU ROBIT CCCCCCC
+
+    console.log("DDD")
+    console.log(findIdByName(whereToCopy));
+    console.log(whereToCopy);
+    console.log("DDD")
+
+    whereToCopy = whereToCopy.toUpperCase();
+    var dataToSend = {
+        question: questionFull.text_q,
+        name_set: findIdByName(whereToCopy),
+        //options: usefulOptionsData,
+        open: questionFull.open,
+        creationDate: getCurrentTimestamp(),
+        active: 0,
+        cloudmap: questionFull.cloudmap
     };
+
+    console.log(dataToSend);
+
+
+    createNewQuestionDatabase(dataToSend)
+
+
     console.log("TOTO JEBNEM DO API CALLU")
     console.log("KOPIROVANIE OTAZKY DO NOVEHO SETU")
     console.log(mergedObject); //TODO JURAJ DOKONCI API CALL NA COPY
