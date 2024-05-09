@@ -14,47 +14,11 @@ console.log("PICI JA SOM GENIUS", sessionLoginID)
 var testDataDelete = `[
     {
       "id_question": 1,
-      "text_q": "What is the capital of France?",
+      "text_q": "SI KOKOT",
       "active": 1,
       "open": 0,
       "id_set": 1,
       "creationDate": "2024-05-01",
-      "code": null
-    },
-    {
-      "id_question": 2,
-      "text_q": "Who wrote 'Romeo and Juliet'?",
-      "active": 1,
-      "open": 0,
-      "id_set": 1,
-      "creationDate": "2024-05-02",
-      "code": null
-    },
-    {
-      "id_question": 3,
-      "text_q": "What is the symbol for gold?",
-      "active": 1,
-      "open": 0,
-      "id_set": 2,
-      "creationDate": "2024-05-03",
-      "code": null
-    },
-    {
-      "id_question": 4,
-      "text_q": "Which planet is known as the Red Planet?",
-      "active": 1,
-      "open": 0,
-      "id_set": 2,
-      "creationDate": "2024-05-04",
-      "code": null
-    },
-    {
-      "id_question": 5,
-      "text_q": "Who painted the Mona Lisa?",
-      "active": 1,
-      "open": 0,
-      "id_set": 3,
-      "creationDate": "2024-05-05",
       "code": null
     }
   ]`;
@@ -242,7 +206,8 @@ function createSeeAllQuestionCollapse() {
             var allQuestionJozkoDivko = document.createElement("div")
             allQuestionJozkoDivko.id = "allQuestionJozkoDivko";
             var allQbyName;
-            allQbyName = JSON.parse(data);
+            console.log(data);
+            allQbyName = data;
             console.log("HJIJI");
             console.log(allQbyName);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
@@ -259,15 +224,18 @@ function createSeeAllQuestionCollapse() {
 
 async function getAllQuestionByName(user) {
     //TU DURI UPRAVIS SPOJAZDNIS BOROVE API A VRATIS DATA
-    /*try {
-        const response = await fetch(`GET Q BY USER=${user}`);
+    console.log("DOPICI",user);
+    try {
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?userId=${sessionLoginID}`,{
+            method: 'GET'
+        }); /*FFF*/
         const data = await response.json();
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
         return testDataDelete; //9999
-    }*/
-    return testDataDelete;
+    }
+    //return testDataDelete;
 }
 
 

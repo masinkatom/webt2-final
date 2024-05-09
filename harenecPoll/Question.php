@@ -133,7 +133,7 @@ class Question
         }
     }
 
-    public function getQuestionInfo($info){
+    /*public function getQuestionInfo($info){
         $query = "SELECT * FROM question where text_q = '$info'";
         $result = mysqli_query($this->conn, $query);
         $questionsBySet = [];
@@ -141,7 +141,7 @@ class Question
             $questionInfo[] = $row;
         }
         return $questionInfo;
-    }
+    }*/
 
     public function addQuestion($data)
     {
