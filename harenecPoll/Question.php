@@ -73,6 +73,27 @@ class Question
         return $questionId;
     }
 
+    public function getAllQUestionsByUserId($userId){
+
+        /*
+            return all question by username
+        */
+        
+        $query = "SELECT *
+          FROM question q
+          INNER JOIN question_set qs ON qs.id_set = q.id_set
+          WHERE qs.id_user = :userId";
+
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':userId', $userId);
+        $stmt->execute();
+        $questionsByUserId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $questionsByUserId;
+
+
+    }
+
     public function deleteQuestionsByName($questionName)
     {
         /*
