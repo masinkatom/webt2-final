@@ -9,6 +9,7 @@ window.onclick = function (event) {
 
 let flag = 0;
 
+console.log("PICI JA SOM GENIUS", sessionLoginID)
 
 var testDataDelete = `[
     {
@@ -242,6 +243,8 @@ function createSeeAllQuestionCollapse() {
             allQuestionJozkoDivko.id = "allQuestionJozkoDivko";
             var allQbyName;
             allQbyName = JSON.parse(data);
+            console.log("HJIJI");
+            console.log(allQbyName);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
             var myTable = createDatatable(allQbyName);
             allQuestionJozkoDivko.appendChild(myTable);
@@ -478,7 +481,9 @@ function createNewQuestionCollapse() {
 
 function findIdByName(name) {
     // Iterate through the globalSets array
+    console.log(globalSets.length, name);
     for (let i = 0; i < globalSets.length; i++) {
+        console.log(globalSets[i].name_set, globalSets[i].name_set === name);
         // If the name_set matches, return the corresponding id_set
         if (globalSets[i].name_set === name) {
             return globalSets[i].id_set;
@@ -546,6 +551,11 @@ function createNewSetCollapse() {
         console.log("CREATE SET DONE");
         createdSet = createdSet.replace(/\s+/g, '_')
         console.log(createdSet);
+        let createdSetToSend = { 
+            setName: createdSet,
+            userName: sessionLoginID
+        }; 
+        createNewSetDatabase(createdSetToSend); //********
         console.log("CREATE SET DONE");
     })
     //s
@@ -555,6 +565,37 @@ function createNewSetCollapse() {
 
     return collapseContainer;
 }
+
+async function createNewSetDatabase(dataToSend) {
+
+    
+    console.log(dataToSend);
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createSet`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        body: JSON.stringify(dataToSend)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('Question updated successfully');
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update question');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
+}
+
+
+
 
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");
@@ -962,7 +1003,7 @@ async function deleteQ(questionId, questionName) { //TODO BORO Dokoncit aby islo
     console.log("DELETE QUESTION" + questionId);
     console.log("Deleting quesiton" + questionName);
     try {
-        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/questions?questionName=${questionName}`, {
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/questions?questionName=${questionId}`, {
             method: 'DELETE'
         });
         const data = await response.json();
@@ -1085,10 +1126,33 @@ function copyQ(questionFull, whereToCopy) {
         "text_q": questionFull.text_q,
         "active": questionFull.active,
         "open": questionFull.open,
-        "id_set": whereToCopy,
+        "id_set": findIdByName(whereToCopy),
         "creationDate": questionFull.creationDate,
         "code": questionFull.code
+    }; //TODO IDEM TU ROBIT CCCCCCC
+
+    console.log("DDD")
+    console.log(findIdByName(whereToCopy));
+    console.log(whereToCopy);
+    console.log("DDD")
+
+    whereToCopy = whereToCopy.toUpperCase();
+    var dataToSend = {
+        question: questionFull.text_q,
+        name_set: findIdByName(whereToCopy),
+        //options: usefulOptionsData,
+        open: questionFull.open,
+        creationDate: getCurrentTimestamp(),
+        active: 0,
+        cloudmap: questionFull.cloudmap
     };
+
+    console.log(dataToSend);
+
+
+    createNewQuestionDatabase(dataToSend)
+
+
     console.log("TOTO JEBNEM DO API CALLU")
     console.log("KOPIROVANIE OTAZKY DO NOVEHO SETU")
     console.log(mergedObject); //TODO JURAJ DOKONCI API CALL NA COPY

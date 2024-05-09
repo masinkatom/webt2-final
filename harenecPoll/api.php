@@ -114,6 +114,10 @@ switch ($method) {
                 $postNewQuestion = $QuestionObj->addQuestion($data);
                 //echo json_encode($postNewQuestion);
                 break;
+            case 'createSet':
+                $postNewSet = $QuestionObj->addSet($data);
+                //echo json_encode($postNewQuestion);
+                break;
             default:
                 break;
         }
