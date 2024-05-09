@@ -3,11 +3,11 @@
 class Question
 {
 
-    private $conn;
+    private $pdo;
 
-    public function __construct($conn)
+    public function __construct($pdo)
     {
-        $this->conn = $conn;
+        $this->pdo = $pdo;
     }
 
     public function getAllQuestions()
@@ -15,54 +15,47 @@ class Question
         /*
         Return all questions (Mainly for ADMIN)
         */
-
         $query = "SELECT * FROM question";
-        $result = mysqli_query($this->conn, $query);
-        $questions = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $questions[] = $row;
-        }
+        $stmt = $this->pdo->query($query);
+        $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $questions;
     }
-
-
 
     public function getQuestionsBySetId($setId)
     {
         /*
         Return questions contained in specific set (by setId)
         */
-
-        $query = "SELECT * FROM question where id_set = $setId";
-        $result = mysqli_query($this->conn, $query);
-        $questionsBySet = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $questionsBySet[] = $row;
-        }
+        $query = "SELECT * FROM question WHERE id_set = :setId";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
+        $stmt->execute();
+        $questionsBySet = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $questionsBySet;
     }
 
-    public function getQuestionByCode($questionCode){
+    public function getQuestionByCode($questionCode)
+    {
         //pridat question.codes
-        $query = "SELECT text_q 
-            FROM question 
-            WHERE question.code = '$questionCode'";
-        $result = mysqli_query($this->conn, $query);
-        $question = mysqli_fetch_assoc($result);
+        $query = "SELECT text_q FROM question WHERE question.code = :questionCode";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':questionCode', $questionCode, PDO::PARAM_STR);
+        $stmt->execute();
+        $question = $stmt->fetch(PDO::FETCH_ASSOC);
         return $question;
     }
 
-    public function getActiveQuestion($question){
-        $query = "SELECT active 
-            FROM question 
-            WHERE question.text_q = '$question'";
-        $result = mysqli_query($this->conn, $query);
-        $question = mysqli_fetch_assoc($result);
-        $isActiveQuestion = $question['active'];
+    public function getActiveQuestion($question)
+    {
+        $query = "SELECT active FROM question WHERE text_q = :question";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':question', $question, PDO::PARAM_STR);
+        $stmt->execute();
+        $isActiveQuestion = $stmt->fetchColumn();
 
         if ($isActiveQuestion == 1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -72,9 +65,11 @@ class Question
         /*
         Return question ID by its name (Part of MyConsole -> Info Button)
         */
-        $query = "SELECT question.id_question FROM question WHERE text_q = $questionName";
-        $result = mysqli_query($this->conn, $query);
-        $questionId = mysqli_fetch_assoc($result);
+        $query = "SELECT id_question FROM question WHERE text_q = :questionName";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':questionName', $questionName, PDO::PARAM_STR);
+        $stmt->execute();
+        $questionId = $stmt->fetchColumn();
         return $questionId;
     }
 
@@ -83,8 +78,10 @@ class Question
         /*
         Delete question by name (MyConsole -> Delete Button)
         */
-        $query = "DELETE FROM question WHERE text_q = '$questionName'";
-        $result = mysqli_query($this->conn, $query);
+        $query = "DELETE FROM question WHERE id_question = :questionName";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':questionName', $questionName, PDO::PARAM_STR);
+        $result = $stmt->execute();
 
         if ($result) {
             return true;
@@ -96,17 +93,17 @@ class Question
     public function editQuestionByName($name, $data)
     {
 
-        $textQ = $data['text_q'];
-        $active = $data['active'];
-        $open = $data['open'];
-        $idSet = $data['id_set'];
-        $creationDate = $data['creation_date'];
-
         $query = "UPDATE question 
-                  SET text_q = '$textQ', active = '$active', open = '$open', id_set = '$idSet', creationDate = '$creationDate' 
-                  WHERE text_q = '$name'";
+                  SET text_q = :textQ, creationDate = :creationDate 
+                  WHERE id_question = :name";
 
-        $result = mysqli_query($this->conn, $query);
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':textQ', $data['text_q'], PDO::PARAM_STR);
+        $stmt->bindParam(':creationDate', $data['creationDate'], PDO::PARAM_STR);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        
+        $result = $stmt->execute();
 
         if ($result) {
             return true;
@@ -127,28 +124,40 @@ class Question
 
     public function addQuestion($data)
     {
-        $textQ = $data['text_q'];
-        $active = $data['active'];
-        $open = $data['open'];
-        $idSet = $data['id_set'];
-        $creationDate = $data['creation_date'];
+        print_r($data);
+        $query = "INSERT INTO question (text_q, active, open, id_set, creationDate, cloudmap) 
+                  VALUES (:textQ, :active, :open, :idSet, :creationDate, :cloudmap)";
 
-        $textQ = mysqli_real_escape_string($this->conn, $textQ);
-        $active = mysqli_real_escape_string($this->conn, $active);
-        $open = mysqli_real_escape_string($this->conn, $open);
-        $idSet = mysqli_real_escape_string($this->conn, $idSet);
-        $creationDate = mysqli_real_escape_string($this->conn, $creationDate);
-
-        $query = "INSERT INTO question (text_q, active, open, id_set, creationDate) VALUES ('$textQ', '$active', '$open', '$idSet', '$creationDate')";
-        $stmt = mysqli_prepare($this->conn, $query);
-        $result = mysqli_stmt_execute($stmt);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':textQ', $data['question'], PDO::PARAM_STR);
+        $stmt->bindParam(':active', $data['active'], PDO::PARAM_INT);
+        $stmt->bindParam(':open', $data['open'], PDO::PARAM_INT);
+        $stmt->bindParam(':idSet', $data['name_set'], PDO::PARAM_INT);
+        $stmt->bindParam(':creationDate', $data['creationDate'], PDO::PARAM_STR);
+        $stmt->bindParam(':cloudmap', $data['cloudmap'], PDO::PARAM_STR);
+        $result = $stmt->execute();
 
         if ($result) {
-            if (mysqli_affected_rows($this->conn) > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function addSet($data)
+    {
+        print_r($data);
+        $query = "INSERT INTO question_set (name_set, id_user) 
+                  VALUES (:setName, :id_user)";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':setName', $data['setName'], PDO::PARAM_STR);
+        $stmt->bindParam(':id_user', $data['userName'], PDO::PARAM_STR);
+        $result = $stmt->execute();
+
+        if ($result) {
+            return true;
         } else {
             return false;
         }
