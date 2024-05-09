@@ -19,9 +19,7 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     $output .= '<div id="snackbar">Operácia sa podarila</div>';
 }
 
-
 echo $output;
-
 
 ?>
 
@@ -35,7 +33,6 @@ echo $output;
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css">
 
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/toast.css">
@@ -50,10 +47,10 @@ echo $output;
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     echo '<li class="nav-item">
-                        <a class="nav-item" href="index.php">DomXXX</a>
+                        <a class="nav-item nav-item-current" href="index.php">DomXXX</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item nav-item-current" href="myConsole.php">KonzXXX</a>
+                            <a class="nav-item" href="myConsole.php">KonzXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="logout.php">OdhláseXXX</a>
@@ -63,7 +60,6 @@ echo $output;
                         </li>
                         ';
                         echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
-                        echo '<script>var sessionLoginID = "' . $_SESSION['loginID'] . '";</script>';
                 } else {
                     echo '<li class="nav-item">
                             <a class="nav-item" href="#">DomovXXX</a>
@@ -78,40 +74,27 @@ echo $output;
                 ?>
             </ul>
         </div>
-    </div>
+    </div>  
+    <main class="container">
+        <h2>Zmena HeslaXXX</h2>
+        <div class="content-outline in-row centered">
+            <form>
+                <label class="margin-label" for="old-password">OldPasswordXXX:</label>
+                <input id="old-password" name="old-password" required="" type="password" />
+                <p id="err-old-password" class="err hidden"></p>
 
-    <div class = "container">
-        <div id="button-container" class="content-outline">
-            <div id="x">
-            </div>    
-        <div>
-    <div>    
+                <label class="margin-label" for="new-password">NewPasswordXXX:</label>
+                <input id="new-password" name="new-password" required="" type="password" />
+                <p id="err-new-password" class="err hidden"></p>
 
-    
+                <label class="margin-label" for="new-password">ConfirmNewPasswordXXX:</label>
+                <input id="confirm-new-password" name="confirm-new-password" required="" type="password" />
+                <p id="err-confirm-new-password" class="err hidden"></p>
 
-    <div id="modalQR" class="modal2 hidden">
-        <div class="info-modal">
-            <h2 id="thesis-name-modal">POZOR DIV </h2>
-            <div class="modal-data">
-                TU VNUTRO DVU
-            </div>
-            <img id="close-modal" src="images/close-icon.svg" alt="close">
-        </div>
-
-
-    </div>
-
-
+                <input id="submit-btn" name="login" type="button" value="Change password" />
+            </form>
+        </div>  
+    </main>
 </body>
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
-<script src="js/myConsole.js"></script>
-
-
-
-
-
-
+<script src="js/confirmPassword.js"></script>
 </html>
