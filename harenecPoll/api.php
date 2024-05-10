@@ -68,6 +68,10 @@ switch ($method) {
                     $question = urldecode($_GET['questionActive']);
                     $isActiveQuestion = $QuestionObj->getActiveQuestion($question);
                     echo json_encode($isActiveQuestion);
+                } elseif(isset($_GET['userId'])){
+                    $userId = urldecode($_GET['userId']);
+                    $userQuestions = $QuestionObj->getAllQUestionsByUserId($userId);
+                    echo json_encode($userQuestions);
                 }
                 break;
             default:
