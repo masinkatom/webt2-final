@@ -34,7 +34,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-$method = 'PUT';
+//$method = 'POST';
 
 switch ($method) {
     case 'GET':
@@ -111,7 +111,7 @@ switch ($method) {
         //TEMPORARY
         /*$data = array(
             'id_answer' => 1,
-            'count' => 1,
+            'count' => 10,
         );*/
 
         //$jsonData = json_encode($data);
