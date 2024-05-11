@@ -34,7 +34,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-//$method = 'GET';
+$method = 'PUT';
 
 switch ($method) {
     case 'GET':
@@ -151,9 +151,12 @@ switch ($method) {
                     $questionUpdate = urldecode($_GET['questionUpdate']);
                     $updateQuestion = $QuestionObj->editQuestionByName(intval($questionUpdate), $data);
                     echo json_encode($updateQuestion);
+                }elseif(isset($_GET['questionActiveUpdate'])){
+                    $questionActiveUpdate = $_GET['questionActiveUpdate'];
+                    $updateQuestion = $QuestionObj->editActiveQuestion($questionActiveUpdate);
+                    echo json_encode($updateQuestion);
                 }
                 break;
-
             default:
                 break;
         }

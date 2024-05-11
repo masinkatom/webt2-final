@@ -29,8 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["login"] = $row['nick'];
                 $_SESSION["loginID"] = $row['id_user'];
                 $_SESSION["logged"] = true;
-
-                header("location: index.php");
+                //echo $_SESSION["login"] , $_SESSION["loginID"];
+               header("location: index.php");
                 exit;
             } else {
                 $errmsg = "Nesprávne meno alebo heslo.";

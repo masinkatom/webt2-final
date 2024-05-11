@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <a class="nav-item" href="login.php">PrihlásenieXXX</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-item" href="register.php">RegistráciaXXX</a>
+                    <a class="nav-item" href="#">RegistráciaXXX</a>
                 </li>
             </ul>
         </div>

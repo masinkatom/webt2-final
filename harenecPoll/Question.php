@@ -133,15 +133,35 @@ class Question
         }
     }
 
-    /*public function getQuestionInfo($info){
-        $query = "SELECT * FROM question where text_q = '$info'";
-        $result = mysqli_query($this->conn, $query);
-        $questionsBySet = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $questionInfo[] = $row;
+    public function
+    editActiveQuestion($questionActiveUpdate){
+        $query = "UPDATE question
+                  SET active = 1
+                  WHERE  id_question = :questionActiveUpdate";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':questionActiveUpdate', $questionActiveUpdate, PDO::PARAM_STR);
+        $result = $stmt->execute();
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
         }
-        return $questionInfo;
-    }*/
+        
+
+    }
+
+    //OPRAVENE NA PDO
+    public function getQuestionInfo($info){
+        $query = "SELECT * FROM question WHERE text_q = :info";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':info', $info, PDO::PARAM_STR);
+        $stmt->execute();
+        $questionsBySet = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $questionsBySet;
+
+    }
 
     public function addQuestion($data)
     {
