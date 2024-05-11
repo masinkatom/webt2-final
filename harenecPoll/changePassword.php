@@ -47,7 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($_POST['old-password'], $hashed_password)) {
                  if(checkEqual($_POST['new-password'], $_POST['confirm-new-password'])){
                     $newPassword = password_hash($_POST['new-password'], PASSWORD_ARGON2ID);
-                    //$newPassword = $_POST['new-password'];
                     $query = "UPDATE user 
                             SET password = :newPassword
                             WHERE nick = :currentUser";

@@ -168,7 +168,6 @@ class Question
 
     public function addSet($data)
     {
-        print_r($data);
         $query = "INSERT INTO question_set (name_set, id_user) 
                   VALUES (:setName, :id_user)";
 
