@@ -8,6 +8,7 @@ require_once '../.config.php';
 require_once 'QuestionSet.php';
 require_once 'Question.php';
 require_once 'Answer.php';
+require_once 'Stat.php';
 
 // Create an instance of the Set class
 $QuestionSetObj = new QuestionSet($pdo);
@@ -17,6 +18,8 @@ $QuestionObj = new Question($pdo);
 
 // Create an instance of the Answer class
 $AnswerObj = new Answer($pdo);
+
+$StatObj = new Stat($pdo);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -30,6 +33,8 @@ $parts_with_query = explode('?', $endpoint);
 $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
+
+$method = 'POST';
 
 switch ($method) {
     case 'GET':
@@ -97,11 +102,8 @@ switch ($method) {
 
         //TEMPORARY
         /*$data = array(
-            'text_q' => 'jurajbrilla ako sa mas?',
-            'active' => 1,
-            'open' => 1,
-            'id_set' => 1,
-            'creation_date' => '2024-05-05'
+            'id_answer' => 1,
+            'count' => 1,
         );*/
 
         //$jsonData = json_encode($data);
@@ -110,39 +112,31 @@ switch ($method) {
 
         //print_r($dataArray) ;
 
+        //received data from js
         $data = json_decode(file_get_contents('php://input'), true);
 
 
         switch ($endpoint_without_query) {
             case 'create':
                 $postNewQuestion = $QuestionObj->addQuestion($data);
-                //echo json_encode($postNewQuestion);
                 break;
             case 'createSet':
                 $postNewSet = $QuestionObj->addSet($data);
-                //echo json_encode($postNewQuestion);
+                break;
+                //TODO
+            case 'createStat':
+
+                $createStat = $StatObj->addStat($data);
+                echo json_encode($createStat);
                 break;
             default:
                 break;
         }
         break;
     case 'PUT':
-        //TEMPORARY
-        /*$data = array(
-            'text_q' => 'vyborne',
-            'creation_date' => '2024-05-05',
-            'originName' => 'origiginal meno otakzy';
-        );*/
-
-        //$data = file_get_contents('php://input');
-
-        //$jsonData = json_encode($data);
-        //$dataArray = json_decode($jsonData, true);
+        //received data from js
         $data = json_decode(file_get_contents('php://input'), true);
-        //echo $data;
-        //$data = file_get_contents('php://input');
-        //TEMPORARY 
-        //echo $dataArray;
+
         print_r($data);
         switch ($endpoint_without_query) {
             case 'update':

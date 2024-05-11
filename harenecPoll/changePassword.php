@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 
 session_start();
 
+require_once '../.config.php';
+
 $output = '';
 
 if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
@@ -19,7 +21,56 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     $output .= '<div id="snackbar">Operácia sa podarila</div>';
 }
 
+function checkEqual($password, $copyPassword) {
+    if($password == $copyPassword) {
+        return true;
+    }else {
+        return false;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $sql = "SELECT password FROM user WHERE nick = :nick";
+    $stmt = $pdo->prepare($sql);
+
+    $currentUser = $_SESSION["login"];
+
+    $stmt->bindParam(":nick", $currentUser, PDO::PARAM_STR);
+    
+
+    if ($stmt->execute()) {
+        if ($stmt->rowCount() == 1) {
+            $row = $stmt->fetch();
+
+            $hashed_password = $row["password"];
+
+            if (password_verify($_POST['old-password'], $hashed_password)) {
+                 if(checkEqual($_POST['new-password'], $_POST['confirm-new-password'])){
+                    $newPassword = password_hash($_POST['new-password'], PASSWORD_ARGON2ID);
+                    $query = "UPDATE user 
+                            SET password = :newPassword
+                            WHERE nick = :currentUser";
+
+                    $stmt = $pdo->prepare($query);
+                    $stmt->bindParam(':newPassword', $newPassword);
+                    $stmt->bindParam(':currentUser', $currentUser);
+
+                    if ($stmt->execute()) {
+                        echo "Heslo bolo úspešne aktualizované.";
+                    } else {
+                        echo "Nastala chyba pri aktualizácii hesla.";
+                    }
+                 }
+            }
+        }else {
+            echo "neexistuje";
+        }
+    }
+}
+
 echo $output;
+
+
 
 ?>
 
@@ -37,7 +88,7 @@ echo $output;
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/toast.css">
     <link rel="stylesheet" href="css/myConsole.css">
-    </head>
+</head>
 
 <body>
 
@@ -55,11 +106,8 @@ echo $output;
                         <li class="nav-item">
                             <a class="nav-item" href="logout.php">OdhláseXXX</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-item" href="changePassword.php">zmenaHeslaXXX</a>
-                        </li>
                         ';
-                        echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
+                    echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
                 } else {
                     echo '<li class="nav-item">
                             <a class="nav-item" href="#">DomovXXX</a>
@@ -74,11 +122,11 @@ echo $output;
                 ?>
             </ul>
         </div>
-    </div>  
+    </div>
     <main class="container">
         <h2>Zmena HeslaXXX</h2>
         <div class="content-outline in-row centered">
-            <form>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                 <label class="margin-label" for="old-password">OldPasswordXXX:</label>
                 <input id="old-password" name="old-password" required="" type="password" />
                 <p id="err-old-password" class="err hidden"></p>
@@ -91,10 +139,11 @@ echo $output;
                 <input id="confirm-new-password" name="confirm-new-password" required="" type="password" />
                 <p id="err-confirm-new-password" class="err hidden"></p>
 
-                <input id="submit-btn" name="login" type="button" value="Change password" />
+                <input id="submit-btn" name="login" type="submit" value="Change password" />
             </form>
-        </div>  
+        </div>
     </main>
 </body>
 <script src="js/confirmPassword.js"></script>
+
 </html>
