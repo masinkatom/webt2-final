@@ -34,7 +34,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-$method = 'POST';
+//$method = 'GET';
 
 switch ($method) {
     case 'GET':
@@ -79,6 +79,14 @@ switch ($method) {
                     echo json_encode($userQuestions);
                 }
                 break;
+            case 'stats':
+                if(isset($_GET['userId'])){
+                    $setId = $_GET['userId'];
+                    $returnStatInfo = $StatObj->getHistoricStatByQuestionId($setId);
+                    echo json_encode($returnStatInfo);
+                }
+
+
             default:
                 break;
         }
@@ -125,7 +133,6 @@ switch ($method) {
                 break;
                 //TODO
             case 'createStat':
-
                 $createStat = $StatObj->addStat($data);
                 echo json_encode($createStat);
                 break;

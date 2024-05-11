@@ -29,6 +29,22 @@ class Stat
             return false;
         }
     }
+
+    public function
+    getHistoricStatByQuestionId($setId)
+    {
+        $query = "SELECT * FROM stats WHERE id_stats = :setId";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':setId', $setId, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            $statsById = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $statsById;
+        } else {
+            return false;
+        }
+    }
+
 }
 
 ?>
