@@ -154,8 +154,9 @@ function createNewSetButton() {
 
 function createDatatable(questionsData) {
     let table = document.createElement('table');
-    table.id = 'example';
-    table.classList.add('display');
+    table.id = 'userQuestions';
+    table.classList.add('table', 'table-striped');
+    table.style.width = '100%';
 
     const thead = document.createElement('thead');
     const trHeader = document.createElement('tr');
@@ -188,7 +189,10 @@ function createDatatable(questionsData) {
 
 function initDatatable() {
     $(document).ready( function () {
-        $('#example').DataTable();
+        $('#userQuestions').DataTable({
+            responsive: true,
+            scrollX: true
+        });
     } );
 }
 
