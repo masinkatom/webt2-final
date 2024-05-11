@@ -54,7 +54,7 @@ echo $output;
                         <a class="nav-item" href="index.php">DomXXX</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item nav-item-current" href="myConsole.php">KonzXXX</a>
+                            <a class="nav-item nav-item-current" href="#">KonzXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="logout.php">OdhláseXXX</a>
@@ -63,8 +63,9 @@ echo $output;
                             <a class="nav-item" href="changePassword.php">zmenaHeslaXXX</a>
                         </li>
                         ';
+                    //echo $_SESSION["login"], $_SESSION["loginID"];
                         echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
-                        echo '<script>var sessionLoginID = "' . $_SESSION['loginID'] . '";</script>';
+                        echo '<script>var sessionLoginID = "' . $_SESSION["loginID"] . '";</script>';
                 } else {
                     echo '<li class="nav-item">
                             <a class="nav-item" href="#">DomovXXX</a>
