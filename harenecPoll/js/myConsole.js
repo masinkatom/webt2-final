@@ -476,6 +476,7 @@ async function createNewQuestionDatabase(dataToSend) {
         .then(response => {
             // Check if the request was successful
             if (response.ok) {
+                showToast();
                 console.log('Question updated successfully');
                 // Handle further actions if needed
             } else {
@@ -1126,3 +1127,17 @@ function copyQ(questionFull, whereToCopy) {
     console.log(mergedObject); //TODO JURAJ DOKONCI API CALL NA COPY
     console.log("KOPIROVANIE OTAZKY DO NOVEHO SETU")
 }   
+
+function showToast() {
+    var snackbar = document.createElement('div');
+    snackbar.id = "snackbar";
+    snackbar.textContent = "Operácia sa podarila";
+    document.body.appendChild(snackbar);
+
+    snackbar.className = "show";
+
+    setTimeout(function () {
+        snackbar.className = snackbar.className.replace("show", "");
+    }, 3000);
+}
+

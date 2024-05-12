@@ -38,6 +38,7 @@ header('Content-Type: application/json');
 
 switch ($method) {
     case 'GET':
+        echo $endpoint_without_query;
         switch ($endpoint_without_query) {
             case 'sets':
                 if (isset($_GET['username'])) {
