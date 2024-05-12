@@ -1,2 +1,9 @@
 https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?questionCode={code}
+
+
 https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createStat
+
+$data = array(
+            'key1' => value1,
+            'key2' => value2,
+);
