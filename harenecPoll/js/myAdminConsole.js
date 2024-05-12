@@ -74,18 +74,25 @@ var globalUsers = JSON.parse(`[
     }
 ]`);
 
+var tmpSessLogin = sessionLogin;
+var tmpSessLogiID = sessionLoginID;
+
 getGlobalUsers().then(data => {
     globalUsers = data;
     console.log(globalUsers);
     var mainCtn = document.getElementById("main-ctn");
     var container = document.getElementById("button-container");
-    var tmpSessLogin = sessionLogin;
-    //var tmpSessLoginID = sessionLoginID;
+    
     globalUsers.forEach(function(user) {
         
         getGlobalSets(user.nick).then(data => {
             console.log(user.nick, "JOJ DORITI");
             sessionLogin = user.nick;
+            getIdByName().then(data=>{
+                console.log("HIRA HIRA", data);
+                sessionLoginID = data;
+                console.log(sessionLoginID, "DDD");
+            })
             globalSets = data;
             console.log(globalSets);
             var button = document.createElement("button");
@@ -98,6 +105,27 @@ getGlobalUsers().then(data => {
             var container = document.getElementById("button-container");
             container.appendChild(button);//DDD
             container.appendChild(createButtonsOfSets(user.nick));
+
+            var collapseDiv = document.createElement("div");
+            collapseDiv.classList.add("collapse");
+            collapseDiv.id = "X"+user.nick;
+            collapseDiv.classList.add("in-row");
+            collapseDiv.classList.add("centered-v");
+
+
+            var CRUDuserDiv = document.createElement("div");
+            CRUDuserDiv.textContent = "DDDDDD";
+            CRUDuserDiv.classList.add("in-row");
+            CRUDuserDiv.classList.add("centered-v");
+
+            var cardBodyDiv = document.createElement("div");
+            cardBodyDiv.classList.add("card", "card-body");
+            cardBodyDiv.classList.add("collapse-set");
+            cardBodyDiv.id = "X"+user.nick + "Div";
+            cardBodyDiv.appendChild(createCRUDdiv(user.nick));
+            collapseDiv.appendChild(cardBodyDiv);
+
+            container.appendChild(collapseDiv);
             //createButtonsOfSets();
         })
         .catch(error => {
@@ -112,6 +140,106 @@ getGlobalUsers().then(data => {
 )
 
 
+function createCRUDdiv(userName) {
+    var crudCuserDiv = document.createElement("div");
+    crudCuserDiv.classList.add("in-row");
+    crudCuserDiv.classList.add("centered-h");
+
+    var buttonDel = document.createElement("button");
+    buttonDel.setAttribute("type", "button");
+    buttonDel.className = "btn btn-danger";
+    buttonDel.innerText = "XXXDelete User";
+    buttonDel.style.fontSize = "1.6rem";
+    buttonDel.addEventListener("click", function() {
+        deleteUser(userName);
+    });
+
+    var buttonE = document.createElement("button");
+    buttonE.setAttribute("type", "button");
+    buttonE.className = "btn btn-warning";
+    buttonE.innerText = "Edit";
+    buttonE.style.fontSize = "1.6rem";
+    buttonE.setAttribute("data-toggle", "collapse");
+    buttonE.setAttribute("data-target", "#collapseDiv" + userName);
+    buttonE.setAttribute("aria-expanded", "false");
+    buttonE.setAttribute("aria-controls", "collapseDiv" + userName);
+    buttonE.addEventListener("click", function() {
+        console.log("sddssdsddsds");
+        });
+
+        var button = document.createElement("button");
+button.classList.add("btn");
+button.classList.add("btn-warning");
+
+    //buttonE.className = "btn btn-warning";
+button.setAttribute("type", "button");
+button.setAttribute("data-bs-toggle", "collapse");
+button.setAttribute("data-bs-target", "#collapseExample");
+button.setAttribute("aria-expanded", "false");
+button.style.fontSize = "1.6rem";
+button.setAttribute("aria-controls", "collapseExample");
+button.innerText = "XXXEdit";
+
+    var buttonSU = document.createElement("button");
+    buttonSU.setAttribute("type", "button");
+    buttonSU.className = "btn btn-primary";
+    buttonSU.innerText = "XXXSet user";
+    buttonSU.style.fontSize = "1.6rem";
+    buttonSU.addEventListener("click", function() {
+        setUserRole(userName, 0);
+    });
+
+    var buttonSA = document.createElement("button");
+    buttonSA.setAttribute("type", "button");
+    buttonSA.className = "btn btn-primary";
+    buttonSA.innerText = "XXXSet admin";
+    buttonSA.style.fontSize = "1.6rem";
+    buttonSA.addEventListener("click", function() {
+        setUserRole(userName, 1);
+    });
+
+    var collapseDiv = document.createElement("div");
+    collapseDiv.classList.add("collapse");
+    //collapseDiv.classList.add("content-outline");
+    collapseDiv.id = "collapseExample";
+
+    // Create card body div
+    var cardBodyDiv = document.createElement("div");
+    cardBodyDiv.classList.add("card");
+    cardBodyDiv.classList.add("content-outline");
+    cardBodyDiv.style.marginBottom = "0rem";
+    cardBodyDiv.classList.add("card-body");
+    cardBodyDiv.innerText = "V tomto divku a bude editovat otazka";
+    console.log(userName, " <<< S TYMTO USOROM PRACUJES")
+    //TODO JOZKO TU IDES ROBIT EDIT USERA HEJ
+
+// Append card body div to collapse div
+collapseDiv.appendChild(cardBodyDiv);
+
+    // Append buttons to the crudCuserDiv
+    crudCuserDiv.appendChild(buttonDel);
+    crudCuserDiv.appendChild(button);
+    crudCuserDiv.appendChild(collapseDiv);
+    crudCuserDiv.appendChild(buttonSA);
+    crudCuserDiv.appendChild(buttonSU);
+    
+
+    return crudCuserDiv;
+}
+
+function deleteUser(userName) {
+    console.log("Deleting user with sessionLoginID: " + userName);
+}
+
+// Function to handle edit user button click
+function editUser(userName) {
+    console.log("Editing user with sessionLoginID: " + userName);
+}
+
+// Function to handle set user role button click
+function setUserRole(userName, role) {
+    console.log("Setting user role with sessionLoginID: " + userName + " to role: " + role);
+}
 
     async function getGlobalUsers() {
         //TODO TU KURVA
@@ -264,15 +392,14 @@ function initDatatable() {
 
 function createSeeAllQuestionCollapse() {
     var collapseContainer = document.createElement("div");
-    getAllQuestionByName(sessionLogin)
+    getAllQuestionByName()
         .then(data => {
             collapseContainer.classList.add("collapse");
             collapseContainer.id = "seeAllQuestionCollapse";
             var cardElement = document.createElement("div");
             cardElement.classList.add("card", "card-body");
             cardElement.classList.add("collapse-set");
-            cardElement.textContent = "See all question";
-
+            
             var allQuestionJozkoDivko = document.createElement("div")
             allQuestionJozkoDivko.id = "allQuestionJozkoDivko";
             var allQbyName;
@@ -283,8 +410,12 @@ function createSeeAllQuestionCollapse() {
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
             console.log(allQbyName);
 
-            var myTable = createDatatable(allQbyName);
-            allQuestionJozkoDivko.appendChild(myTable);
+            console.log(allQbyName.length, "WTF");
+            if(allQbyName.length != 0){
+                var myTable = createDatatable(allQbyName);
+                allQuestionJozkoDivko.appendChild(myTable);
+            }
+            
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
             cardElement.appendChild(allQuestionJozkoDivko);
             collapseContainer.appendChild(cardElement);
@@ -294,14 +425,33 @@ function createSeeAllQuestionCollapse() {
     return collapseContainer;
 }
 
-async function getAllQuestionByName(user) {
+async function getAllQuestionByName() {
     //TU DURI UPRAVIS SPOJAZDNIS BOROVE API A VRATIS DATA
-    console.log("DOPICI",user);
+    console.log("DOPICI>> ",sessionLoginID);
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?userId=${sessionLoginID}`,{
             method: 'GET'
         }); /*FFF*/
         const data = await response.json();
+        console.log("REALSHIT VO VYPISE DATA", data, sessionLoginID);
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return testDataDelete; //9999
+    }
+    //return testDataDelete;
+}
+
+async function getIdByName() {
+    //TU DURI UPRAVIS SPOJAZDNIS BOROVE API A VRATIS DATA
+    
+    try {
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/users?userName=${sessionLogin}`,{
+            method: 'GET'
+        }); /*FFF*/
+        
+        const data = await response.json();
+        console.log(data, "JJJJJ");
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
