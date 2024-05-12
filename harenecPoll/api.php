@@ -38,7 +38,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-//$method = 'GET';
+//$method = 'PUT';
 
 switch ($method) {
     case 'GET':
@@ -162,12 +162,12 @@ switch ($method) {
         break;
     case 'PUT':
         //received data from js
-        //$data = json_decode(file_get_contents('php://input'), true);
+        $data = json_decode(file_get_contents('php://input'), true);
 
-        /*$data = array(
-            'adminValue' => 1
-        );*/
-
+       /* $data = array(
+            'nick' => "jozko"
+        );
+*/
         //print_r($data);
         switch ($endpoint_without_query) {
             case 'update':

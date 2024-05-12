@@ -1,3 +1,5 @@
+console.log("Hallo world admin!");
+
 let btnModalClose = document.getElementById("close-modal");
 let modalQR = document.getElementById("modalQR");
 window.onclick = function (event) {
@@ -49,6 +51,8 @@ var jsonData = `[
 ]`;
 
 
+
+
 var globalSets = `[
     {
         "name_set": "Math"
@@ -58,23 +62,76 @@ var globalSets = `[
     }
 ]`;
 
-getGlobalSets().then(data => {
-    globalSets = data;
-    console.log(globalSets);
-    createButtonsOfSets();
-})
-    .catch(error => {
-        console.error('Error:', error);
+var globalUsers = JSON.parse(`[
+    {
+        "nick": "aaaaaa"
+    },
+    {
+        "nick": "Joseph"
+    },
+    {
+        "nick": "semirgerkan"
+    }
+]`);
+
+getGlobalUsers().then(data => {
+    globalUsers = data;
+    console.log(globalUsers);
+    var mainCtn = document.getElementById("main-ctn");
+    var container = document.getElementById("button-container");
+    var tmpSessLogin = sessionLogin;
+    //var tmpSessLoginID = sessionLoginID;
+    globalUsers.forEach(function(user) {
+        
+        getGlobalSets(user.nick).then(data => {
+            console.log(user.nick, "JOJ DORITI");
+            sessionLogin = user.nick;
+            globalSets = data;
+            console.log(globalSets);
+            var button = document.createElement("button");
+            button.setAttribute("type", "button");
+            button.setAttribute("data-bs-toggle", "collapse");
+            button.setAttribute("data-bs-target", `#X${user.nick}`);
+            button.setAttribute("aria-expanded", "false");
+            button.textContent = user.nick;
+
+            var container = document.getElementById("button-container");
+            container.appendChild(button);//DDD
+            container.appendChild(createButtonsOfSets(user.nick));
+            //createButtonsOfSets();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
     });
+    mainCtn.appendChild(container);
+
+    sessionLogin = tmpSessLogin;
+}
+)
 
 
 
+    async function getGlobalUsers() {
+        //TODO TU KURVA
+        /*try {
+            const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/allUsers`,{
+                method: 'GET'
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return testDataDelete; 
+        }*/
+        return globalUsers;
+    }
 
 
-
-async function getGlobalSets() {
+async function getGlobalSets(user) {
     try {
-        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${sessionLogin}`,
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${user}`,
             { mode: "no-cors" });
         const data = await response.json();
         return data;
@@ -84,13 +141,18 @@ async function getGlobalSets() {
     }
 }
 
-var globalQuestionSets = ["DBS", "AZA", "OOP"];
+
+function createButtonsOfSets(user) {
+
+    var collapseDiv = document.createElement("div");
+    collapseDiv.classList.add("collapse");
+    collapseDiv.id = "X"+user;
 
 
-
-function createButtonsOfSets() {
-
-    var container = document.getElementById("button-container");
+    //var container = document.getElementById("button-container");
+    console.log("ROBIM PRE USERA", user)
+    var container = document.createElement("div");
+    container.classList.add("content-outline");
 
     globalSets.forEach(function (item) {
         createSetSection(item.name_set, container);
@@ -104,7 +166,15 @@ function createButtonsOfSets() {
     container.appendChild(createSeeAllQuestionCollapse());
     //container.appendChild(createStatsButton());
     //container.appendChild(creatseeStatsCollapse())
-
+    
+    var cardBodyDiv = document.createElement("div");
+    cardBodyDiv.classList.add("card", "card-body");
+    cardBodyDiv.classList.add("collapse-set");
+    cardBodyDiv.id = "X"+user + "Div";
+    cardBodyDiv.appendChild(container);
+    collapseDiv.appendChild(cardBodyDiv);
+    
+    return(collapseDiv);
 }
 
 function createStatsButton() {
@@ -211,6 +281,8 @@ function createSeeAllQuestionCollapse() {
             console.log("HJIJI");
             console.log(allQbyName);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
+            console.log(allQbyName);
+
             var myTable = createDatatable(allQbyName);
             allQuestionJozkoDivko.appendChild(myTable);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
@@ -984,7 +1056,7 @@ async function deleteQ(questionId, questionName) { //TODO BORO Dokoncit aby islo
 }
 
 function showInfoQ(question) {
-    if (question.open.toString() === '0') {
+    if (question.open.toString() === "0") {
         //console.log(showQuestionsWithAnswers(question));
         return showQuestionsWithAnswers(question);
     }
@@ -1129,7 +1201,6 @@ function copyQ(questionFull, whereToCopy) {
 }   
 
 function showToast() {
-    console.log("BORIS KOKOT")
     var snackbar = document.createElement('div');
     snackbar.id = "snackbar";
     snackbar.textContent = "Operácia sa podarila";
