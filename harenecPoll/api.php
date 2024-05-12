@@ -89,7 +89,6 @@ switch ($method) {
                     $returnStatInfo = $StatObj->getHistoricStatByQuestionId($setId);
                     echo json_encode($returnStatInfo);
                 }
-
             case 'users':
                 if (isset($_GET['userName'])) {
                     $userName = urldecode(($_GET['userName']));

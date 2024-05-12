@@ -1,0 +1,2 @@
+https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?questionCode={code}
+https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createStat

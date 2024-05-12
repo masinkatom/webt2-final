@@ -1,29 +1,3 @@
-<?php
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-session_start();
-
-$output = '';
-
-if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
-    $_SESSION["logged"] = false;
-    $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar">Operácia sa podarila</div>';
-} elseif (isset($_SESSION["loggedout"]) && $_SESSION["loggedout"] === true) {
-    $_SESSION["loggedout"] = false;
-    $_SESSION["loggedin"] = false;
-    $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar">Operácia sa podarila</div>';
-}
-
-
-echo $output;
-
-
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,8 +12,6 @@ echo $output;
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css">
 
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/toast.css">
-    <link rel="stylesheet" href="css/myConsole.css">
     </head>
 
 <body>
@@ -100,10 +72,6 @@ echo $output;
     </ul>          
 
     <div>    
-
-    
-
-
 </body>
 
 
