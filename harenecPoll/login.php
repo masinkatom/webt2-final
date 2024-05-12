@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $_SESSION["isAdmin"] = $isAdmin;
                 if ($isAdmin ==  1) {
-                    header("location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                    header("location: myAdmin.php");
                     exit;
                 }else{
                     header("location: index.php");
