@@ -38,7 +38,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-$method = 'GET';
+$method = 'PUT';
 
 switch ($method) {
     case 'GET':
@@ -158,7 +158,7 @@ switch ($method) {
         //$data = json_decode(file_get_contents('php://input'), true);
 
         $data = array(
-            'nick' => "jozko"
+            'adminValue' => 1
         );
 
         //print_r($data);
@@ -172,6 +172,13 @@ switch ($method) {
                     $questionActiveUpdate = $_GET['questionActiveUpdate'];
                     $updateQuestion = $QuestionObj->editActiveQuestion($questionActiveUpdate);
                     echo json_encode($updateQuestion);
+                }
+                break;
+            case 'updateUserFlag':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode($_GET['userName']);
+                    $updatedUserFlag = $UserObj->setUserFlag($userName, $data);
+                    echo json_encode($updatedUserFlag);
                 }
                 break;
             case 'editUser':

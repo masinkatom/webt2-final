@@ -47,6 +47,25 @@ class User
     }
 
     public function
+    setUserFlag($userName, $data){
+        $query = "UPDATE user 
+                  SET admin = :adminValue 
+                  WHERE user.nick = :userName";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':userName', $userName, PDO::PARAM_STR);
+        $stmt->bindParam(':adminValue', $data['adminValue'], PDO::PARAM_STR);
+
+        $result = $stmt->execute();
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function
     returnAllUsersName(){
          $query = "SELECT nick
                    FROM user";
