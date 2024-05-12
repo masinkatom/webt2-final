@@ -108,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(":password", $hashed_password, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
+            $_SESSION["registred"] = true;
             header("location: login.php");
             echo "Podarilo sa";
         } else {

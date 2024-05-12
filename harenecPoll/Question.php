@@ -37,11 +37,11 @@ class Question
     public function getQuestionByCode($questionCode)
     {
         //pridat question.codes
-        $query = "SELECT text_q FROM question WHERE question.code = :questionCode";
+        $query = "SELECT * FROM question WHERE question.code = :questionCode";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':questionCode', $questionCode, PDO::PARAM_STR);
         $stmt->execute();
-        $question = $stmt->fetch(PDO::FETCH_ASSOC);
+        $question = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $question;
     }
 
