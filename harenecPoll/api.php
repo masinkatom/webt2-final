@@ -38,7 +38,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-$method = 'GET';
+//$method = 'GET';
 
 switch ($method) {
     case 'GET':
@@ -164,9 +164,9 @@ switch ($method) {
         //received data from js
         //$data = json_decode(file_get_contents('php://input'), true);
 
-        $data = array(
+        /*$data = array(
             'adminValue' => 1
-        );
+        );*/
 
         //print_r($data);
         switch ($endpoint_without_query) {
