@@ -66,6 +66,19 @@ class User
     }
 
     public function
+    getUserIdByName($userName){
+        $query = "SELECT id_user
+                  FROM user 
+                  WHERE nick = :userName";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':userName', $userName);
+        $stmt->execute();
+        $userId = $stmt->fetchColumn();
+        return $userId;
+    }
+
+    public function
     returnAllUsersName(){
          $query = "SELECT nick
                    FROM user";

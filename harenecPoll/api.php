@@ -38,7 +38,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-$method = 'PUT';
+$method = 'GET';
 
 switch ($method) {
     case 'GET':
@@ -91,8 +91,15 @@ switch ($method) {
                 }
 
             case 'users':
-                $users = $UserObj->returnAllUsersName();
-                echo json_encode($users);
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode(($_GET['userName']));
+                    $idByName = $UserObj->getUserIdByName($userName);
+                    echo json_encode($idByName);
+                }else{
+                    $users = $UserObj->returnAllUsersName();
+                    echo json_encode($users);
+                }
+                break;
             default:
                 break;
         }
