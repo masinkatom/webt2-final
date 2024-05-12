@@ -108,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(":password", $hashed_password, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
+            $_SESSION["registred"] = true;
             header("location: login.php");
             echo "Podarilo sa";
         } else {
@@ -141,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <a class="nav-item" href="login.php">PrihlásenieXXX</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-item" href="register.php">RegistráciaXXX</a>
+                    <a class="nav-item" href="#">RegistráciaXXX</a>
                 </li>
             </ul>
         </div>

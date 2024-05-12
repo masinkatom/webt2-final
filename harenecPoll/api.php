@@ -9,6 +9,10 @@ require_once 'QuestionSet.php';
 require_once 'Question.php';
 require_once 'Answer.php';
 require_once 'Stat.php';
+require_once 'User.php';
+
+// Create an instance of the user
+$UserObj = new User($pdo);
 
 // Create an instance of the Set class
 $QuestionSetObj = new QuestionSet($pdo);
@@ -34,7 +38,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-$method = 'POST';
+//$method = 'PUT';
 
 switch ($method) {
     case 'GET':
@@ -79,6 +83,23 @@ switch ($method) {
                     echo json_encode($userQuestions);
                 }
                 break;
+            case 'stats':
+                if(isset($_GET['userId'])){
+                    $setId = $_GET['userId'];
+                    $returnStatInfo = $StatObj->getHistoricStatByQuestionId($setId);
+                    echo json_encode($returnStatInfo);
+                }
+
+            case 'users':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode(($_GET['userName']));
+                    $idByName = $UserObj->getUserIdByName($userName);
+                    echo json_encode($idByName);
+                }else{
+                    $users = $UserObj->returnAllUsersName();
+                    echo json_encode($users);
+                }
+                break;
             default:
                 break;
         }
@@ -92,6 +113,13 @@ switch ($method) {
                     echo json_encode($deleteByQuestionName);
                 }
                 break;
+            case 'deleteUser':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode($_GET['userName']);
+                    $deletedUser = $UserObj->deleteUserByName($userName);
+                    echo json_encode($deletedUser);
+                }
+                break;
             default:
                 break;
         }
@@ -103,7 +131,7 @@ switch ($method) {
         //TEMPORARY
         /*$data = array(
             'id_answer' => 1,
-            'count' => 1,
+            'count' => 10,
         );*/
 
         //$jsonData = json_encode($data);
@@ -125,7 +153,6 @@ switch ($method) {
                 break;
                 //TODO
             case 'createStat':
-
                 $createStat = $StatObj->addStat($data);
                 echo json_encode($createStat);
                 break;
@@ -137,16 +164,37 @@ switch ($method) {
         //received data from js
         $data = json_decode(file_get_contents('php://input'), true);
 
-        print_r($data);
+       /* $data = array(
+            'nick' => "jozko"
+        );
+*/
+        //print_r($data);
         switch ($endpoint_without_query) {
             case 'update':
                 if (isset($_GET['questionUpdate'])) {
                     $questionUpdate = urldecode($_GET['questionUpdate']);
                     $updateQuestion = $QuestionObj->editQuestionByName(intval($questionUpdate), $data);
                     echo json_encode($updateQuestion);
+                }elseif(isset($_GET['questionActiveUpdate'])){
+                    $questionActiveUpdate = $_GET['questionActiveUpdate'];
+                    $updateQuestion = $QuestionObj->editActiveQuestion($questionActiveUpdate);
+                    echo json_encode($updateQuestion);
                 }
                 break;
-
+            case 'updateUserFlag':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode($_GET['userName']);
+                    $updatedUserFlag = $UserObj->setUserFlag($userName, $data);
+                    echo json_encode($updatedUserFlag);
+                }
+                break;
+            case 'editUser':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode($_GET['userName']);
+                    $updateUser = $UserObj->editUserByName($userName, $data);
+                    echo json_encode($updateUser);
+                }
+                break;
             default:
                 break;
         }
