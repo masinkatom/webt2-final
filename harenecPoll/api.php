@@ -90,7 +90,16 @@ switch ($method) {
                     echo json_encode($returnStatInfo);
                 }
 
-
+            case 'users':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode(($_GET['userName']));
+                    $idByName = $UserObj->getUserIdByName($userName);
+                    echo json_encode($idByName);
+                }else{
+                    $users = $UserObj->returnAllUsersName();
+                    echo json_encode($users);
+                }
+                break;
             default:
                 break;
         }
@@ -170,6 +179,13 @@ switch ($method) {
                     $questionActiveUpdate = $_GET['questionActiveUpdate'];
                     $updateQuestion = $QuestionObj->editActiveQuestion($questionActiveUpdate);
                     echo json_encode($updateQuestion);
+                }
+                break;
+            case 'updateUserFlag':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode($_GET['userName']);
+                    $updatedUserFlag = $UserObj->setUserFlag($userName, $data);
+                    echo json_encode($updatedUserFlag);
                 }
                 break;
             case 'editUser':
