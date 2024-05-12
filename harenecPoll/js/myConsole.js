@@ -152,6 +152,18 @@ function createNewSetButton() {
     return newQButton;
 }
 
+function createTableHeader(header, columnName) {
+    const th = document.createElement('th');
+    th.textContent = columnName;
+    header.appendChild(th);
+}
+
+function addTableContent(tRow, content) {
+    const td = document.createElement('td');
+    td.textContent = content;
+    tRow.appendChild(td);
+}
+
 function createDatatable(questionsData) {
     let table = document.createElement('table');
     table.id = 'userQuestions';
@@ -161,23 +173,21 @@ function createDatatable(questionsData) {
     const thead = document.createElement('thead');
     const trHeader = document.createElement('tr');
     
-    const keys = Object.keys(questionsData[0]);
-    keys.forEach(key => {
-        const th = document.createElement('th');
-        th.textContent = key;
-        trHeader.appendChild(th);
-    });
+    createTableHeader(trHeader, "text");
+    createTableHeader(trHeader, "creation dateXXX");
+    createTableHeader(trHeader, "name_setXXX");
+    createTableHeader(trHeader, "codeXXX");
+
     thead.appendChild(trHeader);
     table.appendChild(thead);
 
     const tbody = document.createElement('tbody');
     questionsData.forEach(item => {
         const tr = document.createElement('tr');
-        keys.forEach(key => {
-            const td = document.createElement('td');
-            td.textContent = item[key];
-            tr.appendChild(td);
-        });
+        addTableContent(tr, item.text_q);
+        addTableContent(tr, item.creationDate);
+        addTableContent(tr, item.name_set);
+        addTableContent(tr, item.code);
         tbody.appendChild(tr);
     });
     table.appendChild(tbody);
