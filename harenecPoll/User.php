@@ -33,7 +33,6 @@ class User
                   SET nick = :nick 
                   WHERE user.nick = :userName";
 
-
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':userName', $userName, PDO::PARAM_STR);
         $stmt->bindParam(':nick', $data['nick'], PDO::PARAM_STR);
@@ -45,6 +44,16 @@ class User
         } else {
             return false;
         }
+    }
+
+    public function
+    returnAllUsersName(){
+         $query = "SELECT nick
+                   FROM user";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $allUsers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $allUsers;
     }
 }
 ?>
