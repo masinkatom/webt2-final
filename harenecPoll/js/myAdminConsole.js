@@ -337,10 +337,11 @@ function setUserRole(userName, role) {
 async function getGlobalSets(user) {
     console.log(user);
     try {
-        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${user}`,
-            { mode: "no-cors" });
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${user}`);
         const data = await response.json();
+        console.log(data);
         return data;
+        
     } catch (error) {
         console.error('Error fetching sets:', error);
         return [];
