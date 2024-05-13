@@ -228,15 +228,17 @@ button.innerText = "XXXEdit";
     editUserDiv.appendChild(editUserField);
     editUserDiv.appendChild(buttonEditUser);
 
-    buttonEditUser,addEventListener('click', function() {
+    buttonEditUser.addEventListener('click', function() {
         // DATA NA ODOSLANIE
         // zmenene meno usera
-        var edutedUserToSend = {
+        var editedUserToSend = {
             username: editUserField.value
         }
+        console.log(editedUserToSend);
     })
     editUserDiv.appendChild(buttonEditUser);
     cardBodyDiv.appendChild(editUserDiv);
+    //^^ TODO JOZKO TU IDES ROBIT EDIT USERA HEJ ^^
 
 // Append card body div to collapse div
 collapseDiv.appendChild(cardBodyDiv);
