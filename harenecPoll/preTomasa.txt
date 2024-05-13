@@ -7,3 +7,5 @@ $data = array(
             'key1' => value1,
             'key2' => value2,
 );
+
+https://node24.webte.fei.stuba.sk/web2final/harenecPoll/api.php/answer?questionId=1

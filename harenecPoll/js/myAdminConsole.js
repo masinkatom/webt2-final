@@ -756,8 +756,12 @@ function createNewQuestionCollapse() {
                 open: 0,
                 creationDate: getCurrentTimestamp(),
                 active: 0,
+<<<<<<< HEAD
                 cloudmap: 0,
                 admin_owner: adminCheckBoxValue
+=======
+                cloudmap: cloudmapValue
+>>>>>>> origin/Boris/dev
             };
         }
         console.log("CREATE QUESTION DONE");

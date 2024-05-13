@@ -10,6 +10,10 @@ class Answer
         $this->pdo = $pdo;
     }
 
+
+
+
+
     public function getAnswersByQuestionId($questionId)
     {
         /*
