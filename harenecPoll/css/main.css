@@ -516,7 +516,23 @@ button:hover {
 }
 
 li{
-    font-size: 14px;
+    font-size: 16px;
 }
 
+.hover-underline:hover{
+    text-decoration: underline;
+}
 
+.hover-underline{
+    color: var(--webte-color-yellow);
+}
+
+.container-two-colums{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+.column{
+    padding: 20px;
+}
