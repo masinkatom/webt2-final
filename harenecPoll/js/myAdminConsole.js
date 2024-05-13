@@ -697,7 +697,7 @@ function createNewQuestionCollapse() {
                 open: 0,
                 creationDate: getCurrentTimestamp(),
                 active: 0,
-                cloudmap: 0
+                cloudmap: cloudmapValue
             };
         }
         console.log("CREATE QUESTION DONE");
