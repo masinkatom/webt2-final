@@ -209,9 +209,34 @@ button.innerText = "XXXEdit";
     cardBodyDiv.classList.add("content-outline");
     cardBodyDiv.style.marginBottom = "0rem";
     cardBodyDiv.classList.add("card-body");
-    cardBodyDiv.innerText = "V tomto divku a bude editovat otazka";
+    cardBodyDiv.innerText = "V tomto divku a bude editovat user";
     console.log(userName, " <<< S TYMTO USOROM PRACUJES")
+    
     //TODO JOZKO TU IDES ROBIT EDIT USERA HEJ
+    var editUserDiv = document.createElement("div");
+    editUserDiv.id = "editUserDiv";
+
+    var editUserField = document.createElement("input");
+    editUserField.setAttribute("type", "text");
+    editUserField.value = userName;
+    
+    var buttonEditUser = document.createElement("button");
+    buttonEditUser.setAttribute("type", "button");
+    buttonEditUser.className = "btn btn-primary";
+    buttonEditUser.innerText = "XXXEdit user";
+
+    editUserDiv.appendChild(editUserField);
+    editUserDiv.appendChild(buttonEditUser);
+
+    buttonEditUser,addEventListener('click', function() {
+        // DATA NA ODOSLANIE
+        // zmenene meno usera
+        var edutedUserToSend = {
+            username: editUserField.value
+        }
+    })
+    editUserDiv.appendChild(buttonEditUser);
+    cardBodyDiv.appendChild(editUserDiv);
 
 // Append card body div to collapse div
 collapseDiv.appendChild(cardBodyDiv);
@@ -219,9 +244,9 @@ collapseDiv.appendChild(cardBodyDiv);
     // Append buttons to the crudCuserDiv
     crudCuserDiv.appendChild(buttonDel);
     crudCuserDiv.appendChild(button);
-    crudCuserDiv.appendChild(collapseDiv);
     crudCuserDiv.appendChild(buttonSA);
     crudCuserDiv.appendChild(buttonSU);
+    crudCuserDiv.appendChild(collapseDiv);
     
 
     return crudCuserDiv;
