@@ -308,6 +308,7 @@ function setUserRole(userName, role) {
 
 
 async function getGlobalSets(user) {
+    console.log(user);
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${user}`,
             { mode: "no-cors" });
@@ -580,6 +581,11 @@ function createNewQuestionCollapse() {
     var cloudmapCheckbox = document.createElement("input");
     cloudmapCheckbox.setAttribute("type", "checkbox");
 
+    var labelAdminOwner = document.createElement("label");
+    labelAdminOwner.innerHTML = "AdminOwnerXXX: ";
+    var adminOwnerCheckbox = document.createElement("input");
+    adminOwnerCheckbox.setAttribute("type", "checkbox");
+
     // // div pre otazku s moznostami --$$
     var divkoPocetMoznosti = document.createElement("div");
     divkoPocetMoznosti.id = "OptionsAmount";
@@ -590,6 +596,9 @@ function createNewQuestionCollapse() {
     if (openQuestionCheckbox.checked) {
         divkoPocetMoznosti.appendChild(labelCloudmap);
         divkoPocetMoznosti.appendChild(cloudmapCheckbox);
+        //BORO PRIDAL
+        divkoPocetMoznosti.appendChild(labelAdminOwner);
+        divkoPocetMoznosti.appendChild(adminOwnerCheckbox);
     }
 
     // input number - pocet odpovedi na otazku
@@ -613,6 +622,7 @@ function createNewQuestionCollapse() {
     var selectedSetValue = setSelectBox.value;
     setSelectBox.addEventListener('change', function () {
         selectedSetValue = this.value;
+        console.log(selectedSetValue);
     });
 
     openQuestionCheckbox.addEventListener('change', function () {
@@ -623,13 +633,19 @@ function createNewQuestionCollapse() {
             divkoPocetMoznosti.removeChild(divkoMoznosti);
             divkoPocetMoznosti.appendChild(labelCloudmap);
             divkoPocetMoznosti.appendChild(cloudmapCheckbox);
+            //BORO PRIDAL
+            divkoPocetMoznosti.appendChild(labelAdminOwner);
+            divkoPocetMoznosti.appendChild(adminOwnerCheckbox);
         } else {
             divkoPocetMoznosti.appendChild(numberOptionsLabel);
             divkoPocetMoznosti.appendChild(numOfOptions);
             divkoPocetMoznosti.appendChild(setOptionsBtn);
             divkoPocetMoznosti.appendChild(divkoMoznosti);
-            divkoPocetMoznosti.removeChild(labelCloudmap);
             divkoPocetMoznosti.removeChild(cloudmapCheckbox);
+            divkoPocetMoznosti.removeChild(labelCloudmap);
+            //BORO PRIDAL
+            divkoPocetMoznosti.appendChild(labelAdminOwner);
+            divkoPocetMoznosti.appendChild(adminOwnerCheckbox);
         }
     });
 
@@ -640,6 +656,15 @@ function createNewQuestionCollapse() {
             cloudmapValue = 1;   
         } else {
             cloudmapValue = 0;
+        }
+    });
+
+    var adminCheckBoxValue = 0;
+    adminOwnerCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            adminCheckBoxValue = 1;   
+        } else {
+            adminCheckBoxValue = 0;
         }
     });
 
@@ -693,7 +718,8 @@ function createNewQuestionCollapse() {
                 open: 1,
                 creationDate: getCurrentTimestamp(),
                 active: 0,
-                cloudmap: cloudmapValue //TODO JOZKO TU DAS TOTEN UDAJ Z CLOUDMAP SELECTBOXE
+                cloudmap: cloudmapValue, //TODO JOZKO TU DAS TOTEN UDAJ Z CLOUDMAP SELECTBOXE
+                admin_owner: adminCheckBoxValue
             };
         } else {
             dataToSend = {
@@ -703,7 +729,8 @@ function createNewQuestionCollapse() {
                 open: 0,
                 creationDate: getCurrentTimestamp(),
                 active: 0,
-                cloudmap: 0
+                cloudmap: 0,
+                admin_owner: adminCheckBoxValue
             };
         }
         console.log("CREATE QUESTION DONE");
@@ -726,6 +753,7 @@ function findIdByName(name) {
         console.log(globalSets[i].name_set, globalSets[i].name_set === name);
         // If the name_set matches, return the corresponding id_set
         if (globalSets[i].name_set === name) {
+            console.log(globalSets[i].id_set);
             return globalSets[i].id_set;
         }
     }

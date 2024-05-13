@@ -166,8 +166,8 @@ class Question
     public function addQuestion($data)
     {
         print_r($data);
-        $query = "INSERT INTO question (text_q, active, open, id_set, creationDate, cloudmap, ) 
-                  VALUES (:textQ, :active, :open, :idSet, :creationDate, :cloudmap)";
+        $query = "INSERT INTO question (text_q, active, open, id_set, creationDate, cloudmap, adminOwner) 
+                  VALUES (:textQ, :active, :open, :idSet, :creationDate, :cloudmap, :adminOwner)";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':textQ', $data['question'], PDO::PARAM_STR);
@@ -176,6 +176,7 @@ class Question
         $stmt->bindParam(':idSet', $data['name_set'], PDO::PARAM_INT);
         $stmt->bindParam(':creationDate', $data['creationDate'], PDO::PARAM_STR);
         $stmt->bindParam(':cloudmap', $data['cloudmap'], PDO::PARAM_STR);
+        $stmt->bindParam(':adminOwner', $data['admin_owner'], PDO::PARAM_STR);
         $result = $stmt->execute();
 
         if ($result) {
