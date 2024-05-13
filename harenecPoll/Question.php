@@ -166,7 +166,7 @@ class Question
     public function addQuestion($data)
     {
         print_r($data);
-        $query = "INSERT INTO question (text_q, active, open, id_set, creationDate, cloudmap) 
+        $query = "INSERT INTO question (text_q, active, open, id_set, creationDate, cloudmap, ) 
                   VALUES (:textQ, :active, :open, :idSet, :creationDate, :cloudmap)";
 
         $stmt = $this->pdo->prepare($query);

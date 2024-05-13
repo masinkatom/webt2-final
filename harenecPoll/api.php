@@ -165,10 +165,11 @@ switch ($method) {
         $data = json_decode(file_get_contents('php://input'), true);
 
        /* $data = array(
-            'nick' => "jozko"
-        );
-*/
+            'adminValue' => 1
+        );*/
+
         //print_r($data);
+        //echo $data;
         switch ($endpoint_without_query) {
             case 'update':
                 if (isset($_GET['questionUpdate'])) {

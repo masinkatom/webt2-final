@@ -260,6 +260,12 @@ function editUser(userName) {
 
 // Function to handle set user role button click
 function setUserRole(userName, role) {
+
+    let data;
+    data = {
+        adminValue: role,
+    }
+
     console.log("Setting user role with sessionLoginID: " + userName + " to role: " + role);
     fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/updateUserFlag?userName=${userName}`, {
         method: 'PUT',
@@ -267,7 +273,7 @@ function setUserRole(userName, role) {
             'Content-Type': 'application/json'
         },
         // Convert the data object to JSON string and send it in the request body
-        body: JSON.stringify(role)
+        body: JSON.stringify(data)
     })
         .then(response => {
             // Check if the request was successful
@@ -287,8 +293,8 @@ function setUserRole(userName, role) {
 
     async function getGlobalUsers() {
         //TODO TU KURVA
-        /*try {
-            const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/allUsers`,{
+        try {
+            const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/users`,{
                 method: 'GET'
             });
             const data = await response.json();
@@ -296,8 +302,8 @@ function setUserRole(userName, role) {
         } catch (error) {
             console.error('Error fetching data:', error);
             return testDataDelete; 
-        }*/
-        return globalUsers;
+        }
+        //return globalUsers;
     }
 
 
