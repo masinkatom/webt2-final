@@ -66,6 +66,10 @@ switch ($method) {
                     $questionAnswer = urldecode($_GET['questionAnswer']);
                     $answerByQuestion = $AnswerObj->getAnswersByQuestionName($questionAnswer);
                     echo json_encode($answerByQuestion);
+                }elseif (isset($_GET['questionId'])) {
+                    $questionId =$_GET['questionId']; 
+                    $answerByQuestionId = $AnswerObj->getAnswersByQuestionId($questionId);
+                    echo json_encode($answerByQuestionId);
                 }
                 break;
             case 'question':
