@@ -293,8 +293,8 @@ function setUserRole(userName, role) {
 
     async function getGlobalUsers() {
         //TODO TU KURVA
-        /*try {
-            const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/allUsers`,{
+        try {
+            const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/users`,{
                 method: 'GET'
             });
             const data = await response.json();
@@ -302,8 +302,8 @@ function setUserRole(userName, role) {
         } catch (error) {
             console.error('Error fetching data:', error);
             return testDataDelete; 
-        }*/
-        return globalUsers;
+        }
+        //return globalUsers;
     }
 
 
