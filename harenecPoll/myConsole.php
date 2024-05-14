@@ -67,6 +67,7 @@ echo $output;
                         echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
                         echo '<script>var sessionLoginID = "' . $_SESSION["loginID"] . '";</script>';
                 } else {
+                    // TODO tu by mal byt redirect na login.php
                     echo '<li class="nav-item">
                             <a class="nav-item" href="#">DomovXXX</a>
                         </li>
