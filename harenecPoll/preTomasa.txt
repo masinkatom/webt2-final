@@ -9,3 +9,10 @@ $data = array(
 );
 
 https://node24.webte.fei.stuba.sk/harenecPoll/api.php/answer?questionId=1
+
+
+//toto je 119 u mna hej, bacha
+https://node119.webte.fei.stuba.sk/web2final/harenecPoll/api.php/stats?questionId={idecko}
+
+//u dura to pojde takto
+https://node24.webte.fei.stuba.sk/harenecPoll/api.php/stats?questionId=1
