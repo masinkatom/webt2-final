@@ -92,7 +92,12 @@ switch ($method) {
                     $setId = $_GET['userId'];
                     $returnStatInfo = $StatObj->getHistoricStatByQuestionId($setId);
                     echo json_encode($returnStatInfo);
+                }elseif (isset($_GET['questionId'])) {
+                    $questionId = $_GET['questionId'];
+                    $returnStatInfo = $StatObj->getStatsByQuestionId($questionId);
+                    echo json_encode($returnStatInfo);
                 }
+                break;
 
             case 'users':
                 if (isset($_GET['userName'])) {

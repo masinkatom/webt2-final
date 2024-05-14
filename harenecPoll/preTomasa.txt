@@ -8,4 +8,4 @@ $data = array(
             'key2' => value2,
 );
 
-https://node24.webte.fei.stuba.sk/web2final/harenecPoll/api.php/answer?questionId=1
+https://node24.webte.fei.stuba.sk/harenecPoll/api.php/answer?questionId=1
