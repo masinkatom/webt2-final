@@ -37,11 +37,11 @@ class Question
     public function getQuestionByCode($questionCode)
     {
         //pridat question.codes
-        $query = "SELECT text_q FROM question WHERE question.code = :questionCode";
+        $query = "SELECT * FROM question WHERE question.code = :questionCode";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':questionCode', $questionCode, PDO::PARAM_STR);
         $stmt->execute();
-        $question = $stmt->fetch(PDO::FETCH_ASSOC);
+        $question = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $question;
     }
 
@@ -72,6 +72,7 @@ class Question
         $questionId = $stmt->fetchColumn();
         return $questionId;
     }
+
 
     public function getAllQUestionsByUserId($userId){
 
@@ -166,8 +167,8 @@ class Question
     public function addQuestion($data)
     {
         print_r($data);
-        $query = "INSERT INTO question (text_q, active, open, id_set, creationDate, cloudmap) 
-                  VALUES (:textQ, :active, :open, :idSet, :creationDate, :cloudmap)";
+        $query = "INSERT INTO question (text_q, active, open, id_set, creationDate, cloudmap, adminOwner) 
+                  VALUES (:textQ, :active, :open, :idSet, :creationDate, :cloudmap, :adminOwner)";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':textQ', $data['question'], PDO::PARAM_STR);
@@ -176,6 +177,7 @@ class Question
         $stmt->bindParam(':idSet', $data['name_set'], PDO::PARAM_INT);
         $stmt->bindParam(':creationDate', $data['creationDate'], PDO::PARAM_STR);
         $stmt->bindParam(':cloudmap', $data['cloudmap'], PDO::PARAM_STR);
+        $stmt->bindParam(':adminOwner', $data['admin_owner'], PDO::PARAM_STR);
         $result = $stmt->execute();
 
         if ($result) {

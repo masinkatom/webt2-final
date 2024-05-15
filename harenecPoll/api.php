@@ -9,6 +9,10 @@ require_once 'QuestionSet.php';
 require_once 'Question.php';
 require_once 'Answer.php';
 require_once 'Stat.php';
+require_once 'User.php';
+
+// Create an instance of the user
+$UserObj = new User($pdo);
 
 // Create an instance of the Set class
 $QuestionSetObj = new QuestionSet($pdo);
@@ -34,7 +38,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-//$method = 'POST';
+//$method = 'PUT';
 
 switch ($method) {
     case 'GET':
@@ -62,6 +66,10 @@ switch ($method) {
                     $questionAnswer = urldecode($_GET['questionAnswer']);
                     $answerByQuestion = $AnswerObj->getAnswersByQuestionName($questionAnswer);
                     echo json_encode($answerByQuestion);
+                }elseif (isset($_GET['questionId'])) {
+                    $questionId =$_GET['questionId']; 
+                    $answerByQuestionId = $AnswerObj->getAnswersByQuestionId($questionId);
+                    echo json_encode($answerByQuestionId);
                 }
                 break;
             case 'question':
@@ -84,9 +92,23 @@ switch ($method) {
                     $setId = $_GET['userId'];
                     $returnStatInfo = $StatObj->getHistoricStatByQuestionId($setId);
                     echo json_encode($returnStatInfo);
+                }elseif (isset($_GET['questionId'])) {
+                    $questionId = $_GET['questionId'];
+                    $returnStatInfo = $StatObj->getStatsByQuestionId($questionId);
+                    echo json_encode($returnStatInfo);
                 }
+                break;
 
-
+            case 'users':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode(($_GET['userName']));
+                    $idByName = $UserObj->getUserIdByName($userName);
+                    echo json_encode($idByName);
+                }else{
+                    $users = $UserObj->returnAllUsersName();
+                    echo json_encode($users);
+                }
+                break;
             default:
                 break;
         }
@@ -98,6 +120,13 @@ switch ($method) {
                     $questionName = urldecode($_GET['questionName']);
                     $deleteByQuestionName = $QuestionObj->deleteQuestionsByName($questionName);
                     echo json_encode($deleteByQuestionName);
+                }
+                break;
+            case 'deleteUser':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode($_GET['userName']);
+                    $deletedUser = $UserObj->deleteUserByName($userName);
+                    echo json_encode($deletedUser);
                 }
                 break;
             default:
@@ -144,7 +173,12 @@ switch ($method) {
         //received data from js
         $data = json_decode(file_get_contents('php://input'), true);
 
-        print_r($data);
+       /* $data = array(
+            'adminValue' => 1
+        );*/
+
+        //print_r($data);
+        //echo $data;
         switch ($endpoint_without_query) {
             case 'update':
                 if (isset($_GET['questionUpdate'])) {
@@ -155,6 +189,20 @@ switch ($method) {
                     $questionActiveUpdate = $_GET['questionActiveUpdate'];
                     $updateQuestion = $QuestionObj->editActiveQuestion($questionActiveUpdate);
                     echo json_encode($updateQuestion);
+                }
+                break;
+            case 'updateUserFlag':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode($_GET['userName']);
+                    $updatedUserFlag = $UserObj->setUserFlag($userName, $data);
+                    echo json_encode($updatedUserFlag);
+                }
+                break;
+            case 'editUser':
+                if (isset($_GET['userName'])) {
+                    $userName = urldecode($_GET['userName']);
+                    $updateUser = $UserObj->editUserByName($userName, $data);
+                    echo json_encode($updateUser);
                 }
                 break;
             default:

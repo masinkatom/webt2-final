@@ -1,3 +1,5 @@
+console.log("Hallo world admin!");
+
 let btnModalClose = document.getElementById("close-modal");
 let modalQR = document.getElementById("modalQR");
 window.onclick = function (event) {
@@ -49,6 +51,8 @@ var jsonData = `[
 ]`;
 
 
+
+
 var globalSets = `[
     {
         "name_set": "Math"
@@ -58,39 +62,304 @@ var globalSets = `[
     }
 ]`;
 
-getGlobalSets().then(data => {
-    globalSets = data;
-    console.log(globalSets);
-    createButtonsOfSets();
-})
-    .catch(error => {
-        console.error('Error:', error);
+var globalUsers = JSON.parse(`[
+    {
+        "nick": "aaaaaa"
+    },
+    {
+        "nick": "Joseph"
+    },
+    {
+        "nick": "semirgerkan"
+    }
+]`);
+
+var tmpSessLogin = sessionLogin;
+var tmpSessLogiID = sessionLoginID;
+
+getGlobalUsers().then(data => {
+    globalUsers = data;
+    console.log(globalUsers);
+    var mainCtn = document.getElementById("main-ctn");
+    var container = document.getElementById("button-container");
+    
+    globalUsers.forEach(function(user) {
+        
+        getGlobalSets(user.nick).then(data => {
+            console.log(user.nick, "JOJ DORITI");
+            sessionLogin = user.nick;
+            getIdByName().then(data=>{
+                console.log("HIRA HIRA", data);
+                sessionLoginID = data;
+                console.log(sessionLoginID, "DDD");
+            })
+            globalSets = data;
+            console.log(globalSets);
+            var button = document.createElement("button");
+            button.setAttribute("type", "button");
+            button.setAttribute("data-bs-toggle", "collapse");
+            button.setAttribute("data-bs-target", `#X${user.nick}`);
+            button.setAttribute("aria-expanded", "false");
+            button.textContent = user.nick;
+
+            var container = document.getElementById("button-container");
+            container.appendChild(button);//DDD
+            container.appendChild(createButtonsOfSets(user.nick));
+
+            var collapseDiv = document.createElement("div");
+            collapseDiv.classList.add("collapse");
+            collapseDiv.id = "X"+user.nick;
+            collapseDiv.classList.add("in-row");
+            collapseDiv.classList.add("centered-v");
+
+
+            var CRUDuserDiv = document.createElement("div");
+            CRUDuserDiv.textContent = "DDDDDD";
+            CRUDuserDiv.classList.add("in-row");
+            CRUDuserDiv.classList.add("centered-v");
+
+            var cardBodyDiv = document.createElement("div");
+            cardBodyDiv.classList.add("card", "card-body");
+            cardBodyDiv.classList.add("collapse-set");
+            cardBodyDiv.id = "X"+user.nick + "Div";
+            cardBodyDiv.appendChild(createCRUDdiv(user.nick));
+            collapseDiv.appendChild(cardBodyDiv);
+
+            container.appendChild(collapseDiv);
+            //createButtonsOfSets();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+    });
+    mainCtn.appendChild(container);
+
+    sessionLogin = tmpSessLogin;
+}
+)
+
+
+function createCRUDdiv(userName) {
+    var crudCuserDiv = document.createElement("div");
+    crudCuserDiv.classList.add("in-row");
+    crudCuserDiv.classList.add("centered-h");
+
+    var buttonDel = document.createElement("button");
+    buttonDel.setAttribute("type", "button");
+    buttonDel.className = "btn btn-danger";
+    buttonDel.innerText = "XXXDelete User";
+    buttonDel.style.fontSize = "1.6rem";
+    buttonDel.addEventListener("click", function() {
+        deleteUser(userName);
     });
 
+    var buttonE = document.createElement("button");
+    buttonE.setAttribute("type", "button");
+    buttonE.className = "btn btn-warning";
+    buttonE.innerText = "Edit";
+    buttonE.style.fontSize = "1.6rem";
+    buttonE.setAttribute("data-toggle", "collapse");
+    buttonE.setAttribute("data-target", "#collapseDiv" + userName);
+    buttonE.setAttribute("aria-expanded", "false");
+    buttonE.setAttribute("aria-controls", "collapseDiv" + userName);
+    buttonE.addEventListener("click", function() {
+        console.log("sddssdsddsds");
+        });
+
+        var button = document.createElement("button");
+button.classList.add("btn");
+button.classList.add("btn-warning");
+
+    //buttonE.className = "btn btn-warning";
+button.setAttribute("type", "button");
+button.setAttribute("data-bs-toggle", "collapse");
+button.setAttribute("data-bs-target", "#collapseExample");
+button.setAttribute("aria-expanded", "false");
+button.style.fontSize = "1.6rem";
+button.setAttribute("aria-controls", "collapseExample");
+button.innerText = "XXXEdit";
+
+    var buttonSU = document.createElement("button");
+    buttonSU.setAttribute("type", "button");
+    buttonSU.className = "btn btn-primary";
+    buttonSU.innerText = "XXXSet user";
+    buttonSU.style.fontSize = "1.6rem";
+    buttonSU.addEventListener("click", function() {
+        setUserRole(userName, 0);
+    });
+
+    var buttonSA = document.createElement("button");
+    buttonSA.setAttribute("type", "button");
+    buttonSA.className = "btn btn-primary";
+    buttonSA.innerText = "XXXSet admin";
+    buttonSA.style.fontSize = "1.6rem";
+    buttonSA.addEventListener("click", function() {
+        setUserRole(userName, 1);
+    });
+
+    var collapseDiv = document.createElement("div");
+    collapseDiv.classList.add("collapse");
+    //collapseDiv.classList.add("content-outline");
+    collapseDiv.id = "collapseExample";
+
+    // Create card body div
+    var cardBodyDiv = document.createElement("div");
+    cardBodyDiv.classList.add("card");
+    cardBodyDiv.classList.add("content-outline");
+    cardBodyDiv.style.marginBottom = "0rem";
+    cardBodyDiv.classList.add("card-body");
+    cardBodyDiv.innerText = "V tomto divku a bude editovat user";
+    console.log(userName, " <<< S TYMTO USOROM PRACUJES")
+    
+    //TODO JOZKO TU IDES ROBIT EDIT USERA HEJ
+    var editUserDiv = document.createElement("div");
+    editUserDiv.id = "editUserDiv";
+
+    var editUserField = document.createElement("input");
+    editUserField.setAttribute("type", "text");
+    editUserField.value = userName;
+    
+    var buttonEditUser = document.createElement("button");
+    buttonEditUser.setAttribute("type", "button");
+    buttonEditUser.className = "btn btn-primary";
+    buttonEditUser.innerText = "XXXEdit user";
+
+    editUserDiv.appendChild(editUserField);
+    editUserDiv.appendChild(buttonEditUser);
+
+    buttonEditUser.addEventListener('click', function() {
+        // DATA NA ODOSLANIE
+        // zmenene meno usera
+        var editedUserToSend = {
+            username: editUserField.value
+        }
+        console.log(editedUserToSend);
+    })
+    editUserDiv.appendChild(buttonEditUser);
+    cardBodyDiv.appendChild(editUserDiv);
+    //^^ TODO JOZKO TU IDES ROBIT EDIT USERA HEJ ^^
+
+// Append card body div to collapse div
+collapseDiv.appendChild(cardBodyDiv);
+
+    // Append buttons to the crudCuserDiv
+    crudCuserDiv.appendChild(buttonDel);
+    crudCuserDiv.appendChild(button);
+    crudCuserDiv.appendChild(buttonSA);
+    crudCuserDiv.appendChild(buttonSU);
+    crudCuserDiv.appendChild(collapseDiv);
+    
+
+    return crudCuserDiv;
+}
+
+function deleteUser(userName) {
+    console.log("Deleting user with sessionLoginID: " + userName);
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/deleteUser?userName=${userName}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        //body: JSON.stringify(question)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('User deleted successfully');
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to delete user');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
+}
+
+// Function to handle edit user button click
+function editUser(userName) {
+    console.log("Editing user with sessionLoginID: " + userName);
+}
+
+// Function to handle set user role button click
+function setUserRole(userName, role) {
+
+    let data;
+    data = {
+        adminValue: role,
+    }
+
+    console.log("Setting user role with sessionLoginID: " + userName + " to role: " + role);
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/updateUserFlag?userName=${userName}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('User flag updated successfully');
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update user flag');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
+}
+
+    async function getGlobalUsers() {
+        //TODO TU KURVA
+        try {
+            const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/users`,{
+                method: 'GET'
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return testDataDelete; 
+        }
+        //return globalUsers;
+    }
 
 
-
-
-
-async function getGlobalSets() {
+async function getGlobalSets(user) {
+    console.log(user);
     try {
-        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${sessionLogin}`,
-            { mode: "no-cors" });
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${user}`);
         const data = await response.json();
+        console.log(data);
         return data;
+        
     } catch (error) {
         console.error('Error fetching sets:', error);
         return [];
     }
 }
 
-var globalQuestionSets = ["DBS", "AZA", "OOP"];
+
+function createButtonsOfSets(user) {
+
+    var collapseDiv = document.createElement("div");
+    collapseDiv.classList.add("collapse");
+    collapseDiv.id = "X"+user;
 
 
-
-function createButtonsOfSets() {
-
-    var container = document.getElementById("button-container");
+    //var container = document.getElementById("button-container");
+    console.log("ROBIM PRE USERA", user)
+    var container = document.createElement("div");
+    container.classList.add("content-outline");
 
     globalSets.forEach(function (item) {
         createSetSection(item.name_set, container);
@@ -104,7 +373,15 @@ function createButtonsOfSets() {
     container.appendChild(createSeeAllQuestionCollapse());
     //container.appendChild(createStatsButton());
     //container.appendChild(creatseeStatsCollapse())
-
+    
+    var cardBodyDiv = document.createElement("div");
+    cardBodyDiv.classList.add("card", "card-body");
+    cardBodyDiv.classList.add("collapse-set");
+    cardBodyDiv.id = "X"+user + "Div";
+    cardBodyDiv.appendChild(container);
+    collapseDiv.appendChild(cardBodyDiv);
+    
+    return(collapseDiv);
 }
 
 function createStatsButton() {
@@ -152,42 +429,31 @@ function createNewSetButton() {
     return newQButton;
 }
 
-function createTableHeader(header, columnName) {
-    const th = document.createElement('th');
-    th.textContent = columnName;
-    header.appendChild(th);
-}
-
-function addTableContent(tRow, content) {
-    const td = document.createElement('td');
-    td.textContent = content;
-    tRow.appendChild(td);
-}
-
 function createDatatable(questionsData) {
     let table = document.createElement('table');
-    table.id = 'userQuestions';
-    table.classList.add('table', 'table-striped');
-    table.style.width = '100%';
+    table.id = 'example';
+    table.classList.add('display');
 
     const thead = document.createElement('thead');
     const trHeader = document.createElement('tr');
     
-    createTableHeader(trHeader, "text");
-    createTableHeader(trHeader, "creation dateXXX");
-    createTableHeader(trHeader, "name_setXXX");
-    createTableHeader(trHeader, "codeXXX");
-
+    const keys = Object.keys(questionsData[0]);
+    keys.forEach(key => {
+        const th = document.createElement('th');
+        th.textContent = key;
+        trHeader.appendChild(th);
+    });
     thead.appendChild(trHeader);
     table.appendChild(thead);
 
     const tbody = document.createElement('tbody');
     questionsData.forEach(item => {
         const tr = document.createElement('tr');
-        addTableContent(tr, item.text_q);
-        addTableContent(tr, item.creationDate);
-        addTableContent(tr, item.name_set);
-        addTableContent(tr, item.code);
+        keys.forEach(key => {
+            const td = document.createElement('td');
+            td.textContent = item[key];
+            tr.appendChild(td);
+        });
         tbody.appendChild(tr);
     });
     table.appendChild(tbody);
@@ -199,24 +465,20 @@ function createDatatable(questionsData) {
 
 function initDatatable() {
     $(document).ready( function () {
-        $('#userQuestions').DataTable({
-            responsive: true,
-            scrollX: true
-        });
+        $('#example').DataTable();
     } );
 }
 
 function createSeeAllQuestionCollapse() {
     var collapseContainer = document.createElement("div");
-    getAllQuestionByName(sessionLogin)
+    getAllQuestionByName()
         .then(data => {
             collapseContainer.classList.add("collapse");
             collapseContainer.id = "seeAllQuestionCollapse";
             var cardElement = document.createElement("div");
             cardElement.classList.add("card", "card-body");
             cardElement.classList.add("collapse-set");
-            cardElement.textContent = "See all question";
-
+            
             var allQuestionJozkoDivko = document.createElement("div")
             allQuestionJozkoDivko.id = "allQuestionJozkoDivko";
             var allQbyName;
@@ -225,8 +487,14 @@ function createSeeAllQuestionCollapse() {
             console.log("HJIJI");
             console.log(allQbyName);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
-            var myTable = createDatatable(allQbyName);
-            allQuestionJozkoDivko.appendChild(myTable);
+            console.log(allQbyName);
+
+            console.log(allQbyName.length, "WTF");
+            if(allQbyName.length != 0){
+                var myTable = createDatatable(allQbyName);
+                allQuestionJozkoDivko.appendChild(myTable);
+            }
+            
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
             cardElement.appendChild(allQuestionJozkoDivko);
             collapseContainer.appendChild(cardElement);
@@ -236,14 +504,33 @@ function createSeeAllQuestionCollapse() {
     return collapseContainer;
 }
 
-async function getAllQuestionByName(user) {
+async function getAllQuestionByName() {
     //TU DURI UPRAVIS SPOJAZDNIS BOROVE API A VRATIS DATA
-    console.log("DOPICI",user);
+    console.log("DOPICI>> ",sessionLoginID);
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?userId=${sessionLoginID}`,{
             method: 'GET'
         }); /*FFF*/
         const data = await response.json();
+        console.log("REALSHIT VO VYPISE DATA", data, sessionLoginID);
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return testDataDelete; //9999
+    }
+    //return testDataDelete;
+}
+
+async function getIdByName() {
+    //TU DURI UPRAVIS SPOJAZDNIS BOROVE API A VRATIS DATA
+    
+    try {
+        const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/users?userName=${sessionLogin}`,{
+            method: 'GET'
+        }); /*FFF*/
+        
+        const data = await response.json();
+        console.log(data, "JJJJJ");
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -322,6 +609,11 @@ function createNewQuestionCollapse() {
     var cloudmapCheckbox = document.createElement("input");
     cloudmapCheckbox.setAttribute("type", "checkbox");
 
+    var labelAdminOwner = document.createElement("label");
+    labelAdminOwner.innerHTML = "AdminOwnerXXX: ";
+    var adminOwnerCheckbox = document.createElement("input");
+    adminOwnerCheckbox.setAttribute("type", "checkbox");
+
     // // div pre otazku s moznostami --$$
     var divkoPocetMoznosti = document.createElement("div");
     divkoPocetMoznosti.id = "OptionsAmount";
@@ -332,6 +624,9 @@ function createNewQuestionCollapse() {
     if (openQuestionCheckbox.checked) {
         divkoPocetMoznosti.appendChild(labelCloudmap);
         divkoPocetMoznosti.appendChild(cloudmapCheckbox);
+        //BORO PRIDAL
+        divkoPocetMoznosti.appendChild(labelAdminOwner);
+        divkoPocetMoznosti.appendChild(adminOwnerCheckbox);
     }
 
     // input number - pocet odpovedi na otazku
@@ -355,6 +650,7 @@ function createNewQuestionCollapse() {
     var selectedSetValue = setSelectBox.value;
     setSelectBox.addEventListener('change', function () {
         selectedSetValue = this.value;
+        console.log(selectedSetValue);
     });
 
     openQuestionCheckbox.addEventListener('change', function () {
@@ -365,13 +661,19 @@ function createNewQuestionCollapse() {
             divkoPocetMoznosti.removeChild(divkoMoznosti);
             divkoPocetMoznosti.appendChild(labelCloudmap);
             divkoPocetMoznosti.appendChild(cloudmapCheckbox);
+            //BORO PRIDAL
+            divkoPocetMoznosti.appendChild(labelAdminOwner);
+            divkoPocetMoznosti.appendChild(adminOwnerCheckbox);
         } else {
             divkoPocetMoznosti.appendChild(numberOptionsLabel);
             divkoPocetMoznosti.appendChild(numOfOptions);
             divkoPocetMoznosti.appendChild(setOptionsBtn);
             divkoPocetMoznosti.appendChild(divkoMoznosti);
-            divkoPocetMoznosti.removeChild(labelCloudmap);
             divkoPocetMoznosti.removeChild(cloudmapCheckbox);
+            divkoPocetMoznosti.removeChild(labelCloudmap);
+            //BORO PRIDAL
+            divkoPocetMoznosti.appendChild(labelAdminOwner);
+            divkoPocetMoznosti.appendChild(adminOwnerCheckbox);
         }
     });
 
@@ -382,6 +684,15 @@ function createNewQuestionCollapse() {
             cloudmapValue = 1;   
         } else {
             cloudmapValue = 0;
+        }
+    });
+
+    var adminCheckBoxValue = 0;
+    adminOwnerCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            adminCheckBoxValue = 1;   
+        } else {
+            adminCheckBoxValue = 0;
         }
     });
 
@@ -435,7 +746,8 @@ function createNewQuestionCollapse() {
                 open: 1,
                 creationDate: getCurrentTimestamp(),
                 active: 0,
-                cloudmap: cloudmapValue //TODO JOZKO TU DAS TOTEN UDAJ Z CLOUDMAP SELECTBOXE
+                cloudmap: cloudmapValue, //TODO JOZKO TU DAS TOTEN UDAJ Z CLOUDMAP SELECTBOXE
+                admin_owner: adminCheckBoxValue
             };
         } else {
             dataToSend = {
@@ -445,7 +757,12 @@ function createNewQuestionCollapse() {
                 open: 0,
                 creationDate: getCurrentTimestamp(),
                 active: 0,
-                cloudmap: 0
+<<<<<<< HEAD
+                cloudmap: 0,
+                admin_owner: adminCheckBoxValue
+=======
+                cloudmap: cloudmapValue
+>>>>>>> origin/Boris/dev
             };
         }
         console.log("CREATE QUESTION DONE");
@@ -468,6 +785,7 @@ function findIdByName(name) {
         console.log(globalSets[i].name_set, globalSets[i].name_set === name);
         // If the name_set matches, return the corresponding id_set
         if (globalSets[i].name_set === name) {
+            console.log(globalSets[i].id_set);
             return globalSets[i].id_set;
         }
     }
@@ -998,7 +1316,7 @@ async function deleteQ(questionId, questionName) { //TODO BORO Dokoncit aby islo
 }
 
 function showInfoQ(question) {
-    if (question.open.toString() === '0') {
+    if (question.open.toString() === "0") {
         //console.log(showQuestionsWithAnswers(question));
         return showQuestionsWithAnswers(question);
     }
@@ -1143,7 +1461,6 @@ function copyQ(questionFull, whereToCopy) {
 }   
 
 function showToast() {
-    console.log("BORIS KOKOT")
     var snackbar = document.createElement('div');
     snackbar.id = "snackbar";
     snackbar.textContent = "Operácia sa podarila";
