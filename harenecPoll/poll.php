@@ -1,5 +1,11 @@
 <?php
 
+require_once "server/curlHelper.php";
+
+// $response = json_decode(sendRequest("https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?questionCode=". $_GET['code'], "GET"), true);
+
+// echo json_decode($response['response'], true)[0]['active'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +59,7 @@
     <main class="container">
         <div class="content-outline">
             <h1>OTÁZKAXXX:</h1>
-            <h4 class="centered">(Pozor, otázka môže mať viacero správnych odpovedí)</h4>
+            <h4 class="centered">(Pozor, otázka môže mať viacero správnych odpovedíXXX)</h4>
             <br>
             <div class="in-column centered">
                 <h2 id="question-element" class="spacer-b"></h2>
@@ -61,7 +67,7 @@
                 <h2 id="question-404" class="fail hidden">Neexistuje alebo nie je aktivovanáXXX!</h2>
             </div>
             <div class="in-row spaced-between spacer-t ">
-                <button id="results-correct" class="btn-compact centered">Zobraz správne odpovedeXXX</button>
+                <button id="results-send" class="btn-compact centered">Zobraz správne odpovedeXXX</button>
                 <button id="results-redirect" class="btn-compact centered hidden">Zobraz výsledkyXXX ></button>
             </div>
         </div>

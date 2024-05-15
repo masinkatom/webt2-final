@@ -478,6 +478,10 @@ button:hover {
     display: none;
 }
 
+.invisible {
+    visibility: hidden;
+}
+
 .title {
     background: linear-gradient(to right, 
             rgb(255, 255, 0), 
@@ -517,6 +521,19 @@ button:hover {
     animation-fill-mode: forwards;
 }
 
+#answer-input {
+    width: 55rem;
+    height: 7rem;
+    font-size: 2.5rem;
+}
+
+@media screen and (max-width:600px) {
+    #answer-input {
+        width: 40rem;
+        font-size: 2.2rem;
+    }
+}
+
 @media screen and (max-width:470px) {
 
     input[type=text],
@@ -533,6 +550,11 @@ button:hover {
     input[type=button],
     button {
         font-size: 1.8rem;
+    }
+
+    #answer-input {
+        width: 90%;
+        font-size: 2rem;
     }
 
 }

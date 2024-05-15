@@ -4,7 +4,7 @@ let questionDummy =
             "id_question": 4,
             "text_q": "What is the function of mitochondria?",
             "active": 0,
-            "open": 1,
+            "open": 0,
             "id_set": 20,
             "creationDate": "2024-05-02",
             "code": "abcde",
@@ -36,7 +36,7 @@ const questionCode = urlParams.get('code');
 const questionElm = document.getElementById("question-element");
 const answerDiv = document.getElementById("answer-element");
 const resultsBtn = document.getElementById("results-redirect");
-const correctsBtn = document.getElementById("results-correct");
+const correctsBtn = document.getElementById("results-send");
 
 resultsBtn.addEventListener("click", showResults);
 correctsBtn.addEventListener("click", showCorrectAnswers);
@@ -75,8 +75,11 @@ async function showAnswers() {
     await loadQuestion();
 
     if (question.open == 1) {
+        correctsBtn.innerText = "Odoslať odpoveď";
         const ansInput = document.createElement("input");
         ansInput.setAttribute("type", "text");
+        ansInput.id = "answer-input";
+        ansInput.placeholder = ". . . . ."
         answerDiv.appendChild(ansInput);
     }
     else if (question.open == 0) {
@@ -116,22 +119,34 @@ function answerHandler(e) {
     console.log(userChoices);
 }
 
-function showCorrectAnswers() {
-    Array.from(answerDiv.children).every(btn => {
-        btn.removeEventListener("click", answerHandler);
-
-        corrects.every(correct => {
-            btn.style.backgroundColor = "red";
-
-            if (btn.getAttribute("ans-id") == correct.id_answer) {
-                btn.style.backgroundColor = "green";
-                return false;
-            }
+function showCorrectAnswers(e) {
+    if (question.open == 1) {
+        let ansInput = document.getElementById("answer-input");
+        ansInput.disabled = true;
+        ansInput.style.border = "5px solid green";
+        e.target.classList.add("invisible");
+        let data = [];
+        callApi("POST", "https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createStat", data);
+    }
+    else if (question.open == 0) {
+        Array.from(answerDiv.children).every(btn => {
+            btn.removeEventListener("click", answerHandler);
+    
+            corrects.every(correct => {
+                btn.style.backgroundColor = "red";
+    
+                if (btn.getAttribute("ans-id") == correct.id_answer) {
+                    btn.style.backgroundColor = "green";
+                    return false;
+                }
+                return true;
+                
+            });
             return true;
-            
         });
-        return true;
-    });
+        
+    }
+    
     showResultsBtn();
 }
 
