@@ -32,7 +32,7 @@ h1 {
 }
 
 h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin: 1.5rem 0;
 }
 
@@ -43,6 +43,7 @@ h3 {
 
 h4 {
     font-size: 1.6rem;
+    margin: 1rem 0;
 }
 
 img {
@@ -99,14 +100,16 @@ body {
 }
 
 .nav-item {
-    width: 17rem;
-    height: 8rem;
+    min-width: 17rem;
+    max-width: 19rem;
+    min-height: 8rem;
     transition: all 300ms;
 }
 
 .nav-item:hover {
     transition: all 300ms;
-    width: 20rem;
+    min-width: 21rem;
+    max-width: 23rem;
     background-color: var(--webte-color-yellow);
 }
 
@@ -130,6 +133,7 @@ body {
     text-align: center;
     color: white;
     padding: 1.5rem 0;
+    margin: 0 .3rem;
 }
 
 main h1, header h1 {
@@ -221,6 +225,11 @@ button:hover {
     color: white;
 }
 
+.btn-compact {
+    padding: .5rem 1.5rem;
+    height: 5.5rem;
+}
+
 .counter {
     font-size: 1.3rem;
 }
@@ -229,10 +238,6 @@ button:hover {
     font-size: 1.8rem;
     color: red;
 }
-
-
-
-
 
 .success {
     color: var(--webte-color-green);
@@ -317,8 +322,26 @@ button:hover {
     margin-left: 1rem;
 }
 
+.spacer-t {
+    margin-top: 3rem;
+}
+
+.spacer-b {
+    margin-bottom: 3rem;
+}
+
 .spaced-between{ 
     justify-content: space-between;
+}
+
+.align-right {
+    display: flex;
+    justify-content: right;
+}
+
+.align-left {
+    display: flex;
+    justify-content: left;
 }
 
 #myTable_wrapper {
@@ -455,6 +478,10 @@ button:hover {
     display: none;
 }
 
+.invisible {
+    visibility: hidden;
+}
+
 .title {
     background: linear-gradient(to right, 
             rgb(255, 255, 0), 
@@ -488,6 +515,25 @@ button:hover {
 
 }
 
+.animated {
+    animation: fancyLoad 1.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+#answer-input {
+    width: 55rem;
+    height: 7rem;
+    font-size: 2.5rem;
+}
+
+@media screen and (max-width:600px) {
+    #answer-input {
+        width: 40rem;
+        font-size: 2.2rem;
+    }
+}
+
 @media screen and (max-width:470px) {
 
     input[type=text],
@@ -506,7 +552,21 @@ button:hover {
         font-size: 1.8rem;
     }
 
+    #answer-input {
+        width: 90%;
+        font-size: 2rem;
+    }
+
 }
+
+@keyframes fancyLoad { 
+    from { 
+        transform: scaleY(0);
+    } 
+    to { 
+        transform: scaleY(1);
+    } 
+} 
 
 /*Boro - styly*/
 

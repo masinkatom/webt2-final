@@ -66,6 +66,10 @@ switch ($method) {
                     $questionAnswer = urldecode($_GET['questionAnswer']);
                     $answerByQuestion = $AnswerObj->getAnswersByQuestionName($questionAnswer);
                     echo json_encode($answerByQuestion);
+                }elseif (isset($_GET['questionId'])) {
+                    $questionId =$_GET['questionId']; 
+                    $answerByQuestionId = $AnswerObj->getAnswersByQuestionId($questionId);
+                    echo json_encode($answerByQuestionId);
                 }
                 break;
             case 'question':
@@ -88,7 +92,12 @@ switch ($method) {
                     $setId = $_GET['userId'];
                     $returnStatInfo = $StatObj->getHistoricStatByQuestionId($setId);
                     echo json_encode($returnStatInfo);
+                }elseif (isset($_GET['questionId'])) {
+                    $questionId = $_GET['questionId'];
+                    $returnStatInfo = $StatObj->getStatsByQuestionId($questionId);
+                    echo json_encode($returnStatInfo);
                 }
+                break;
 
             case 'users':
                 if (isset($_GET['userName'])) {
