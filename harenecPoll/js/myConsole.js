@@ -492,6 +492,10 @@ async function createNewQuestionDatabase(dataToSend) {
             if (response.ok) {
                 showToast();
                 console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                var container = document.getElementById("button-container");
+                container.inn = "";
+                createButtonsOfSets();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update question');
@@ -564,10 +568,15 @@ async function createNewSetDatabase(dataToSend) {
         .then(response => {
             // Check if the request was successful
             if (response.ok) {
-                console.log('Question updated successfully');
+                console.log('Set updated successfully');
                 // Handle further actions if needed
+                //TU PRIDAL BORO
+                showToast();
+                var container = document.getElementById("button-container");
+                container.inn = "";
+                createButtonsOfSets();
             } else {
-                console.error('Failed to update question');
+                console.error('Failed to update set');
                 // Handle errors if needed
             }
         })
@@ -576,9 +585,6 @@ async function createNewSetDatabase(dataToSend) {
             // Handle errors if needed
         });
 }
-
-
-
 
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");
@@ -973,6 +979,11 @@ function createDeleteCollapse(questionId, questionName) {
     deleteReally.addEventListener("click", function () {
         deleteQ(questionId, questionName)
             .then(() => {
+                //TU PRIDAL BORO
+                showToast();
+                var container = document.getElementById("button-container");
+                container.inn = "";
+                createButtonsOfSets();
                 //TODO ADAMKO SHOW DAJAKY OZNAM MODAL INFO ZE BOLO VYMAZANE
             })
     });
@@ -1092,6 +1103,11 @@ function editQ(originName, question, id) {
             // Check if the request was successful
             if (response.ok) {
                 console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                showToast();
+                var container = document.getElementById("button-container");
+                container.inn = "";
+                createButtonsOfSets();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update question');
@@ -1143,7 +1159,7 @@ function copyQ(questionFull, whereToCopy) {
 }   
 
 function showToast() {
-    console.log("BORIS KOKOT")
+    console.log("com to neide picip");
     var snackbar = document.createElement('div');
     snackbar.id = "snackbar";
     snackbar.textContent = "Operácia sa podarila";
@@ -1155,4 +1171,6 @@ function showToast() {
         snackbar.className = snackbar.className.replace("show", "");
     }, 3000);
 }
+
+//createButtonsOfSets()
 
