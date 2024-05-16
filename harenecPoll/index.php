@@ -41,8 +41,9 @@ echo $output;
             <ul class="nav-list">
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-                    echo '<li class="nav-item">
-                        <a <a class="nav-item nav-item-current" href="#">DomovXXX</a>
+                    echo '
+                        <li class="nav-item">
+                            <a class="nav-item nav-item-current" href="index.php">DomovXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="myConsole.php">MyConsoleXXX</a>
@@ -55,8 +56,9 @@ echo $output;
                         </li>
                         ';
                 } else {
-                    echo '<li class="nav-item">
-                        <a class="nav-item nav-item-current" href="index.php">DomovXXX</a>
+                    echo '
+                        <li class="nav-item">
+                            <a class="nav-item nav-item-current" href="index.php">DomovXXX</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="login.php">PrihlásenieXXX</a>
@@ -71,10 +73,10 @@ echo $output;
     <?php 
         echo '<div class="container">
                 <div class="content-outline centered">
-                    <form action="">
+                    <form action="poll.php" method="GET">
                         <label for="code" class="margin-label">Zadaj kodXXX:</label>
                         <input type="text" name="code" placeholder="po zadani kodu redirect na otazku">
-                        <button>Odoslat kodXXX</button>
+                        <button type="submit">Odoslat kodXXX</button>
                     </form>
                 </div>
             </div>';
