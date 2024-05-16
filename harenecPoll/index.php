@@ -73,10 +73,10 @@ echo $output;
     <?php 
         echo '<div class="container">
                 <div class="content-outline centered">
-                    <form action="poll.php" method="GET">
-                        <label for="code" class="margin-label">Zadaj kodXXX:</label>
-                        <input type="text" name="code" placeholder="po zadani kodu redirect na otazku">
-                        <button type="submit">Odoslat kodXXX</button>
+                    <form action="poll.php" method="GET" class="spacer-t spacer-b">
+                        <h3 for="code" class="margin-label centered">Zadaj kodXXX:</h3>
+                        <input type="text" id="bigger-input-height" class="margin-y" name="code" placeholder=". . .">
+                        <button type="submit" class="margin-y">Odoslat kodXXX</button>
                     </form>
                 </div>
             </div>';

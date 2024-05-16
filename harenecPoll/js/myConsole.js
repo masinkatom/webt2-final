@@ -167,7 +167,7 @@ function addTableContent(tRow, content) {
 function createDatatable(questionsData) {
     let table = document.createElement('table');
     table.id = 'userQuestions';
-    table.classList.add('table', 'table-striped');
+    table.classList.add('table', 'table-striped', 'table-hover');
     table.style.width = '100%';
 
     const thead = document.createElement('thead');
@@ -201,7 +201,12 @@ function initDatatable() {
     $(document).ready( function () {
         $('#userQuestions').DataTable({
             responsive: true,
-            scrollX: true
+            scrollX: true,
+            layout: {
+                topStart: null,
+                bottomStart: null,
+                bottomEnd: "paging"
+            },
         });
     } );
 }

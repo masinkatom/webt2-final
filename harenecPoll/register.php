@@ -148,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     <main class="container">
-        <h2>RegistraciaXXX</h2>
+        <h2 class="centered">RegistraciaXXX</h2>
 
         <div class="content-outline in-row centered">
 

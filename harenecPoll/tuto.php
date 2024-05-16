@@ -1,3 +1,49 @@
+<?php
+
+session_start();
+
+$content = 
+        '<div class="column">
+            <h2 class="hover-underline">Pre prihláseného používateľa v sekcii Konzola:</h2>
+            <ul>
+                <li>Používateľ môže listovať a prehliadať otázky vo svojich setoch.</li>
+                <li>Používateľ môže otázku spustiť zeleným tlačidlom "Start".</li>
+                <li>Používateľ môže otázku deaktivovať červeným tlačidlom "Stop".</li>
+                <li>Používateľ si môže informatívne pozrieť otázku modrým tlačidlom "Info". Môže vidieť text otázky. Rovnako kliknutím na "Štatistiky" môže vidieť výsledky hlasovania za minulé roky.</li>
+                <li>Používateľ si môže nakopírovať otázku do iného setu, kliknutím na sivé tlačidlo "Kópia", zvolením setu, kam chce otázku nakopírovať a nasledným potvrdením operácie.</li>
+                <li>Používateľ môže editovať otázku kliknutím na "Edit". Zmení zvolené informácie a potvrdí operáciu.</li>
+                <li>Používateľ môže kliknutím na červené tlačidlo vymazať otázku. Rozhodnutie musí ešte raz potvrdiť, následne sa otázka navždy vymaže.</li>
+            </ul>
+            <h3 class="hover-underline">Pod zobrazenými setmi má používateľ možnosť:</h3>
+            <ul>
+                <li>Vytvoriť novú otázku, používateľ si bude môcť vybrať z možnosti otvorenej otázky bez možnosti, v takom prípade si bude môcť používateľ zvoliť, ako sa mu budú zobrazovať výsledky, či cez zoznam alebo tzv. "cloudmap"-y. Používateľ môže zvoliť možnosť zatvorenej otázky, kde používateľ vytvorí možnosti.</li>
+                <li>Vytvoriť nový set, kde zadá meno nového setu a potvrdí vytvorenie.</li>
+                <li>Prezerať si všetky používateľove otázky, filtrovať v tabuľke a vyhľadávať podľa konkrétnych otázok, dátumov vytvorenia atď...</li>
+            </ul>
+        </div>
+
+        <div class="column">
+            <h2 class="hover-underline">Pre odlháseného používateľa</h2>
+            <ul>
+                <li>Používateľ sa môže zaregistrovať.</li>
+                <li>Používateľ sa môže prihlásiť.</li>
+                <li>Po vložení QR kódu alebo číselného kódu má používateľ možnosť pristúpiť k otázke.</li>
+            </ul>
+            <h2 class="hover-underline">Pre administrátora</h2>
+            <ul>
+                <li></li>
+            </ul>
+        </div>';
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $_SESSION['manual_content'] = $content;
+    header('Location: pdf.php');
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,39 +97,13 @@
     </div>
 
     <div class="container-two-colums">
-        <div class="column">
-            <h2 class="hover-underline">Pre prihláseného používateľa v sekcii Konzola:</h2>
-            <ul>
-                <li>Používateľ môže listovať a prehliadať otázky vo svojich setoch.</li>
-                <li>Používateľ môže otázku spustiť zeleným tlačidlom "Start".</li>
-                <li>Používateľ môže otázku deaktivovať červeným tlačidlom "Stop".</li>
-                <li>Používateľ si môže informatívne pozrieť otázku modrým tlačidlom "Info". Môže vidieť text otázky. Rovnako kliknutím na "Štatistiky" môže vidieť výsledky hlasovania za minulé roky.</li>
-                <li>Používateľ si môže nakopírovať otázku do iného setu, kliknutím na sivé tlačidlo "Kópia", zvolením setu, kam chce otázku nakopírovať a nasledným potvrdením operácie.</li>
-                <li>Používateľ môže editovať otázku kliknutím na "Edit". Zmení zvolené informácie a potvrdí operáciu.</li>
-                <li>Používateľ môže kliknutím na červené tlačidlo vymazať otázku. Rozhodnutie musí ešte raz potvrdiť, následne sa otázka navždy vymaže.</li>
-            </ul>
-            <h3 class="hover-underline">Pod zobrazenými setmi má používateľ možnosť:</h3>
-            <ul>
-                <li>Vytvoriť novú otázku, používateľ si bude môcť vybrať z možnosti otvorenej otázky bez možnosti, v takom prípade si bude môcť používateľ zvoliť, ako sa mu budú zobrazovať výsledky, či cez zoznam alebo tzv. "cloudmap"-y. Používateľ môže zvoliť možnosť zatvorenej otázky, kde používateľ vytvorí možnosti.</li>
-                <li>Vytvoriť nový set, kde zadá meno nového setu a potvrdí vytvorenie.</li>
-                <li>Prezerať si všetky používateľove otázky, filtrovať v tabuľke a vyhľadávať podľa konkrétnych otázok, dátumov vytvorenia atď...</li>
-            </ul>
-        </div>
+        <?php echo $content; ?>
+    <div>
 
-        <div class="column">
-            <h2 class="hover-underline">Pre odlháseného používateľa</h2>
-            <ul>
-                <li>Používateľ sa môže zaregistrovať.</li>
-                <li>Používateľ sa môže prihlásiť.</li>
-                <li>Po vložení QR kódu alebo číselného kódu má používateľ možnosť pristúpiť k otázke.</li>
-            </ul>
-            <h2 class="hover-underline">Pre administrátora</h2>
-            <ul>
-                <li></li>
-            </ul>
-        </div>
-
-        <div>
+<form action="tuto.php" method="POST">
+    <input type="hidden" name="export_to_pdf" value="PDF">
+    <input type="submit" value="Export to PDF">
+</form>
 </body>
 
 

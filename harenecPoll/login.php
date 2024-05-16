@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     <main class="container">
-        <h2>PrihlásenieXXX</h2>
+        <h2 class="centered">PrihlásenieXXX</h2>
         <div class="content-outline in-row centered">
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <label class="margin-label" for="username">UsernameXXX:</label>

@@ -124,7 +124,7 @@ echo $output;
         </div>
     </div>
     <main class="container">
-        <h2>Zmena HeslaXXX</h2>
+        <h2 class="centered">Zmena HeslaXXX</h2>
         <div class="content-outline in-row centered">
             <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                 <label class="margin-label" for="old-password">OldPasswordXXX:</label>
