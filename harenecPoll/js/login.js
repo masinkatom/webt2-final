@@ -31,12 +31,12 @@ function validateInput(inputId, errMessage, errInputId) {
 }
 
 function validateLogin() {
-    let output = validateInput("username", "Zadajte login.", "err-login");
+    let output = validateInput("username", "Zadajte loginXXX", "err-login");
     return output;
 }
 
 function validatePassword() {
-    let output = validateInput("password", "Zadajte heslo.", "err-password");
+    let output = validateInput("password", "Zadajte hesloXXX", "err-password");
     return output;
 }
 
