@@ -10,23 +10,25 @@ class Stat
         $this->pdo = $pdo;
     }
 
-    public function addStat($data){
-
-        $query = "INSERT INTO stats (id_answer, year)
+    public function addStat($data)
+    {
+        try {
+            $query = "INSERT INTO stats (id_answer, year)
                   VALUES (:id_answer, :year)";
 
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id_answer', $data['id_answer'], PDO::PARAM_STR);
-        $stmt->bindParam(':year', $data['year'] , PDO::PARAM_STR);
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':id_answer', $data['id_answer'], PDO::PARAM_INT);
+            $stmt->bindParam(':year', $data['year'], PDO::PARAM_INT);
 
-        $result = $stmt->execute();
+            $result = $stmt->execute();
 
-        if ($result) {
-            return $data;
-        } else {
+            return $result;
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
             return false;
         }
     }
+
 
     public function
     getHistoricStatByQuestionId($setId)
