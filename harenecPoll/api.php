@@ -38,7 +38,7 @@ $endpoint_without_query = $parts_with_query[0];
 
 header('Content-Type: application/json');
 
-//$method = 'PUT';
+//$method = 'POST';
 
 switch ($method) {
     case 'GET':
@@ -134,24 +134,14 @@ switch ($method) {
         }
         break;
     case 'POST':
-        //data from fetch function in js
-        //$data = file_get_contents('php://input');
-
         //TEMPORARY
         /*$data = array(
-            'id_answer' => 1,
-            'count' => 10,
+            'id_answer' => 12,
+            'year' => 1800,
         );*/
-
-        //$jsonData = json_encode($data);
-        //$dataArray = json_decode($jsonData, true);
-        //TEMPORARY 
-
-        //print_r($dataArray) ;
 
         //received data from js
         $data = json_decode(file_get_contents('php://input'), true);
-
 
         switch ($endpoint_without_query) {
             case 'create':
