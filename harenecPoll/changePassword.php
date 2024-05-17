@@ -21,10 +21,11 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     $output .= '<div id="snackbar">Operácia sa podarila</div>';
 }
 
-function checkEqual($password, $copyPassword) {
-    if($password == $copyPassword) {
+function checkEqual($password, $copyPassword)
+{
+    if ($password == $copyPassword) {
         return true;
-    }else {
+    } else {
         return false;
     }
 }
@@ -36,16 +37,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $currentUser = $_SESSION["login"];
 
     $stmt->bindParam(":nick", $currentUser, PDO::PARAM_STR);
-    
+
+    $msgerr = "";
 
     if ($stmt->execute()) {
         if ($stmt->rowCount() == 1) {
             $row = $stmt->fetch();
 
+
             $hashed_password = $row["password"];
 
             if (password_verify($_POST['old-password'], $hashed_password)) {
-                 if(checkEqual($_POST['new-password'], $_POST['confirm-new-password'])){
+                if (checkEqual($_POST['new-password'], $_POST['confirm-new-password'])) {
                     $newPassword = password_hash($_POST['new-password'], PASSWORD_ARGON2ID);
                     $query = "UPDATE user 
                             SET password = :newPassword
@@ -56,14 +59,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bindParam(':currentUser', $currentUser);
 
                     if ($stmt->execute()) {
-                        echo "Heslo bolo úspešne aktualizované.";
+                        $output .= '<script src="js/scriptToast.js"></script>';
+                        $output .= '<div id="snackbar">Operácia sa podarila</div>';
+                        echo $output;
                     } else {
+                        $msgerr = "Nastala chyba pri aktualizácii hesla.";
                         echo "Nastala chyba pri aktualizácii hesla.";
                     }
-                 }
+                }
+            } else {
+                $msgerr = "Zadaj správne staré heslo";
             }
-        }else {
-            echo "neexistuje";
         }
     }
 }
@@ -140,6 +146,24 @@ echo $output;
                 <p id="err-confirm-new-password" class="err hidden"></p>
 
                 <input id="submit-btn" name="login" type="submit" value="Change password" />
+                <?php
+                if (!(empty($msgerr))) {
+                ?>
+                    <div id="changePasswordModal" class="modal2 hidden">
+                        <div class="info-modal">
+                            <div class="modal-data">
+                                Zadané staré heslo je nesprávne
+                            </div>
+                            <img id="close-modal" src="images/close-icon.svg" alt="close">
+                        </div>
+                    </div>
+
+                    <script src="js/modalConfirmPassword.js"></script>
+                <?php
+                }
+                ?>
+
+
             </form>
         </div>
     </main>
