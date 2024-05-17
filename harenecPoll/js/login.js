@@ -7,7 +7,7 @@ document.getElementById("submit-btn").addEventListener("click", checkValues);
 
 function displayError(input, msg, errInput) {
     errInput.style.display = 'block';
-    errInput.innerHTML = msg;
+    // errInput.innerHTML = msg;
     input.style.border = '3px solid red';
 }
 
