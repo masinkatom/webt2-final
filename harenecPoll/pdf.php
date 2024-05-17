@@ -18,7 +18,7 @@ if (isset($_SESSION['manual_content'])) {
     $pdf->SetKeywords('TCPDF, PDF, user guide, application');
 
     // set default header data
-    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Curiosity hub', 'by Jurko, Borko, Jozko, Tomko');
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Curiosity hub', 'Autori: Juraj, Boris, Jozef, Tomas');
 
     // Set header and footer fonts
     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -27,7 +27,8 @@ if (isset($_SESSION['manual_content'])) {
     $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
     // set margins
-    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_RIGHT);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
     // Set default font subsetting mode
     $pdf->setFontSubsetting(true);
@@ -38,7 +39,7 @@ if (isset($_SESSION['manual_content'])) {
     // add a page
     $pdf->AddPage();
 
-    $heading = '<h3>Navod na pouzitie</h3>';
+    $heading = '<h2 style="text-align: center">Návod na použitie</h2><br>';
     $pdf->writeHTML($heading, true, false, true, false, '');
 
     $pdf->writeHTML($html, true, false, true, false, '');
