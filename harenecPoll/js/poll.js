@@ -37,6 +37,10 @@ const questionElm = document.getElementById("question-element");
 const answerDiv = document.getElementById("answer-element");
 const resultsBtn = document.getElementById("results-redirect");
 const correctsBtn = document.getElementById("results-send");
+const questionBtnsDiv = document.getElementById("question-buttons");
+const currentStatsDiv = document.getElementById("current-stats");
+
+var ws = new WebSocket("wss://node10.webte.fei.stuba.sk/wss2");
 
 resultsBtn.addEventListener("click", showResults);
 correctsBtn.addEventListener("click", showCorrectAnswers);
@@ -105,14 +109,14 @@ function answerHandler(e) {
             e.target.style.backgroundColor = "green";
             return false;
         }
-        
+
         else if (clickedAnsId != correct.id_answer) {
             e.target.style.backgroundColor = "red";
             return true;
         }
     });
     e.target.removeEventListener("click", answerHandler);
-    
+
     showResultsBtn();
 
     userChoices.push(clickedAnsId);
@@ -125,28 +129,33 @@ function showCorrectAnswers(e) {
         ansInput.disabled = true;
         ansInput.style.border = "5px solid green";
         e.target.classList.add("invisible");
-        let data = [];
-        callApi("POST", "https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createStat", data);
+        let data = {
+            "id_answer": "2",
+            "year": "2022"
+        };
+        userChoices.push(ansInput.value);
+        console.log(userChoices);
+        // callApi("POST", "https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createStat", data);
     }
     else if (question.open == 0) {
         Array.from(answerDiv.children).every(btn => {
             btn.removeEventListener("click", answerHandler);
-    
+
             corrects.every(correct => {
                 btn.style.backgroundColor = "red";
-    
+
                 if (btn.getAttribute("ans-id") == correct.id_answer) {
                     btn.style.backgroundColor = "green";
                     return false;
                 }
                 return true;
-                
+
             });
             return true;
         });
-        
+
     }
-    
+
     showResultsBtn();
 }
 
@@ -162,6 +171,10 @@ function showResultsBtn() {
 
 function showResults(e) {
     // TODO redirect to results site
+    questionBtnsDiv.classList.add("hidden");
+    currentStatsDiv.classList.remove("hidden");
+    sendUserChoices();
+    showGraph();
 }
 
 async function callApi(method, url, data = []) {
@@ -193,4 +206,124 @@ async function callApi(method, url, data = []) {
         console.error('Error:', error);
         throw error; // Re-throw the error to be caught by the caller
     }
+}
+
+
+// Plotly to show results
+function showGraph() {
+    let dataPlot = [
+        {
+            x: ['giraffes', 'orangutans', 'monkeys'],
+            y: [20, 14, 23],
+            type: 'bar',
+            marker: {
+    
+                color: 'rgb(191, 175, 0)',
+            
+                line: {
+            
+                  color: 'rgb(255, 255, 255)',
+            
+                  width: 3
+            
+                }
+            
+              }
+        }
+    ];
+    
+    let layout = {
+        xaxis: {
+            tickfont: {
+                family: 'Anta, monospace',
+                size: 14,
+                color: 'white'  // X axis tick labels font color
+            }
+        },
+        yaxis: {
+            title: {
+                text: 'Počet odpovedí',
+                font: {
+                    family: 'Anta, monospace',
+                    size: 18,
+                    color: 'white'  // Y axis label font color
+                }
+            },
+            tickfont: {
+                family: 'Anta, monospace',
+                size: 14,
+                color: 'white'  // Y axis tick labels font color
+            }
+        },
+        margin: {
+            l: 50,   // left margin
+            r: 50,   // right margin
+            b: 50,   // bottom margin
+            t: 10,   // top margin
+            pad: 4   // padding
+        },
+        plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot area
+        paper_bgcolor: 'rgba(0,0,0,0)'  // Transparent paper area
+    };
+    
+    let config = { 
+        responsive: true,
+        displayModeBar: false
+    };
+    
+    Plotly.newPlot('currents-plot', dataPlot, layout, config).then( () => {
+        window.dispatchEvent(new Event('resize'));
+    });
+
+}
+
+
+// WebSocket connection code
+
+// code to keep the connection alive
+const heartbeatInterval = setInterval(() => {
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(prepareData("ping"));
+    }
+}, 20000);
+
+
+ws.onopen = function (e) {
+    console.log("connected");
+}
+
+ws.onmessage = function (e) {
+    let data = JSON.parse(e.data);
+    console.log(data);
+}
+
+function sendUserChoices() {
+    if (userChoices !== null) {
+        let toSend;
+        if (question.open == 0) {
+            toSend = {
+                questionId: questionId,
+                open: 0,
+                answers: userChoices
+            }
+        }
+        else {
+            toSend = {
+                questionId: questionId,
+                open: 1,
+                answers: userChoices
+            }
+        }
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(prepareData("choices", toSend));
+        }
+    }
+}
+
+function prepareData(type, data = []) {
+    return JSON.stringify(
+        {
+            type: type,
+            payload: data
+        });
 }

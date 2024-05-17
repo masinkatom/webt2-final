@@ -15,6 +15,7 @@ require_once "server/curlHelper.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Poll</title>
     <link rel="stylesheet" href="css/main.css">
+    <script src="js/plotly-2.32.0.min.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -66,14 +67,21 @@ require_once "server/curlHelper.php";
                 <div id="answer-element" class="in-column"></div>
                 <h2 id="question-404" class="fail hidden">Neexistuje alebo nie je aktivovanáXXX!</h2>
             </div>
-            <div class="in-row spaced-between spacer-t ">
+            <div id="question-buttons" class="in-row spaced-between spacer-t">
                 <button id="results-send" class="btn-compact centered">Zobraz správne odpovedeXXX</button>
                 <button id="results-redirect" class="btn-compact centered hidden">Zobraz výsledkyXXX ></button>
             </div>
+
+            <div id="current-stats" class="in-column spacer-t hidden">
+                <h2>Aktuálne výsledky hlasovania:</h2>
+
+                <div id="currents-plot"></div>
+            </div>
         </div>
+        
     </main>
 
+    <script src="js/poll.js"></script>
 </body>
-<script src="js/poll.js"></script>
 
 </html>

@@ -527,6 +527,11 @@ button:hover {
     font-size: 2.5rem;
 }
 
+#currents-plot {
+    width:100%;
+    height:100%;
+}
+
 @media screen and (max-width:600px) {
     #answer-input {
         width: 40rem;

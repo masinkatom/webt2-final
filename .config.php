@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost';
+$host = 'node24.webte.fei.stuba.sk';
 $username = 'xbrilla';
 $password = 'presovskaBorka22';
 $dbname = 'WIAH';
@@ -20,8 +20,8 @@ try {
     // Connection successful
     //echo "Connected successfully";
     header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-header('Access-Control-Allow-Headers: Content-Type');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+    header('Access-Control-Allow-Headers: Content-Type');
 } catch (PDOException $e) {
     // Connection failed, handle the error
     echo "Connection failed: " . $e->getMessage();
