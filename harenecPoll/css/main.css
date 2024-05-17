@@ -543,7 +543,7 @@ button:hover {
     input[type=date],
     input[type=password],
     select {
-        width: 90%;
+        width: 100%;
     }
 
     input[type=submit],
@@ -595,4 +595,28 @@ li{
 
 .column{
     padding: 20px;
+}
+
+/* Jojo styly */
+
+#bigger-input-height{
+    height: 7rem;
+    font-size: 2.25rem;
+    text-align: center; 
+}
+
+.margin-y{
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.language-buttons{
+    display: flex;
+    margin-left: 1rem;
+}
+
+.lang_btn{
+    font-size: medium;
+    padding: 1rem 3rem;
+    margin: 0;
 }

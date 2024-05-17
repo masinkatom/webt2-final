@@ -113,8 +113,9 @@ function createStatsButton() {
     statsButton.setAttribute("data-bs-toggle", "collapse");
     statsButton.setAttribute("data-bs-target", "#seeStatsCollapse");
     statsButton.setAttribute("aria-controls", "seeStatsCollapse");
+    statsButton.setAttribute("data-i18n", "see_stats_collapse");
     statsButton.style.fontSize = "1.6rem";
-    statsButton.textContent = "SEE STATSXXX";
+    // statsButton.textContent = "SEE STATSXXX";
     return statsButton;
 }
 
@@ -125,8 +126,9 @@ function createSeeAllQuestionButton() {
     newQButton.setAttribute("data-bs-toggle", "collapse");
     newQButton.setAttribute("data-bs-target", "#seeAllQuestionCollapse");
     newQButton.setAttribute("aria-controls", "seeAllQuestionCollapse");
+    newQButton.setAttribute("data-i18n", "see_all_questions");
     newQButton.style.fontSize = "1.6rem";
-    newQButton.textContent = "SEE ALL QUESTIONXXX";
+    // newQButton.textContent = "SEE ALL QUESTIONXXX";
     return newQButton;
 }
 
@@ -136,8 +138,9 @@ function createButton() {
     newQButton.setAttribute("data-bs-toggle", "collapse");
     newQButton.setAttribute("data-bs-target", "#newQuestionCollapse");
     newQButton.setAttribute("aria-controls", "newQuestionCollapse"); // Set aria-controls attribute
+    newQButton.setAttribute("data-i18n", "new_question_collapse");
     newQButton.style.fontSize = "1.6rem";
-    newQButton.textContent = "NEW QUESTIONWTFXXX";
+    // newQButton.textContent = "NEW QUESTIONWTFXXX";
     return newQButton;
 }
 
@@ -147,14 +150,16 @@ function createNewSetButton() {
     newQButton.setAttribute("data-bs-toggle", "collapse");
     newQButton.setAttribute("data-bs-target", "#newSetCreateCollapse");
     newQButton.setAttribute("aria-controls", "newSetCreateCollapse"); // Set aria-controls attribute
+    newQButton.setAttribute("data-i18n", "new_set_collapse");
     newQButton.style.fontSize = "1.6rem";
-    newQButton.textContent = "NEW SETWTFXXX";
+    // newQButton.textContent = "NEW SETWTFXXX";
     return newQButton;
 }
 
 function createTableHeader(header, columnName) {
     const th = document.createElement('th');
-    th.textContent = columnName;
+    th.setAttribute("data-i18n", columnName);
+    // th.textContent = columnName;
     header.appendChild(th);
 }
 
@@ -167,16 +172,16 @@ function addTableContent(tRow, content) {
 function createDatatable(questionsData) {
     let table = document.createElement('table');
     table.id = 'userQuestions';
-    table.classList.add('table', 'table-striped');
+    table.classList.add('table', 'table-striped', 'table-hover');
     table.style.width = '100%';
 
     const thead = document.createElement('thead');
     const trHeader = document.createElement('tr');
     
-    createTableHeader(trHeader, "text");
-    createTableHeader(trHeader, "creation dateXXX");
-    createTableHeader(trHeader, "name_setXXX");
-    createTableHeader(trHeader, "codeXXX");
+    createTableHeader(trHeader, "th_text_q");
+    createTableHeader(trHeader, "th_creation_date");
+    createTableHeader(trHeader, "th_name_set");
+    createTableHeader(trHeader, "th_code");
 
     thead.appendChild(trHeader);
     table.appendChild(thead);
@@ -279,7 +284,7 @@ function createNewQuestionCollapse() {
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-set");
-    cardElement.textContent = "NEW QUSTIONXXX";
+    // cardElement.textContent = "NEW QUSTIONXXX";
 
     var divkoDoKtorehoBudeJozkoRobit = document.createElement("div") //TODO JOZKO
     //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
@@ -287,12 +292,16 @@ function createNewQuestionCollapse() {
     //tvoja robota
     divkoDoKtorehoBudeJozkoRobit.id = "newQuestionInputs";
 
+    // label nova otazka
+    var newQuestionLabel = document.createElement("label");
+    newQuestionLabel.setAttribute("data-i18n", "new_question_label");
     // text otazky
     var questionInput = document.createElement("input");
     questionInput.setAttribute("type", "text");
 
     var selectSetLabel = document.createElement("label");
-    selectSetLabel.innerHTML = "Choose setXXX: ";
+    selectSetLabel.setAttribute("data-i18n", "choose_set_label");
+    // selectSetLabel.innerHTML = "Choose setXXX: ";
     var setSelectBox = document.createElement("select");
 
     // INFORMACIA PRE JURAJA
@@ -308,9 +317,11 @@ function createNewQuestionCollapse() {
 
     // otvorena otazka? + checkbox
     var labelOpen = document.createElement("label");
-    labelOpen.innerHTML = "Open questionXXX: ";
+    labelOpen.setAttribute("data-i18n", "open_question_checkbox");
+    // labelOpen.innerHTML = "Open questionXXX: ";
     var openQuestionCheckbox = document.createElement("input");
     openQuestionCheckbox.setAttribute("type", "checkbox");
+    divkoDoKtorehoBudeJozkoRobit.appendChild(newQuestionLabel);
     divkoDoKtorehoBudeJozkoRobit.appendChild(questionInput);
     divkoDoKtorehoBudeJozkoRobit.appendChild(selectSetLabel);
     divkoDoKtorehoBudeJozkoRobit.appendChild(setSelectBox);
@@ -318,7 +329,8 @@ function createNewQuestionCollapse() {
     divkoDoKtorehoBudeJozkoRobit.appendChild(openQuestionCheckbox);
 
     var labelCloudmap = document.createElement("label");
-    labelCloudmap.innerHTML = "Cloudmap?XXX: ";
+    labelCloudmap.setAttribute("data-i18n", "cloudmap_checkbox");
+    // labelCloudmap.innerHTML = "Cloudmap?XXX: ";
     var cloudmapCheckbox = document.createElement("input");
     cloudmapCheckbox.setAttribute("type", "checkbox");
 
@@ -336,7 +348,8 @@ function createNewQuestionCollapse() {
 
     // input number - pocet odpovedi na otazku
     var numberOptionsLabel = document.createElement("label");
-    numberOptionsLabel.innerHTML = "Number of optionsXXX: ";
+    numberOptionsLabel.setAttribute("data-i18n", "num_of_options_label");
+    // numberOptionsLabel.innerHTML = "Number of optionsXXX: ";
     var numOfOptions = document.createElement("input");
     numOfOptions.setAttribute("type", "number");
     numOfOptions.setAttribute("min", 1);
@@ -346,7 +359,8 @@ function createNewQuestionCollapse() {
     // tlacidlo na odoslanie poctu monznosti (a,b,c,d)
     var setOptionsBtn = document.createElement("button");
     setOptionsBtn.classList.add("btn", "btn-danger");
-    setOptionsBtn.textContent = "Add optionsXXX";
+    setOptionsBtn.setAttribute("data-i18n", "add_option_button");
+    // setOptionsBtn.textContent = "Add optionsXXX";
 
     var divkoMoznosti = document.createElement("div");
     divkoMoznosti.id = "newQuestionOptions";
@@ -413,7 +427,8 @@ function createNewQuestionCollapse() {
 
     var createQuestionButton = document.createElement("button");
     createQuestionButton.classList.add("btn", "btn-primary");
-    createQuestionButton.textContent = "Create QuestionXXX";
+    createQuestionButton.setAttribute("data-i18n", "new_question_create_button");
+    // createQuestionButton.textContent = "Create QuestionXXX";
     divkoDoKtorehoBudeJozkoRobit.appendChild(createQuestionButton);
 
     createQuestionButton.addEventListener('click', function () {
@@ -516,20 +531,25 @@ function createNewSetCollapse() {
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-set");
-    cardElement.textContent = "NEW SETXXX";
+    // cardElement.textContent = "NEW SETXXX";
 
     var tuRobis = document.createElement("div") //TODO JOZKO
     //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
     //momentalny user je ulozeny v premennej globalnej  SSS var sessionLogin (nevidis ju v .js subore lebo ju taham z phpcka kde ju inicializujem)
     //tvoja robota
     tuRobis.id = "newSetCreateInputs";
+    var newSetLabel = document.createElement("label");
+    newSetLabel.setAttribute("data-i18n", "new_set_label");
+
     var newSetInput = document.createElement("input");
     newSetInput.setAttribute("type", "text");
+    tuRobis.appendChild(newSetLabel);
     tuRobis.appendChild(newSetInput);
 
     var createSetButton = document.createElement("button");
     createSetButton.classList.add("btn", "btn-primary");
-    createSetButton.textContent = "Create SetXXX";
+    createSetButton.setAttribute("data-i18n", "new_set_create_button");
+    // createSetButton.textContent = "Create SetXXX";
     tuRobis.appendChild(createSetButton);
 
     createSetButton.addEventListener('click', function () {
@@ -588,7 +608,8 @@ async function createNewSetDatabase(dataToSend) {
 
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");
-    optionLabel.innerHTML = "OptionXXX: ";
+    optionLabel.setAttribute("data-i18n", "option_label");
+    // optionLabel.innerHTML = "OptionXXX: ";
     var answerText = document.createElement("input");
     answerText.setAttribute("type", "text");
     parentDiv.appendChild(optionLabel);
@@ -600,7 +621,8 @@ function createOption(parentDiv) {
 function createButtonForOption(parentDiv) {
     var correctAnswerBtn = document.createElement("button");
     correctAnswerBtn.classList.add("btn", "btn-secondary");
-    correctAnswerBtn.textContent = "CorrectXXX";
+    correctAnswerBtn.setAttribute("data-i18n", "correct_option_button");
+    // correctAnswerBtn.textContent = "CorrectXXX";
     parentDiv.appendChild(correctAnswerBtn);
     return correctAnswerBtn;
 }
@@ -689,15 +711,18 @@ function insertQuestions(cardBodyDiv, item) {
             //playButton.setAttribute("data-bs-toggle", "collapse");
             //playButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             playButton.style.fontSize = "1.6rem";
+            // .setAttribute("data-i18n", "");
             playButton.textContent = "ONXXX";
             playButton.addEventListener("click", () => {
                 if(question.active === 0){
                     question.active = 1;
+                    // .setAttribute("data-i18n", "");
                     playButton.textContent = "STOPXXX";
                     playButton.style.backgroundColor = "red";
                     playQuestionWithQR(question);
                 }else{
                     question.active = 0;
+                    // .setAttribute("data-i18n", "");
                     playButton.textContent = "STARTXXX";
                     playButton.style.backgroundColor = "green";
                     stopQuestionWithQR(question);
@@ -712,7 +737,8 @@ function insertQuestions(cardBodyDiv, item) {
             infoButton.setAttribute("data-bs-toggle", "collapse");
             infoButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             infoButton.style.fontSize = "1.6rem";
-            infoButton.textContent = "InfoXXX";
+            infoButton.setAttribute("data-i18n", "info_collapse");
+            // infoButton.textContent = "InfoXXX";
 
             //InfoModal
             collapseDiv.appendChild(createInfoCollapse(question.id_question, question));
@@ -723,7 +749,8 @@ function insertQuestions(cardBodyDiv, item) {
             copyButton.setAttribute("data-bs-toggle", "collapse");
             copyButton.setAttribute("data-bs-target", `#${question.id_question}CopyCollapse`);
             copyButton.style.fontSize = "1.6rem";
-            copyButton.textContent = "CopyXXX";
+            copyButton.setAttribute("data-i18n", "copy_collapse");
+            // copyButton.textContent = "CopyXXX";
 
             //CopyModal
             collapseDiv.appendChild(createCopyCollapse(question.id_question, question));
@@ -734,7 +761,8 @@ function insertQuestions(cardBodyDiv, item) {
             editButton.setAttribute("data-bs-toggle", "collapse");
             editButton.setAttribute("data-bs-target", `#${question.id_question}EditCollapse`);
             editButton.style.fontSize = "1.6rem";
-            editButton.textContent = "EditXX";
+            editButton.setAttribute("data-i18n", "edit_collapse");
+            // editButton.textContent = "EditXX";
 
             //EditModal
             collapseDiv.appendChild(createEditCollapse(question.id_question, question));
@@ -750,7 +778,8 @@ function insertQuestions(cardBodyDiv, item) {
             deleteButton.setAttribute("data-bs-toggle", "collapse");
             deleteButton.setAttribute("data-bs-target", `#${question.id_question}DeleteCollapse`);
             deleteButton.style.fontSize = "1.6rem";
-            deleteButton.textContent = "DeleteXXX";
+            deleteButton.setAttribute("data-i18n", "delete_collapse");
+            // deleteButton.textContent = "DeleteXXX";
 
             //DeleteModal
             collapseDiv.appendChild(createDeleteCollapse(question.id_question, question.text_q));
@@ -857,7 +886,8 @@ function createEditCollapse(questionId, questionFull) {
     //aj znenie celej specifickej otazky ktoru chceme upravovat mas v parametru questionFull 
 
     var labelQuestionText = document.createElement("label");
-    labelQuestionText.innerHTML = "Question : ";
+    labelQuestionText.setAttribute("data-i18n", "edit_question_label");
+    // labelQuestionText.innerHTML = "Question : ";
     var QuestionTextEdit = createInputField(questionFull.text_q);
     divkoDoKtorehoJozkoRobiEdit.appendChild(labelQuestionText);
     divkoDoKtorehoJozkoRobiEdit.appendChild(QuestionTextEdit);
@@ -883,7 +913,8 @@ function createEditCollapse(questionId, questionFull) {
 
     var updateQuestionBtn = document.createElement("button");
     updateQuestionBtn.classList.add("btn", "btn-primary");
-    updateQuestionBtn.textContent = "Update Question";
+    updateQuestionBtn.setAttribute("data-i18n", "edit_question_button");
+    // updateQuestionBtn.textContent = "Update Question";
     divkoDoKtorehoJozkoRobiEdit.appendChild(updateQuestionBtn);
 
     updateQuestionBtn.addEventListener('click', function () {
@@ -920,7 +951,8 @@ function createCopyForm(questionFull) {
 
     var labelElement = document.createElement("label");
     labelElement.setAttribute("for", "sets");
-    labelElement.textContent = "Choose where to copy:";
+    labelElement.setAttribute("data-i18n", "copy_label");
+    // labelElement.textContent = "Choose where to copy:";
     formElement.appendChild(labelElement);
 
     var container = document.createElement("div");
@@ -943,7 +975,8 @@ function createCopyForm(questionFull) {
     copyButt.setAttribute("type", "button");
     copyButt.classList.add("btn", "btn-success");
     copyButt.classList.add("bigger-button-font");
-    copyButt.textContent = "CopyXXX";
+    copyButt.setAttribute("data-i18n", "copy_submit_button");
+    // copyButt.textContent = "CopyXXX";
     copyButt.addEventListener("click", function () {
         copyQ(questionFull, selectElement.value);
     });
@@ -965,7 +998,8 @@ function createDeleteCollapse(questionId, questionName) {
     cardElement.classList.add("collapse-info-set");
     cardElement.classList.add("centered");
     var italicText = document.createElement("h4");
-    italicText.textContent = "Are you sure?XXX";
+    italicText.setAttribute("data-i18n", "delete_you_sure");
+    // italicText.textContent = "Are you sure?XXX";
     italicText.classList.add("centered");
     cardElement.appendChild(italicText);
    collapseContainer.appendChild(cardElement);
@@ -974,7 +1008,8 @@ function createDeleteCollapse(questionId, questionName) {
     var deleteReally = document.createElement("button");
     deleteReally.type = "button";
     deleteReally.classList.add("btn", "btn-danger");
-    deleteReally.textContent = "DeleteXXX";
+    deleteReally.setAttribute("data-i18n", "delete_button");
+    // deleteReally.textContent = "DeleteXXX";
     deleteReally.classList.add("bigger-button-font");
     deleteReally.addEventListener("click", function () {
         deleteQ(questionId, questionName)
@@ -1063,6 +1098,7 @@ function showQuestionsWithAnswers(question) {
                 var liElement = document.createElement("li");
                 liElement.textContent = answer.text_a;
                 liElement.classList.add("bigger-font");
+                // .setAttribute("data-i18n", "");
                 var correctness = answer.correct === 1 ? "correctXXX" : "incorectXXX";
                 liElement.textContent += " (" + correctness + ")";
 
