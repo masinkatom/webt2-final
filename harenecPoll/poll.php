@@ -42,38 +42,43 @@ require_once "server/curlHelper.php";
                 } else {
 
                     echo '<li class="nav-item">
-                            <a class="nav-item" href="index.php">DomovXXX</a>
+                            <a class="nav-item" href="index.php" data-i18n="homepage_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="login.php">PrihlásenieXXX</a>
+                            <a class="nav-item" href="login.php" data-i18n="login_page_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="register.php">RegistráciaXXX</a>
+                            <a class="nav-item" href="register.php" data-i18n="register_page_nav"></a>
                         </li>';
                 }
                 ?>
+                <li class="language-buttons">
+                    <button class="lang_btn" onclick="changeLanguage('en')">ENG</button>
+                    <button class="lang_btn" onclick="changeLanguage('sk')">SVK</button>
+                </li>
             </ul>
         </div>
     </div>
 
     <main class="container">
         <div class="content-outline">
-            <h1>OTÁZKAXXX:</h1>
-            <h4 class="centered">(Pozor, otázka môže mať viacero správnych odpovedíXXX)</h4>
+            <h1 data-i18n="poll_header"></h1>
+            <h4 class="centered" data-i18n="poll_warning"></h4>
             <br>
             <div class="in-column centered">
                 <h2 id="question-element" class="spacer-b"></h2>
                 <div id="answer-element" class="in-column"></div>
-                <h2 id="question-404" class="fail hidden">Neexistuje alebo nie je aktivovanáXXX!</h2>
+                <h2 id="question-404" class="fail hidden" data-i18n="question_404"></h2>
             </div>
             <div class="in-row spaced-between spacer-t ">
-                <button id="results-send" class="btn-compact centered">Zobraz správne odpovedeXXX</button>
-                <button id="results-redirect" class="btn-compact centered hidden">Zobraz výsledkyXXX ></button>
+                <button id="results-send" class="btn-compact centered" data-i18n="show_correct_answers"></button>
+                <button id="results-redirect" class="btn-compact centered hidden" data-i18n="show_results">></button>
             </div>
         </div>
     </main>
 
 </body>
 <script src="js/poll.js"></script>
+<script src="js/languageScript.js"></script>
 
 </html>

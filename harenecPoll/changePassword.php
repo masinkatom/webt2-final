@@ -98,13 +98,13 @@ echo $output;
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     echo '<li class="nav-item">
-                        <a class="nav-item nav-item-current" href="index.php">DomXXX</a>
+                        <a class="nav-item nav-item-current" href="index.php" data-i18n="homepage_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="myConsole.php">KonzXXX</a>
+                            <a class="nav-item" href="myConsole.php" data-i18n="my_console_page_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="logout.php">OdhláseXXX</a>
+                            <a class="nav-item" href="logout.php" data-i18n="logout_page_nav"></a>
                         </li>
                         ';
                     echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
@@ -120,30 +120,35 @@ echo $output;
                         </li>';
                 }
                 ?>
+                <li class="language-buttons">
+                    <button class="lang_btn" onclick="changeLanguage('en')">ENG</button>
+                    <button class="lang_btn" onclick="changeLanguage('sk')">SVK</button>
+                </li>
             </ul>
         </div>
     </div>
     <main class="container">
-        <h2 class="centered">Zmena HeslaXXX</h2>
+        <h2 class="centered" data-i18n="change_password_header"></h2>
         <div class="content-outline in-row centered">
             <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                <label class="margin-label" for="old-password">OldPasswordXXX:</label>
+                <label class="margin-label" for="old-password" data-i18n="old_password_label"></label>
                 <input id="old-password" name="old-password" required="" type="password" />
                 <p id="err-old-password" class="err hidden"></p>
 
-                <label class="margin-label" for="new-password">NewPasswordXXX:</label>
+                <label class="margin-label" for="new-password" data-i18n="new_password_label"></label>
                 <input id="new-password" name="new-password" required="" type="password" />
                 <p id="err-new-password" class="err hidden"></p>
 
-                <label class="margin-label" for="new-password">ConfirmNewPasswordXXX:</label>
+                <label class="margin-label" for="new-password" data-i18n="confirm_password_label"></label>
                 <input id="confirm-new-password" name="confirm-new-password" required="" type="password" />
                 <p id="err-confirm-new-password" class="err hidden"></p>
 
-                <input id="submit-btn" name="login" type="submit" value="Change password" />
+                <button id="submit-btn" name="login" type="submit" data-i18n="change_password_submit_button"></button>
             </form>
         </div>
     </main>
 </body>
 <script src="js/confirmPassword.js"></script>
+<script src="js/languageScript.js"></script>
 
 </html>

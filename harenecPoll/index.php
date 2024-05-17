@@ -11,12 +11,12 @@ $output = '';
 if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     $_SESSION["logged"] = false;
     $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar">Operácia sa podarila</div>';
+    $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
 } elseif (isset($_SESSION["loggedout"]) && $_SESSION["loggedout"] === true) {
     $_SESSION["loggedout"] = false;
     $_SESSION["loggedin"] = false;
     $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar">Operácia sa podarila</div>';
+    $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
 }
 
 echo $output;
@@ -43,47 +43,56 @@ echo $output;
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     echo '
                         <li class="nav-item">
-                            <a class="nav-item nav-item-current" href="index.php">DomovXXX</a>
+                            <a class="nav-item nav-item-current" href="index.php" data-i18n="homepage_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="myConsole.php">MyConsoleXXX</a>
+                            <a class="nav-item" href="myConsole.php" data-i18n="my_console_page_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="logout.php">OdhlásenieXXX</a>
+                            <a class="nav-item" href="logout.php" data-i18n="logout_page_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="changePassword.php">zmenaHeslaXXX</a>
+                            <a class="nav-item" href="changePassword.php" data-i18n="change_password_page_nav"></a>
                         </li>
-                        ';
+                        <li class="language-buttons">
+                            <button class="lang_btn" onclick="changeLanguage(`en`)">ENG</button>
+                            <button class="lang_btn" onclick="changeLanguage(`sk`)">SVK</button>
+                        </li>';
                 } else {
                     echo '
                         <li class="nav-item">
-                            <a class="nav-item nav-item-current" href="index.php">DomovXXX</a>
+                            <a class="nav-item nav-item-current" href="index.php" data-i18n="homepage_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="login.php">PrihlásenieXXX</a>
+                            <a class="nav-item" href="login.php" data-i18n="login_page_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="register.php">RegistráciaXXX</a>
-                        </li>';
-                ?>        
+                            <a class="nav-item" href="register.php" data-i18n="register_page_nav"></a>
+                        </li>
+                        <li class="language-buttons">
+                            <button class="lang_btn" onclick="changeLanguage(`en`)">ENG</button>
+                            <button class="lang_btn" onclick="changeLanguage(`sk`)">SVK</button>
+                        </li>
+                        ';
+                ?>
             </ul>
         </div>
     </div>
     <?php 
-        echo '<div class="container">
+        echo '<h1 class="centered">Curiosity Hub</h1>
+            <div class="container">
                 <div class="content-outline centered">
                     <form action="poll.php" method="GET" class="spacer-t spacer-b">
-                        <h3 for="code" class="margin-label centered">Zadaj kodXXX:</h3>
+                        <h3 for="code" class="margin-label centered" data-i18n="code_header"></h3>
                         <input type="text" id="bigger-input-height" class="margin-y" name="code" placeholder=". . .">
-                        <button type="submit" class="margin-y">Odoslat kodXXX</button>
+                        <button type="submit" class="margin-y" data-i18n="code_button"></button>
                     </form>
                 </div>
             </div>';
     }
     ?>
 
-    
+<script src="js/languageScript.js"></script>
 </body>
 
 </html>

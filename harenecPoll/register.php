@@ -136,24 +136,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="main-nav">
             <ul class="nav-list">
                 <li class="nav-item">
-                    <a class="nav-item" href="index.php">HomeXXX</a>
+                    <a class="nav-item" href="index.php" data-i18n="homepage_nav"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-item" href="login.php">PrihlásenieXXX</a>
+                    <a class="nav-item" href="login.php" data-i18n="login_page_nav"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-item" href="#">RegistráciaXXX</a>
+                    <a class="nav-item" href="#" data-i18n="register_page_nav"></a>
+                </li>
+                <li class="language-buttons">
+                    <button class="lang_btn" onclick="changeLanguage('en')">ENG</button>
+                    <button class="lang_btn" onclick="changeLanguage('sk')">SVK</button>
                 </li>
             </ul>
         </div>
     </div>
     <main class="container">
-        <h2 class="centered">RegistraciaXXX</h2>
+        <h2 class="centered" data-i18n="register_header"></h2>
 
         <div class="content-outline in-row centered">
 
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="form-outline">
-                <label for="usernameReg" class="margin-label">Používateľské menoXXX:</label>
+                <label for="usernameReg" class="margin-label" data-i18n="register_username"></label>
                 <input id="login" name="usernameReg" required type="text" />
                 <p id="err-login" class="err hidden"></p>
                 <!-- /*JOJO*/  pridany <p> pre vypis chybovej hlasky po odoslani formulara -->
@@ -166,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 
 
-                <label for="passwordReg" class="margin-label">HesloXXX:</label>
+                <label for="passwordReg" class="margin-label" data-i18n="register_password"></label>
                 <input id="password" name="passwordReg" required type="password" />
                 <p id="err-password" class="err hidden"></p>
                 <!-- /*JOJO*/ pridany <p> pre vypis chybovej hlasky po odoslani formulara -->
@@ -179,13 +183,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 
 
-                <input id="submit-btn" name="register" type="submit" value="Register" />
+                <button id="submit-btn" name="register" type="submit" data-i18n="register_button"></button>
             </form>
         </div>
     </main>
 
 
     <script src="js/register.js"></script>
+    <script src="js/languageScript.js"></script>
 </body>
 
 </html>

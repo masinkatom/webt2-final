@@ -9,7 +9,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }else if(isset($_SESSION["registred"]) && $_SESSION["registred"] ===  true) {
     $output = '';
     $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar">Operácia sa podarila</div>';
+    $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
     echo $output;
 }
 
@@ -74,30 +74,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="main-nav">
             <ul class="nav-list">
                 <li class="nav-item">
-                    <a class="nav-item" href="index.php">HomeXXX</a>
+                    <a class="nav-item" href="index.php" data-i18n="homepage_nav"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-item nav-item-current" href="#">PrihlásenieXXX</a>
+                    <a class="nav-item nav-item-current" href="#" data-i18n="login_page_nav"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-item" href="register.php">RegistráciaXXX</a>
+                    <a class="nav-item" href="register.php" data-i18n="register_page_nav"></a>
+                </li>
+                <li class="language-buttons">
+                    <button class="lang_btn" onclick="changeLanguage('en')">ENG</button>
+                    <button class="lang_btn" onclick="changeLanguage('sk')">SVK</button>
                 </li>
             </ul>
         </div>
     </div>
     <main class="container">
-        <h2 class="centered">PrihlásenieXXX</h2>
+        <h2 class="centered" data-i18n="login_header"></h2>
         <div class="content-outline in-row centered">
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                <label class="margin-label" for="username">UsernameXXX:</label>
+                <label class="margin-label" for="username" data-i18n="login_username"></label>
                 <input id="username" name="username" required="" type="text" />
                 <p id="err-login" class="err hidden"></p>
 
-                <label class="margin-label" for="password">PasswordXXX:</label>
+                <label class="margin-label" for="password" data-i18n="login_password"></label>
                 <input id="password" name="password" required="" type="password" />
                 <p id="err-password" class="err hidden"></p>
 
-                <input id="submit-btn" name="login" type="submit" value="Login" />
+                <button id="submit-btn" name="login" type="submit"  data-i18n="login_button"></button>
                 
                 <?php if (!empty($errmsg)) : ?>
                     <p class="err"><?php echo $errmsg; ?></p>
@@ -107,5 +111,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </main>
 </body>
 <script src="js/login.js"></script>
+<script src="js/languageScript.js"></script>
 
 </html>

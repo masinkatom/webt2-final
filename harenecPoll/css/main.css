@@ -609,3 +609,14 @@ li{
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
 }
+
+.language-buttons{
+    display: flex;
+    margin-left: 1rem;
+}
+
+.lang_btn{
+    font-size: medium;
+    padding: 1rem 3rem;
+    margin: 0;
+}
