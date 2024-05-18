@@ -80,7 +80,7 @@
 
     "poll_header": "OTÁZKA:",
     "poll_warning": "(Pozor, otázka môže mať viacero správnych odpovedí)",
-    "question_404": "Neexistuje alebo nie je aktivovaná!",
+    "question_404": "Neexistuje!",
     "show_correct_answers": "Zobraziť správne odpovede",
     "show_results": "Zobraziť výsledky"
 }
