@@ -127,7 +127,7 @@ function answerHandler(e) {
         }
     });
     e.target.removeEventListener("click", answerHandler);
-    
+
     let data = {
         "id_answer": clickedAnsId,
         "year": new Date().getFullYear()
@@ -145,10 +145,10 @@ function showCorrectAnswers(e) {
         ansInput.disabled = true;
         ansInput.style.border = "5px solid green";
         e.target.classList.add("invisible");
-        
+
         userChoices.push(ansInput.value);
         console.log(userChoices);
-        
+
     }
     else if (question.open == 0) {
         Array.from(answerDiv.children).every(btn => {
@@ -191,7 +191,7 @@ function showResults(e) {
     currentStatsDiv.classList.remove("hidden");
     sendUserChoices();
     if (question.open == 0) {
-        
+
     }
     else {
         // TODO vysledky pre otvorenu otazku
@@ -243,7 +243,7 @@ async function fillXYData() {
         let ansCount = 0;
         otherUserChoices.forEach(ansId => {
             if (answer.id_answer == ansId) {
-                ansCount ++;
+                ansCount++;
             }
         });
         yAxis.push(ansCount)
@@ -260,14 +260,14 @@ async function showGraph() {
             marker: {
                 color: 'rgb(191, 175, 0)',
                 line: {
-                  color: 'rgb(255, 255, 255)',
-                  width: 3
+                    color: 'rgb(255, 255, 255)',
+                    width: 3
                 }
-            
-              }
+
+            }
         }
     ];
-    
+
     let layout = {
         xaxis: {
             tickfont: {
@@ -277,14 +277,14 @@ async function showGraph() {
             }
         },
         yaxis: {
-            title: {
-                text: 'Počet odpovedí',
-                font: {
-                    family: 'Anta, monospace',
-                    size: 18,
-                    color: 'white'  // Y axis label font color
-                }
-            },
+            // title: {
+            //     text: 'Počet odpovedí',
+            //     font: {
+            //         family: 'Anta, monospace',
+            //         size: 18,
+            //         color: 'white'  // Y axis label font color
+            //     }
+            // },
             tickfont: {
                 family: 'Anta, monospace',
                 size: 14,
@@ -302,16 +302,36 @@ async function showGraph() {
         plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot area
         paper_bgcolor: 'rgba(0,0,0,0)'  // Transparent paper area
     };
-    
-    let config = { 
+
+    let config = {
         responsive: true,
         displayModeBar: false
     };
-    
-    Plotly.newPlot('currents-plot', dataPlot, layout, config).then( () => {
+    document.getElementById("currents-plot").classList.remove("hidden");
+    Plotly.newPlot('currents-plot', dataPlot, layout, config).then(() => {
         window.dispatchEvent(new Event('resize'));
     });
 
+}
+
+function showCloud() {
+    const listContainer = document.getElementById('dynamicList');
+    listContainer.classList.remove("hidden");
+    listContainer.innerHTML = '';
+
+    // Count the occurrences of each item
+    const itemCounts = {};
+    otherUserChoices.forEach(item => {
+        itemCounts[item] = (itemCounts[item] || 0) + 1;
+    });
+
+    // Create a list item for each unique item
+    for (const [item, count] of Object.entries(itemCounts)) {
+        const listItem = document.createElement('li');
+        listItem.textContent = item + " (" + count + "x)";
+        listItem.style.fontSize = (22 + (count - 1) * 4) + 'px'; // Base font size 16px, increase by 4px for each additional occurrence
+        listContainer.appendChild(listItem);
+    }
 }
 
 
@@ -331,13 +351,20 @@ ws.onopen = function (e) {
 
 ws.onmessage = function (e) {
     let data = JSON.parse(e.data);
-    otherUserChoices = data.payload.answers;
-    showGraph();
+    if (data.type == "userAnswers") {
+        otherUserChoices = data.payload.answers;
+        if (question.open == 0) {
+            showGraph();
+        }
+        else if (question.open == 1) {
+            showCloud();
+        }
+    }
     console.log(data);
 }
 
 function sendUserChoices() {
-    if (userChoices !== null) {
+    if (userChoices !== null && userChoices[0] != "") {
         let toSend;
         if (question.open == 0) {
             toSend = {

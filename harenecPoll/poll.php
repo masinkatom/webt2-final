@@ -87,7 +87,8 @@ require_once "server/curlHelper.php";
             <div id="current-stats" class="in-column spacer-t hidden">
                 <h2>Aktuálne výsledky hlasovaniaXXX:</h2>
 
-                <div id="currents-plot"></div>
+                <div id="currents-plot" class="hidden"></div>
+                <ul id="dynamicList" class="in-row centered hidden"></ul>
             </div>
         </div>
         
