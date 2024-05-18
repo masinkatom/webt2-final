@@ -56,6 +56,14 @@
     "th_name_set": "Name_set",
     "th_code": "Code",
 
+    "my_admin_console" : "",
+    "admin_new_question_admin_owner_checkox": "Admin owner:",
+    "admin_delete_user_button": "Delete user",
+    "admin_edit_user_collapse": "Edit user",
+    "admin_edit_user_button": "Edit user",
+    "admin_set_user_button": "Set role user",
+    "admin_set_admin_button": "Set role admin",
+
     "logout_page_nav": "Logout",
     
     "change_password_page_nav": "Change Password",
@@ -68,13 +76,6 @@
     "empty_new_password": "",
     "empty_confirm_password": "",
     "passwords_not_matching": "",
-
-    "admin_new_question_admin_owner_checkox": "",
-    "admin_delete_user_button": "",
-    "admin_edit_user_collapse": "",
-    "admin_edit_user_button": "",
-    "admin_set_admin_button": "",
-    "admin_set_user_button": "",
 
     "snackbar_message": "Successfull operation",
 

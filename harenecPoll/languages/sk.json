@@ -31,7 +31,7 @@
     "copy_collapse": "Kópia",
     "copy_label": "Vyber kam skopírovať",
     "copy_submit_button": "Kopírovať",
-    "edit_collapse": "Uprava",
+    "edit_collapse": "Úprava",
     "edit_question_label": "Otázka:",
     "edit_question_button": "Upraviť Otázku",
     "delete_collapse": "Vymazanie",
@@ -56,6 +56,14 @@
     "th_name_set": "Názov_setu",
     "th_code": "Kód",
 
+    "my_admin_console" : "",
+    "admin_new_question_admin_owner_checkox": "Admin vlastník:",
+    "admin_delete_user_button": "Vymazať používateľa",
+    "admin_edit_user_collapse": "Upraviť používateľa",
+    "admin_edit_user_button": "Upraviť",
+    "admin_set_user_button": "Nastaviť rolu používateľ",
+    "admin_set_admin_button": "Nastaviť rolu admin",
+
     "logout_page_nav": "Odhlásenie",
     
     "change_password_page_nav": "Zmena Hesla",
@@ -68,13 +76,6 @@
     "empty_new_password": "",
     "empty_confirm_password": "",
     "passwords_not_matching": "",
-
-    "admin_new_question_admin_owner_checkox": "",
-    "admin_delete_user_button": "",
-    "admin_edit_user_collapse": "",
-    "admin_edit_user_button": "",
-    "admin_set_admin_button": "",
-    "admin_set_user_button": "",
 
     "snackbar_message": "Operácia sa podarila",
 

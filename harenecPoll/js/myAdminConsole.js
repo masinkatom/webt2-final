@@ -1,3 +1,16 @@
+function clickButton() {
+    let langBtn = document.getElementById('sk_btn');
+
+    if (langBtn) {
+        langBtn.click();
+        console.log("button should have been clicked");
+    } else {
+        console.log("button not found");
+    }
+}
+
+clickButton();
+
 console.log("Hallo world admin!");
 
 let btnModalClose = document.getElementById("close-modal");
@@ -148,7 +161,8 @@ function createCRUDdiv(userName) {
     var buttonDel = document.createElement("button");
     buttonDel.setAttribute("type", "button");
     buttonDel.className = "btn btn-danger";
-    buttonDel.innerText = "XXXDelete User";
+    buttonDel.setAttribute("data-i18n", "admin_delete_user_button");
+    // buttonDel.innerText = "XXXDelete User";
     buttonDel.style.fontSize = "1.6rem";
     buttonDel.addEventListener("click", function() {
         deleteUser(userName);
@@ -178,12 +192,14 @@ button.setAttribute("data-bs-target", "#collapseExample");
 button.setAttribute("aria-expanded", "false");
 button.style.fontSize = "1.6rem";
 button.setAttribute("aria-controls", "collapseExample");
-button.innerText = "XXXEdit";
+button.setAttribute("data-i18n", "admin_edit_user_collapse");
+// button.innerText = "XXXEdit";
 
     var buttonSU = document.createElement("button");
     buttonSU.setAttribute("type", "button");
     buttonSU.className = "btn btn-primary";
-    buttonSU.innerText = "XXXSet user";
+    buttonSU.setAttribute("data-i18n", "admin_set_user_button");
+    // buttonSU.innerText = "XXXSet user";
     buttonSU.style.fontSize = "1.6rem";
     buttonSU.addEventListener("click", function() {
         setUserRole(userName, 0);
@@ -192,7 +208,8 @@ button.innerText = "XXXEdit";
     var buttonSA = document.createElement("button");
     buttonSA.setAttribute("type", "button");
     buttonSA.className = "btn btn-primary";
-    buttonSA.innerText = "XXXSet admin";
+    buttonSA.setAttribute("data-i18n", "admin_set_admin_button");
+    // buttonSA.innerText = "XXXSet admin";
     buttonSA.style.fontSize = "1.6rem";
     buttonSA.addEventListener("click", function() {
         setUserRole(userName, 1);
@@ -209,7 +226,7 @@ button.innerText = "XXXEdit";
     cardBodyDiv.classList.add("content-outline");
     cardBodyDiv.style.marginBottom = "0rem";
     cardBodyDiv.classList.add("card-body");
-    cardBodyDiv.innerText = "V tomto divku a bude editovat user";
+    // cardBodyDiv.innerText = "V tomto divku a bude editovat user";
     console.log(userName, " <<< S TYMTO USOROM PRACUJES")
     
     //TODO JOZKO TU IDES ROBIT EDIT USERA HEJ
@@ -223,7 +240,8 @@ button.innerText = "XXXEdit";
     var buttonEditUser = document.createElement("button");
     buttonEditUser.setAttribute("type", "button");
     buttonEditUser.className = "btn btn-primary";
-    buttonEditUser.innerText = "XXXEdit user";
+    buttonEditUser.setAttribute("data-i18n", "admin_edit_user_button");
+    // buttonEditUser.innerText = "XXXEdit user";
 
     editUserDiv.appendChild(editUserField);
     editUserDiv.appendChild(buttonEditUser);
@@ -249,6 +267,7 @@ collapseDiv.appendChild(cardBodyDiv);
     crudCuserDiv.appendChild(buttonSA);
     crudCuserDiv.appendChild(buttonSU);
     crudCuserDiv.appendChild(collapseDiv);
+    clickButton();
     
 
     return crudCuserDiv;
@@ -390,8 +409,9 @@ function createStatsButton() {
     statsButton.setAttribute("data-bs-toggle", "collapse");
     statsButton.setAttribute("data-bs-target", "#seeStatsCollapse");
     statsButton.setAttribute("aria-controls", "seeStatsCollapse");
+    statsButton.setAttribute("data-i18n", "see_stats_collapse");
     statsButton.style.fontSize = "1.6rem";
-    statsButton.textContent = "SEE STATSXXX";
+    // statsButton.textContent = "SEE STATSXXX";
     return statsButton;
 }
 
@@ -402,8 +422,9 @@ function createSeeAllQuestionButton() {
     newQButton.setAttribute("data-bs-toggle", "collapse");
     newQButton.setAttribute("data-bs-target", "#seeAllQuestionCollapse");
     newQButton.setAttribute("aria-controls", "seeAllQuestionCollapse");
+    newQButton.setAttribute("data-i18n", "see_all_questions");
     newQButton.style.fontSize = "1.6rem";
-    newQButton.textContent = "SEE ALL QUESTIONXXX";
+    // newQButton.textContent = "SEE ALL QUESTIONXXX";
     return newQButton;
 }
 
@@ -413,8 +434,9 @@ function createButton() {
     newQButton.setAttribute("data-bs-toggle", "collapse");
     newQButton.setAttribute("data-bs-target", "#newQuestionCollapse");
     newQButton.setAttribute("aria-controls", "newQuestionCollapse"); // Set aria-controls attribute
+    newQButton.setAttribute("data-i18n", "new_question_collapse");
     newQButton.style.fontSize = "1.6rem";
-    newQButton.textContent = "NEW QUESTIONWTFXXX";
+    // newQButton.textContent = "NEW QUESTIONWTFXXX";
     return newQButton;
 }
 
@@ -424,8 +446,9 @@ function createNewSetButton() {
     newQButton.setAttribute("data-bs-toggle", "collapse");
     newQButton.setAttribute("data-bs-target", "#newSetCreateCollapse");
     newQButton.setAttribute("aria-controls", "newSetCreateCollapse"); // Set aria-controls attribute
+    newQButton.setAttribute("data-i18n", "new_set_collapse");
     newQButton.style.fontSize = "1.6rem";
-    newQButton.textContent = "NEW SETWTFXXX";
+    // newQButton.textContent = "NEW SETWTFXXX";
     return newQButton;
 }
 
@@ -566,7 +589,7 @@ function createNewQuestionCollapse() {
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-set");
-    cardElement.textContent = "NEW QUSTIONXXX";
+    // cardElement.textContent = "NEW QUSTIONXXX";
 
     var divkoDoKtorehoBudeJozkoRobit = document.createElement("div") //TODO JOZKO
     //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
@@ -574,12 +597,15 @@ function createNewQuestionCollapse() {
     //tvoja robota
     divkoDoKtorehoBudeJozkoRobit.id = "newQuestionInputs";
 
+    var newQuestionLabel = document.createElement("label");
+    newQuestionLabel.setAttribute("data-i18n", "new_question_label");
     // text otazky
     var questionInput = document.createElement("input");
     questionInput.setAttribute("type", "text");
 
     var selectSetLabel = document.createElement("label");
-    selectSetLabel.innerHTML = "Choose setXXX: ";
+    selectSetLabel.setAttribute("data-i18n", "choose_set_label");
+    // selectSetLabel.innerHTML = "Choose setXXX: ";
     var setSelectBox = document.createElement("select");
 
     // INFORMACIA PRE JURAJA
@@ -595,9 +621,11 @@ function createNewQuestionCollapse() {
 
     // otvorena otazka? + checkbox
     var labelOpen = document.createElement("label");
-    labelOpen.innerHTML = "Open questionXXX: ";
+    labelOpen.setAttribute("data-i18n", "open_question_checkbox");
+    // labelOpen.innerHTML = "Open questionXXX: ";
     var openQuestionCheckbox = document.createElement("input");
     openQuestionCheckbox.setAttribute("type", "checkbox");
+    divkoDoKtorehoBudeJozkoRobit.appendChild(newQuestionLabel);
     divkoDoKtorehoBudeJozkoRobit.appendChild(questionInput);
     divkoDoKtorehoBudeJozkoRobit.appendChild(selectSetLabel);
     divkoDoKtorehoBudeJozkoRobit.appendChild(setSelectBox);
@@ -605,12 +633,14 @@ function createNewQuestionCollapse() {
     divkoDoKtorehoBudeJozkoRobit.appendChild(openQuestionCheckbox);
 
     var labelCloudmap = document.createElement("label");
-    labelCloudmap.innerHTML = "Cloudmap?XXX: ";
+    labelCloudmap.setAttribute("data-i18n", "cloudmap_checkbox");
+    // labelCloudmap.innerHTML = "Cloudmap?XXX: ";
     var cloudmapCheckbox = document.createElement("input");
     cloudmapCheckbox.setAttribute("type", "checkbox");
 
     var labelAdminOwner = document.createElement("label");
-    labelAdminOwner.innerHTML = "AdminOwnerXXX: ";
+    labelAdminOwner.setAttribute("data-i18n", "admin_new_question_admin_owner_checkox");
+    // labelAdminOwner.innerHTML = "AdminOwnerXXX: ";
     var adminOwnerCheckbox = document.createElement("input");
     adminOwnerCheckbox.setAttribute("type", "checkbox");
 
@@ -631,7 +661,8 @@ function createNewQuestionCollapse() {
 
     // input number - pocet odpovedi na otazku
     var numberOptionsLabel = document.createElement("label");
-    numberOptionsLabel.innerHTML = "Number of optionsXXX: ";
+    numberOptionsLabel.setAttribute("data-i18n", "num_of_options_label");
+    // numberOptionsLabel.innerHTML = "Number of optionsXXX: ";
     var numOfOptions = document.createElement("input");
     numOfOptions.setAttribute("type", "number");
     numOfOptions.setAttribute("min", 1);
@@ -641,7 +672,8 @@ function createNewQuestionCollapse() {
     // tlacidlo na odoslanie poctu monznosti (a,b,c,d)
     var setOptionsBtn = document.createElement("button");
     setOptionsBtn.classList.add("btn", "btn-danger");
-    setOptionsBtn.textContent = "Add optionsXXX";
+    setOptionsBtn.setAttribute("data-i18n", "add_option_button");
+    // setOptionsBtn.textContent = "Add optionsXXX";
 
     var divkoMoznosti = document.createElement("div");
     divkoMoznosti.id = "newQuestionOptions";
@@ -674,6 +706,7 @@ function createNewQuestionCollapse() {
             //BORO PRIDAL
             divkoPocetMoznosti.appendChild(labelAdminOwner);
             divkoPocetMoznosti.appendChild(adminOwnerCheckbox);
+            clickButton(); // tu problem
         }
     });
 
@@ -724,7 +757,8 @@ function createNewQuestionCollapse() {
 
     var createQuestionButton = document.createElement("button");
     createQuestionButton.classList.add("btn", "btn-primary");
-    createQuestionButton.textContent = "Create QuestionXXX";
+    createQuestionButton.setAttribute("data-i18n", "new_question_create_button");
+    // createQuestionButton.textContent = "Create QuestionXXX";
     divkoDoKtorehoBudeJozkoRobit.appendChild(createQuestionButton);
 
     createQuestionButton.addEventListener('click', function () {
@@ -826,20 +860,25 @@ function createNewSetCollapse() {
     var cardElement = document.createElement("div");
     cardElement.classList.add("card", "card-body");
     cardElement.classList.add("collapse-set");
-    cardElement.textContent = "NEW SETXXX";
+    // cardElement.textContent = "NEW SETXXX";
 
     var tuRobis = document.createElement("div") //TODO JOZKO
     //tu mozes jozko do toho divka sukat vsetky veci ktore chces aby v nom boli + funkcionalitka :P
     //momentalny user je ulozeny v premennej globalnej  SSS var sessionLogin (nevidis ju v .js subore lebo ju taham z phpcka kde ju inicializujem)
     //tvoja robota
     tuRobis.id = "newSetCreateInputs";
+    var newSetLabel = document.createElement("label");
+    newSetLabel.setAttribute("data-i18n", "new_set_label");
+
     var newSetInput = document.createElement("input");
     newSetInput.setAttribute("type", "text");
+    tuRobis.appendChild(newSetLabel);
     tuRobis.appendChild(newSetInput);
 
     var createSetButton = document.createElement("button");
     createSetButton.classList.add("btn", "btn-primary");
-    createSetButton.textContent = "Create SetXXX";
+    createSetButton.setAttribute("data-i18n", "new_set_create_button");
+    // createSetButton.textContent = "Create SetXXX";
     tuRobis.appendChild(createSetButton);
 
     createSetButton.addEventListener('click', function () {
@@ -896,7 +935,8 @@ async function createNewSetDatabase(dataToSend) {
 
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");
-    optionLabel.innerHTML = "OptionXXX: ";
+    optionLabel.setAttribute("data-i18n", "option_label");
+    // optionLabel.innerHTML = "OptionXXX: ";
     var answerText = document.createElement("input");
     answerText.setAttribute("type", "text");
     parentDiv.appendChild(optionLabel);
@@ -908,8 +948,10 @@ function createOption(parentDiv) {
 function createButtonForOption(parentDiv) {
     var correctAnswerBtn = document.createElement("button");
     correctAnswerBtn.classList.add("btn", "btn-secondary");
-    correctAnswerBtn.textContent = "CorrectXXX";
+    correctAnswerBtn.setAttribute("data-i18n", "correct_option_button");
+    // correctAnswerBtn.textContent = "CorrectXXX";
     parentDiv.appendChild(correctAnswerBtn);
+    clickButton(); // tu problem
     return correctAnswerBtn;
 }
 
@@ -1020,7 +1062,8 @@ function insertQuestions(cardBodyDiv, item) {
             infoButton.setAttribute("data-bs-toggle", "collapse");
             infoButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             infoButton.style.fontSize = "1.6rem";
-            infoButton.textContent = "InfoXXX";
+            infoButton.setAttribute("data-i18n", "info_collapse");
+            // infoButton.textContent = "InfoXXX";
 
             //InfoModal
             collapseDiv.appendChild(createInfoCollapse(question.id_question, question));
@@ -1031,7 +1074,8 @@ function insertQuestions(cardBodyDiv, item) {
             copyButton.setAttribute("data-bs-toggle", "collapse");
             copyButton.setAttribute("data-bs-target", `#${question.id_question}CopyCollapse`);
             copyButton.style.fontSize = "1.6rem";
-            copyButton.textContent = "CopyXXX";
+            copyButton.setAttribute("data-i18n", "copy_collapse");
+            // copyButton.textContent = "CopyXXX";
 
             //CopyModal
             collapseDiv.appendChild(createCopyCollapse(question.id_question, question));
@@ -1042,7 +1086,8 @@ function insertQuestions(cardBodyDiv, item) {
             editButton.setAttribute("data-bs-toggle", "collapse");
             editButton.setAttribute("data-bs-target", `#${question.id_question}EditCollapse`);
             editButton.style.fontSize = "1.6rem";
-            editButton.textContent = "EditXX";
+            editButton.setAttribute("data-i18n", "edit_collapse");
+            // editButton.textContent = "EditXXX";
 
             //EditModal
             collapseDiv.appendChild(createEditCollapse(question.id_question, question));
@@ -1058,7 +1103,8 @@ function insertQuestions(cardBodyDiv, item) {
             deleteButton.setAttribute("data-bs-toggle", "collapse");
             deleteButton.setAttribute("data-bs-target", `#${question.id_question}DeleteCollapse`);
             deleteButton.style.fontSize = "1.6rem";
-            deleteButton.textContent = "DeleteXXX";
+            deleteButton.setAttribute("data-i18n", "delete_collapse");
+            // deleteButton.textContent = "DeleteXXX";
 
             //DeleteModal
             collapseDiv.appendChild(createDeleteCollapse(question.id_question, question.text_q));
@@ -1079,6 +1125,7 @@ function insertQuestions(cardBodyDiv, item) {
             columnDiv.appendChild(collapseDiv);
             div.appendChild(columnDiv);
             cardBodyDiv.appendChild(div);
+            clickButton();
         });
 
     })
@@ -1089,11 +1136,13 @@ function insertQuestions(cardBodyDiv, item) {
 
 }
 
-function stopQuestionWithQR(quesiton){
+function stopQuestionWithQR(question){
     console.log("STOP NA OTAZKU");
-    console.log(quesiton); 333
+    console.log(question); 333
     console.log("STOP NA OTAZKU");
-    setActiveFlagToZero(quesiton.id_question);
+    setActiveFlagToZero(question.id_question);
+    question.code = "";
+    editQFLAG(question.text_q, question, question.id_question);
     //dajak vysledky riesit este neviem
 }
 
@@ -1135,12 +1184,18 @@ function playQuestionWithQR(question){
     console.log("SPUSTAM PLAY NA OTAZKU");
     console.log(question);
     console.log("SPUSTAM PLAY NA OTAZKU");
-    var divWithGQ = document.getElementById("modalQRDiv");
+
+    var divWithGQ = document.getElementById("modalQRDivAdmin");
+    divWithGQ.innerHTML = '';
+
     setActiveFlagToOne(question.id_question);
-    console.log(generateRandomWord(), "RANDOM HESLIELKO");
+    question.code = generateRandomWord();
+    editQFLAG(question.text_q, question, question.id_question);
+    // console.log(generateRandomWord(), "RANDOM HESLIELKO");
+
     //vygeneruj QR kod
     var qrcode = new QRCode(divWithGQ, {
-        text: "", // uprav podla spravneho node
+        text: "https://node24.webte.fei.stuba.sk/harenecPoll/poll.php?code="+question.code, // uprav podla spravneho node
         width: 256,
         height: 256,
         colorDark : "#000000",
@@ -1315,7 +1370,8 @@ function createCopyForm(questionFull) {
     copyButt.setAttribute("type", "button");
     copyButt.classList.add("btn", "btn-success");
     copyButt.classList.add("bigger-button-font");
-    copyButt.textContent = "CopyXXX";
+    copyButt.setAttribute("data-i18n", "copy_submit_button");
+    // copyButt.textContent = "CopyXXX";
     copyButt.addEventListener("click", function () {
         copyQ(questionFull, selectElement.value);
     });
@@ -1337,7 +1393,8 @@ function createDeleteCollapse(questionId, questionName) {
     cardElement.classList.add("collapse-info-set");
     cardElement.classList.add("centered");
     var italicText = document.createElement("h4");
-    italicText.textContent = "Are you sure?XXX";
+    italicText.setAttribute("data-i18n", "delete_you_sure");
+    // italicText.textContent = "Are you sure?XXX";
     italicText.classList.add("centered");
     cardElement.appendChild(italicText);
    collapseContainer.appendChild(cardElement);
@@ -1346,7 +1403,8 @@ function createDeleteCollapse(questionId, questionName) {
     var deleteReally = document.createElement("button");
     deleteReally.type = "button";
     deleteReally.classList.add("btn", "btn-danger");
-    deleteReally.textContent = "DeleteXXX";
+    deleteReally.setAttribute("data-i18n", "delete_button");
+    // deleteReally.textContent = "DeleteXXX";
     deleteReally.classList.add("bigger-button-font");
     deleteReally.addEventListener("click", function () {
         deleteQ(questionId, questionName)
@@ -1446,6 +1504,42 @@ function showQuestionsWithAnswers(question) {
 
     return returnDiv;
 
+}
+
+function editQFLAG(originName, question, id) {
+    console.log("Poslem toto");
+    console.log(id)
+    console.log(question);
+    console.log(originName);
+    console.log("Posielam toto hore");
+    console.log(JSON.stringify(question));
+    //const data = question;
+
+    // Send a POST request to the server
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionUpdate=${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        body: JSON.stringify(question)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                showToast();
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update question');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
 }
 
 function editQ(originName, question, id) {

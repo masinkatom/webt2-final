@@ -82,8 +82,8 @@ echo $output;
                 }
                 ?>
                 <li class="language-buttons">
-                    <button class="lang_btn" onclick="changeLanguage('en')">ENG</button>
-                    <button class="lang_btn" onclick="changeLanguage('sk')">SVK</button>
+                    <button class="lang_btn" id="eng_btn" onclick="changeLanguage('en')">ENG</button>
+                    <button class="lang_btn" id="sk_btn" onclick="changeLanguage('sk')">SVK</button>
                 </li>
             </ul>
         </div>
@@ -103,7 +103,7 @@ echo $output;
     <div id="modalQR" class="modal2 hidden">
         <div class="info-modal">
             <h2 id="thesis-name-modal">POZOR DIV </h2>
-            <div class="modal-data">
+            <div class="modal-data" id="modalQRDivAdmin">
                 TU VNUTRO DVU
             </div>
             <img id="close-modal" src="images/close-icon.svg" alt="close">
@@ -118,9 +118,9 @@ echo $output;
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
-<script src="js/myAdminConsole.js"></script>
 <script src="js/languageScript.js"></script>
 <script src="qrcodejs/qrcode.js"></script>
+<script src="js/myAdminConsole.js"></script>
 
 
 

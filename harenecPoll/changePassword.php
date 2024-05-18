@@ -149,7 +149,7 @@ echo $output;
                 <input id="confirm-new-password" name="confirm-new-password" required="" type="password" />
                 <p id="err-confirm-new-password" class="err hidden"></p>
 
-                <input id="submit-btn" name="login" type="submit" value="Change password" />
+                <button id="submit-btn" name="login" type="submit" data-i18n="change_password_submit_button"></button>
                 <?php
                 if (!(empty($msgerr))) {
                 ?>

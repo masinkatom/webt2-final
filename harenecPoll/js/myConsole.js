@@ -1,3 +1,16 @@
+function clickButton() {
+    let langBtn = document.getElementById('sk_btn');
+
+    if (langBtn) {
+        langBtn.click();
+        console.log("button should have been clicked");
+    } else {
+        console.log("button not found");
+    }
+}
+
+clickButton(); 
+
 let btnModalClose = document.getElementById("close-modal");
 let modalQR = document.getElementById("modalQR");
 window.onclick = function (event) {
@@ -75,7 +88,8 @@ getGlobalSets().then(data => {
 async function getGlobalSets() {
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${sessionLogin}`,
-            { mode: "no-cors" });
+            // { mode: "no-cors" }
+        );
         const data = await response.json();
         return data;
     } catch (error) {
@@ -386,6 +400,7 @@ function createNewQuestionCollapse() {
             divkoPocetMoznosti.appendChild(divkoMoznosti);
             divkoPocetMoznosti.removeChild(labelCloudmap);
             divkoPocetMoznosti.removeChild(cloudmapCheckbox);
+            clickButton(); // tu problem
         }
     });
 
@@ -624,6 +639,7 @@ function createButtonForOption(parentDiv) {
     correctAnswerBtn.setAttribute("data-i18n", "correct_option_button");
     // correctAnswerBtn.textContent = "CorrectXXX";
     parentDiv.appendChild(correctAnswerBtn);
+    clickButton(); // tu problem
     return correctAnswerBtn;
 }
 
@@ -800,6 +816,7 @@ function insertQuestions(cardBodyDiv, item) {
             columnDiv.appendChild(collapseDiv);
             div.appendChild(columnDiv);
             cardBodyDiv.appendChild(div);
+            clickButton();
         });
 
     })
@@ -853,27 +870,24 @@ async function setActiveFlagToZero(questionId){
 }
 
 
-
-function setQuestionCode(code){
-
-}
-
-
 function playQuestionWithQR(question){
     modalQR.classList.remove("hidden");
     console.log("SPUSTAM PLAY NA OTAZKU");
     console.log(question);
     console.log("SPUSTAM PLAY NA OTAZKU");
+
     var divWithGQ = document.getElementById("modalQRDiv");
+    divWithGQ.innerHTML = '';
+
     setActiveFlagToOne(question.id_question);
     question.code = generateRandomWord();
     editQFLAG(question.text_q, question, question.id_question);
     //setQuestionCode(generateRandomWord()); //????????
-    
 
+    
     //vygeneruj QR kod
     var qrcode = new QRCode(divWithGQ, {
-        text: "", // uprav podla spravneho node
+        text: "https://node24.webte.fei.stuba.sk/harenecPoll/poll.php?code="+question.code, // uprav podla spravneho node
         width: 256,
         height: 256,
         colorDark : "#000000",

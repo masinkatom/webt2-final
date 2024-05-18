@@ -80,8 +80,8 @@ echo $output;
                 }
                 ?>
                 <li class="language-buttons">
-                    <button class="lang_btn" onclick="changeLanguage('en')">ENG</button>
-                    <button class="lang_btn" onclick="changeLanguage('sk')">SVK</button>
+                    <button class="lang_btn" id="eng_btn" onclick="changeLanguage('en')">ENG</button>
+                    <button class="lang_btn" id="sk_btn" onclick="changeLanguage('sk')">SVK</button>
                 </li>
             </ul>
         </div>
@@ -115,8 +115,8 @@ echo $output;
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
-<script src="js/myConsole.js"></script>
 <script src="js/languageScript.js"></script>
+<script src="js/myConsole.js"></script>
 <script src="qrcodejs/qrcode.js"></script>
 
 
