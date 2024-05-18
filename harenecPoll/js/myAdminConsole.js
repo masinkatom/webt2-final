@@ -1118,7 +1118,16 @@ async function setActiveFlagToZero(questionId){
         });
 }
 
+function generateRandomWord() {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    let word = '';
+    for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        word += letters[randomIndex];
+    }   
 
+    return word;
+}
 
 
 function playQuestionWithQR(question){
@@ -1128,7 +1137,7 @@ function playQuestionWithQR(question){
     console.log("SPUSTAM PLAY NA OTAZKU");
     var divWithGQ = document.getElementById("modalQRDiv");
     setActiveFlagToOne(question.id_question);
-
+    console.log(generateRandomWord(), "RANDOM HESLIELKO");
     //vygeneruj QR kod
     //vygeneruj kodik
     //kodik hod do databazy (prepis udaj ktory tam uz je)
@@ -1453,6 +1462,11 @@ function editQ(originName, question, id) {
             // Check if the request was successful
             if (response.ok) {
                 console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                showToast();
+                var container = document.getElementById("button-container");
+                container.innerHTML = "";
+                createButtonsOfSets();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update question');

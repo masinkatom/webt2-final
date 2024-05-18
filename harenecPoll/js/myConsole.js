@@ -810,11 +810,24 @@ function insertQuestions(cardBodyDiv, item) {
 
 }
 
-function stopQuestionWithQR(quesiton){
+function generateRandomWord() {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    let word = '';
+    for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        word += letters[randomIndex];
+    }   
+
+    return word;
+}
+
+function stopQuestionWithQR(question){
     console.log("STOP NA OTAZKU");
-    console.log(quesiton); 333
+    console.log(question)
     console.log("STOP NA OTAZKU");
-    setActiveFlagToZero(quesiton.id_question);
+    setActiveFlagToZero(question.id_question);
+    question.code = "";
+    editQFLAG(question.text_q, question, question.id_question);
     //dajak vysledky riesit este neviem
 }
 
@@ -841,6 +854,10 @@ async function setActiveFlagToZero(questionId){
 
 
 
+function setQuestionCode(code){
+
+}
+
 
 function playQuestionWithQR(question){
     modalQR.classList.remove("hidden");
@@ -849,6 +866,10 @@ function playQuestionWithQR(question){
     console.log("SPUSTAM PLAY NA OTAZKU");
     var divWithGQ = document.getElementById("modalQRDiv");
     setActiveFlagToOne(question.id_question);
+    question.code = generateRandomWord();
+    editQFLAG(question.text_q, question, question.id_question);
+    //setQuestionCode(generateRandomWord()); //????????
+    
 
     //vygeneruj QR kod
     //vygeneruj kodik
@@ -1164,6 +1185,43 @@ function showQuestionsWithAnswers(question) {
 
 }
 
+function editQFLAG(originName, question, id) {
+    console.log("Poslem toto");
+    console.log(id)
+    console.log(question);
+    console.log(originName);
+    console.log("Posielam toto hore");
+    console.log(JSON.stringify(question));
+    //const data = question;
+
+    // Send a POST request to the server
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionUpdate=${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        body: JSON.stringify(question)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                showToast();
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update question');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
+}
+
+
 function editQ(originName, question, id) {
     console.log("Poslem toto");
     console.log(id)
@@ -1189,7 +1247,7 @@ function editQ(originName, question, id) {
                 //TU PRIDAL BORO
                 showToast();
                 var container = document.getElementById("button-container");
-                container.inn = "";
+                container.innerHTML = "";
                 createButtonsOfSets();
                 // Handle further actions if needed
             } else {
@@ -1242,7 +1300,6 @@ function copyQ(questionFull, whereToCopy) {
 }   
 
 function showToast() {
-    console.log("com to neide picip");
     var snackbar = document.createElement('div');
     snackbar.id = "snackbar";
     snackbar.textContent = "Operácia sa podarila";

@@ -116,14 +116,16 @@ class Question
     {
 
         $query = "UPDATE question 
-                  SET text_q = :textQ, creationDate = :creationDate 
+                  SET text_q = :textQ, creationDate = :creationDate, code = :code 
                   WHERE id_question = :name";
 
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':textQ', $data['text_q'], PDO::PARAM_STR);
+        $stmt->bindParam(':code', $data['code'], PDO::PARAM_STR);
         $stmt->bindParam(':creationDate', $data['creationDate'], PDO::PARAM_STR);
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        
         
         $result = $stmt->execute();
 
