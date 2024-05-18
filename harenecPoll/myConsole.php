@@ -99,7 +99,7 @@ echo $output;
     <div id="modalQR" class="modal2 hidden">
         <div class="info-modal">
             <h2 id="thesis-name-modal">POZOR DIV </h2>
-            <div class="modal-data">
+            <div class="modal-data" id="modalQRDiv">
                 TU VNUTRO DVU
             </div>
             <img id="close-modal" src="images/close-icon.svg" alt="close">

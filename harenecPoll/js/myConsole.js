@@ -507,6 +507,10 @@ async function createNewQuestionDatabase(dataToSend) {
             if (response.ok) {
                 showToast();
                 console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                var container = document.getElementById("button-container");
+                container.inn = "";
+                createButtonsOfSets();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update question');
@@ -584,10 +588,15 @@ async function createNewSetDatabase(dataToSend) {
         .then(response => {
             // Check if the request was successful
             if (response.ok) {
-                console.log('Question updated successfully');
+                console.log('Set updated successfully');
                 // Handle further actions if needed
+                //TU PRIDAL BORO
+                showToast();
+                var container = document.getElementById("button-container");
+                container.inn = "";
+                createButtonsOfSets();
             } else {
-                console.error('Failed to update question');
+                console.error('Failed to update set');
                 // Handle errors if needed
             }
         })
@@ -596,9 +605,6 @@ async function createNewSetDatabase(dataToSend) {
             // Handle errors if needed
         });
 }
-
-
-
 
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");
@@ -804,13 +810,51 @@ function insertQuestions(cardBodyDiv, item) {
 
 }
 
-function stopQuestionWithQR(quesiton){
-    console.log("STOP NA OTAZKU");
-    console.log(quesiton);
-    console.log("STOP NA OTAZKU");
-    //nastavit flag active na 0
-    //dajak vysledky riesit este neviem
+function generateRandomWord() {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    let word = '';
+    for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        word += letters[randomIndex];
+    }   
 
+    return word;
+}
+
+function stopQuestionWithQR(question){
+    console.log("STOP NA OTAZKU");
+    console.log(question)
+    console.log("STOP NA OTAZKU");
+    setActiveFlagToZero(question.id_question);
+    question.code = "";
+    editQFLAG(question.text_q, question, question.id_question);
+    //dajak vysledky riesit este neviem
+}
+
+async function setActiveFlagToZero(questionId){ 
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionActiveUpdateZero=${questionId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => {
+           
+            if (response.ok) {
+                console.log('User flag updated successfully');
+            } else {
+                console.error('Failed to update user flag');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+
+        });
+}
+
+
+
+function setQuestionCode(code){
 
 }
 
@@ -820,12 +864,42 @@ function playQuestionWithQR(question){
     console.log("SPUSTAM PLAY NA OTAZKU");
     console.log(question);
     console.log("SPUSTAM PLAY NA OTAZKU");
-    //nastav flag aktivna na 1
+    var divWithGQ = document.getElementById("modalQRDiv");
+    setActiveFlagToOne(question.id_question);
+    question.code = generateRandomWord();
+    editQFLAG(question.text_q, question, question.id_question);
+    //setQuestionCode(generateRandomWord()); //????????
+    
+
     //vygeneruj QR kod
     //vygeneruj kodik
     //kodik hod do databazy (prepis udaj ktory tam uz je)
     //nastartuj adamkove websockey nwm co 
-    
+}
+
+async function setActiveFlagToOne(questionId){ 
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionActiveUpdate=${questionId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        //body: JSON.stringify(data)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('User flag updated successfully');
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update user flag');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
 }
 
 function createInfoCollapse(questionId, questionFull) {
@@ -1008,6 +1082,11 @@ function createDeleteCollapse(questionId, questionName) {
     deleteReally.addEventListener("click", function () {
         deleteQ(questionId, questionName)
             .then(() => {
+                //TU PRIDAL BORO
+                showToast();
+                var container = document.getElementById("button-container");
+                container.inn = "";
+                createButtonsOfSets();
                 //TODO ADAMKO SHOW DAJAKY OZNAM MODAL INFO ZE BOLO VYMAZANE
             })
     });
@@ -1106,6 +1185,43 @@ function showQuestionsWithAnswers(question) {
 
 }
 
+function editQFLAG(originName, question, id) {
+    console.log("Poslem toto");
+    console.log(id)
+    console.log(question);
+    console.log(originName);
+    console.log("Posielam toto hore");
+    console.log(JSON.stringify(question));
+    //const data = question;
+
+    // Send a POST request to the server
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionUpdate=${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        body: JSON.stringify(question)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                showToast();
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update question');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
+}
+
+
 function editQ(originName, question, id) {
     console.log("Poslem toto");
     console.log(id)
@@ -1128,6 +1244,11 @@ function editQ(originName, question, id) {
             // Check if the request was successful
             if (response.ok) {
                 console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                showToast();
+                var container = document.getElementById("button-container");
+                container.innerHTML = "";
+                createButtonsOfSets();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update question');
@@ -1179,7 +1300,6 @@ function copyQ(questionFull, whereToCopy) {
 }   
 
 function showToast() {
-    console.log("BORIS KOKOT")
     var snackbar = document.createElement('div');
     snackbar.id = "snackbar";
     snackbar.textContent = "Operácia sa podarila";
@@ -1191,4 +1311,6 @@ function showToast() {
         snackbar.className = snackbar.className.replace("show", "");
     }, 3000);
 }
+
+//createButtonsOfSets()
 

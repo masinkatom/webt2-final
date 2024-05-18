@@ -109,7 +109,7 @@ body {
 .nav-item:hover {
     transition: all 300ms;
     min-width: 21rem;
-    max-width: 23rem;
+    max-width: 21rem;
     background-color: var(--webte-color-yellow);
 }
 

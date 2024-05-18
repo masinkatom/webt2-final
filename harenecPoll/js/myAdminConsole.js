@@ -516,7 +516,7 @@ async function getAllQuestionByName() {
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
-        return testDataDelete; //9999
+        return testDataDelete;
     }
     //return testDataDelete;
 }
@@ -534,7 +534,7 @@ async function getIdByName() {
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
-        return testDataDelete; //9999
+        return testDataDelete; 
     }
     //return testDataDelete;
 }
@@ -1091,12 +1091,42 @@ function insertQuestions(cardBodyDiv, item) {
 
 function stopQuestionWithQR(quesiton){
     console.log("STOP NA OTAZKU");
-    console.log(quesiton);
+    console.log(quesiton); 333
     console.log("STOP NA OTAZKU");
-    //nastavit flag active na 0
+    setActiveFlagToZero(quesiton.id_question);
     //dajak vysledky riesit este neviem
+}
 
+async function setActiveFlagToZero(questionId){ 
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionActiveUpdateZero=${questionId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => {
+           
+            if (response.ok) {
+                console.log('User flag updated successfully');
+            } else {
+                console.error('Failed to update user flag');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
 
+        });
+}
+
+function generateRandomWord() {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    let word = '';
+    for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        word += letters[randomIndex];
+    }   
+
+    return word;
 }
 
 
@@ -1105,12 +1135,38 @@ function playQuestionWithQR(question){
     console.log("SPUSTAM PLAY NA OTAZKU");
     console.log(question);
     console.log("SPUSTAM PLAY NA OTAZKU");
-    //nastav flag aktivna na 1
+    var divWithGQ = document.getElementById("modalQRDiv");
+    setActiveFlagToOne(question.id_question);
+    console.log(generateRandomWord(), "RANDOM HESLIELKO");
     //vygeneruj QR kod
     //vygeneruj kodik
     //kodik hod do databazy (prepis udaj ktory tam uz je)
     //nastartuj adamkove websockey nwm co 
-    
+}
+
+async function setActiveFlagToOne(questionId){ 
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionActiveUpdate=${questionId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // Convert the data object to JSON string and send it in the request body
+        //body: JSON.stringify(data)
+    })
+        .then(response => {
+            // Check if the request was successful
+            if (response.ok) {
+                console.log('User flag updated successfully');
+                // Handle further actions if needed
+            } else {
+                console.error('Failed to update user flag');
+                // Handle errors if needed
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors if needed
+        });
 }
 
 function createInfoCollapse(questionId, questionFull) {
@@ -1406,6 +1462,11 @@ function editQ(originName, question, id) {
             // Check if the request was successful
             if (response.ok) {
                 console.log('Question updated successfully');
+                //TU PRIDAL BORO
+                showToast();
+                var container = document.getElementById("button-container");
+                container.innerHTML = "";
+                createButtonsOfSets();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update question');
