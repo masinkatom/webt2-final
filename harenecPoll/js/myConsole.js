@@ -75,8 +75,7 @@ getGlobalSets().then(data => {
 async function getGlobalSets() {
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${sessionLogin}`,
-            // { mode: "no-cors" }
-        );
+            { mode: "no-cors" });
         const data = await response.json();
         return data;
     } catch (error) {
@@ -852,9 +851,8 @@ function playQuestionWithQR(question){
     setActiveFlagToOne(question.id_question);
 
     //vygeneruj QR kod
-    let code = "abcde";
     var qrcode = new QRCode(divWithGQ, {
-        text: "https://node40.webte.fei.stuba.sk/webt2-final/harenecPoll/poll.php?code="+code, // uprav podla spravneho node
+        text: "", // uprav podla spravneho node
         width: 256,
         height: 256,
         colorDark : "#000000",
