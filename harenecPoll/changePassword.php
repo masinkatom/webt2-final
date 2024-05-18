@@ -154,9 +154,9 @@ echo $output;
                 if (!(empty($msgerr))) {
                 ?>
                     <div id="changePasswordModal" class="modal2 hidden">
-                        <div class="info-modal">
+                        <div class="info-modal-password">
                             <div class="modal-data">
-                                Zadané staré heslo je nesprávne
+                                <h2>Zadané staré heslo je nesprávne</h2>
                             </div>
                             <img id="close-modal" src="images/close-icon.svg" alt="close">
                         </div>

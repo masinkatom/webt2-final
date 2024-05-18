@@ -65,13 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     echo '
                         <li class="nav-item">
-                            <a class="nav-item nav-item-current" href="#">KonzXXX</a>
+                            <a class="nav-item nav-item-current" href="#" data-i18n="my_console_page_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="logout.php">OdhláseXXX</a>
+                            <a class="nav-item" href="logout.php" data-i18n="logout_page_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="changePassword.php">zmenaHeslaXXX</a>
+                            <a class="nav-item" href="changePassword.php" data-i18n="change_password_page_nav"></a>
                         </li>
                         ';
                     //echo $_SESSION["login"], $_SESSION["loginID"];
@@ -79,16 +79,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo '<script>var sessionLoginID = "' . $_SESSION["loginID"] . '";</script>';
                 } else {
                     echo '<li class="nav-item">
-                            <a class="nav-item" href="#">DomovXXX</a>
+                            <a class="nav-item" href="#" data-i18n="homepage_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="login.php">PrihlásenieXXX</a>
+                            <a class="nav-item" href="login.php" data-i18n="login_page_nav"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item" href="register.php">RegistráciaXXX</a>
+                            <a class="nav-item" href="register.php" data-i18n="register_page_nav"></a>
                         </li>';
                 }
                 ?>
+                <li class="language-buttons">
+                    <button class="lang_btn" onclick="changeLanguage('en')">ENG</button>
+                    <button class="lang_btn" onclick="changeLanguage('sk')">SVK</button>
+                </li>
             </ul>
         </div>
     </div>
@@ -101,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php echo $content_unsigned; ?>
             <form action="tuto.php" method="POST">
                 <input type="hidden" name="export_to_pdf" value="PDF">
-                <button type="submit" class="btn btn-primary btn-lg fs-3 w-50 p-3">Export to PDF</button>
+                <button type="submit" class="btn btn-primary btn-lg fs-3 w-50 p-3">Export PDF</button>
             </form>
         </div>
     <div>
@@ -112,10 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
 <script src="js/myAdminConsole.js"></script>
-
-
-
-
-
+<script src="js/languageScript.js"></script>
 
 </html>

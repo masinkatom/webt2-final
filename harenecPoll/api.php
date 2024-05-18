@@ -136,8 +136,8 @@ switch ($method) {
     case 'POST':
         //TEMPORARY
         /*$data = array(
-            'id_answer' => 12,
-            'year' => 1800,
+            'id_answer' => 17,
+            'year' => 1800
         );*/
 
         //received data from js

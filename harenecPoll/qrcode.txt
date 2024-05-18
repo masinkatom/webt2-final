@@ -1,0 +1,16 @@
+<div id="qrcode"></div>
+
+<script src="qrcodejs/qrcode.js"></script>
+
+// generovanie qr kodu
+<script type="text/javascript">
+    let code = "abcde";
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: "https://node40.webte.fei.stuba.sk/webt2-final/harenecPoll/poll.php?code="+code, // uprav podla spravneho node
+        width: 256,
+        height: 256,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+</script>
