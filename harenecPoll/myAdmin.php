@@ -114,6 +114,7 @@ echo $output;
 <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
 <script src="js/myAdminConsole.js"></script>
 <script src="js/languageScript.js"></script>
+<script src="qrcodejs/qrcode.js"></script>
 
 
 
