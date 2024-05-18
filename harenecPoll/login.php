@@ -4,14 +4,18 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
+if (isset($_SESSION["isIn"]) && $_SESSION["isIn"] === true) {
+    echo '<script src="js/setLocalStorageFalse.js"></script>';
+}
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     header("location: index.php");
-}else if(isset($_SESSION["registred"]) && $_SESSION["registred"] ===  true) {
+} else if (isset($_SESSION["registred"]) && $_SESSION["registred"] ===  true) {
     $output = '';
     $output .= '<script src="js/scriptToast.js"></script>';
     $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
     echo $output;
 }
+
 
 require_once '../.config.php';
 
@@ -35,15 +39,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["loginID"] = $row['id_user'];
                 $_SESSION["logged"] = true;
 
+                $_SESSION['isIn'] = true;
+
                 $_SESSION["isAdmin"] = $isAdmin;
                 if ($isAdmin ==  1) {
                     header("location: myAdmin.php");
                     exit;
-                }else{
+                } else {
                     header("location: index.php");
                     exit;
                 }
-              
             } else {
                 $errmsg = "Nesprávne meno alebo heslo.";
             }
@@ -101,13 +106,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input id="password" name="password" required="" type="password" />
                 <p id="err-password" class="err hidden" data-i18n="login_empty_password"></p>
 
-                <button id="submit-btn" name="login" type="submit"  data-i18n="login_button"></button>
-                
+                <button id="submit-btn" name="login" type="submit" data-i18n="login_button"></button>
+
                 <?php if (!empty($errmsg)) : ?>
                     <p class="err" data-i18n="login_error_after_submit"></p>
                 <?php endif; ?>
             </form>
-        </div>  
+        </div>
     </main>
 </body>
 <script src="js/login.js"></script>
