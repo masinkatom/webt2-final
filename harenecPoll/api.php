@@ -180,6 +180,11 @@ switch ($method) {
                     $updateQuestion = $QuestionObj->editActiveQuestion($questionActiveUpdate);
                     echo json_encode($updateQuestion);
                 }
+                elseif(isset($_GET['questionActiveUpdateZero'])){
+                    $questionActiveUpdate = $_GET['questionActiveUpdateZero'];
+                    $updateQuestion = $QuestionObj->editActiveQuestionZero($questionActiveUpdate);
+                    echo json_encode($updateQuestion);
+                }
                 break;
             case 'updateUserFlag':
                 if (isset($_GET['userName'])) {

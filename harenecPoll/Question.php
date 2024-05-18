@@ -204,4 +204,24 @@ class Question
             return false;
         }
     }
+
+
+    public function
+    editActiveQuestionZero($questionActiveUpdate){
+        $query = "UPDATE question
+                  SET active = 0
+                  WHERE  id_question = :questionActiveUpdate";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':questionActiveUpdate', $questionActiveUpdate, PDO::PARAM_STR);
+        $result = $stmt->execute();
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+        
+
+    }
 }
