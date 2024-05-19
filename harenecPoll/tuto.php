@@ -2,15 +2,15 @@
 
 session_start();
 
-$content_signed = '<h2 class="hover-underline">Pre prihláseného používateľa v sekcii Konzola:</h2>
+$content_signed = '<h2 class="hover-underline" data-i18n="tuto_signed_user">Pre prihláseného používateľa v sekcii Konzola:</h2>
         <ul>
-            <li>Používateľ môže listovať a prehliadať otázky vo svojich setoch.</li>
-            <li>Používateľ môže otázku spustiť zeleným tlačidlom "Start".</li>
-            <li>Používateľ môže otázku deaktivovať červeným tlačidlom "Stop".</li>
-            <li>Používateľ si môže informatívne pozrieť otázku modrým tlačidlom "Info". Môže vidieť text otázky. Rovnako kliknutím na "Štatistiky" môže vidieť výsledky hlasovania za minulé roky.</li>
-            <li>Používateľ si môže nakopírovať otázku do iného setu, kliknutím na sivé tlačidlo "Kópia", zvolením setu, kam chce otázku nakopírovať a nasledným potvrdením operácie.</li>
-            <li>Používateľ môže editovať otázku kliknutím na "Edit". Zmení zvolené informácie a potvrdí operáciu.</li>
-            <li>Používateľ môže kliknutím na červené tlačidlo vymazať otázku. Rozhodnutie musí ešte raz potvrdiť, následne sa otázka navždy vymaže.</li>
+            <li data-i18n="signed_l1">Používateľ môže listovať a prehliadať otázky vo svojich setoch.</li>
+            <li data-i18n="signed_l2">Používateľ môže otázku spustiť zeleným tlačidlom "Start".</li>
+            <li data-i18n="signed_l3">Používateľ môže otázku deaktivovať červeným tlačidlom "Stop".</li>
+            <li data-i18n="signed_l4">Používateľ si môže informatívne pozrieť otázku modrým tlačidlom "Info". Môže vidieť text otázky. Rovnako kliknutím na "Štatistiky" môže vidieť výsledky hlasovania za minulé roky.</li>
+            <li data-i18n="signed_l5">Používateľ si môže nakopírovať otázku do iného setu, kliknutím na sivé tlačidlo "Kópia", zvolením setu, kam chce otázku nakopírovať a nasledným potvrdením operácie.</li>
+            <li data-i18n="signed_l6">Používateľ môže editovať otázku kliknutím na "Edit". Zmení zvolené informácie a potvrdí operáciu.</li>
+            <li data-i18n="signed_l7">Používateľ môže kliknutím na červené tlačidlo vymazať otázku. Rozhodnutie musí ešte raz potvrdiť, následne sa otázka navždy vymaže.</li>
         </ul>
         <h3 class="hover-underline">Pod zobrazenými setmi má používateľ možnosť:</h3>
         <ul>
@@ -19,13 +19,13 @@ $content_signed = '<h2 class="hover-underline">Pre prihláseného používateľa
             <li>Prezerať si všetky používateľove otázky, filtrovať v tabuľke a vyhľadávať podľa konkrétnych otázok, dátumov vytvorenia atď...</li>
         </ul>';
 
-$content_unsigned = '<h2 class="hover-underline">Pre odlháseného používateľa</h2>
+$content_unsigned = '<h2 class="hover-underline" data-i18n="tuto_unsigned_user">Pre odlháseného používateľa</h2>
         <ul>
             <li>Používateľ sa môže zaregistrovať.</li>
             <li>Používateľ sa môže prihlásiť.</li>
             <li>Po vložení QR kódu alebo číselného kódu má používateľ možnosť pristúpiť k otázke.</li>
         </ul>
-        <h2 class="hover-underline">Pre administrátora</h2>
+        <h2 class="hover-underline" data-i18n="tuto_admin">Pre administrátora</h2>
         <ul>
             <li></li>
         </ul>';

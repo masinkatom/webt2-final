@@ -73,6 +73,7 @@
     "confirm_password_label": "Confirm New Password:",
     "change_password_submit_button": "CHANGE PASSWORD",
     "empty_old_password": "",
+    "wrong_old_password": "You set wrong old password",
     "empty_new_password": "",
     "empty_confirm_password": "",
     "passwords_not_matching": "",
@@ -83,5 +84,23 @@
     "poll_warning": "(Warning, the question might have multiple correct answers)",
     "question_404": "The question does not exist or is not activated!",
     "show_correct_answers": "Show correct answers",
-    "show_results": "Show results"
+    "show_results": "Show results",
+
+    "tuto_signed_user": "Console for signed user:",
+    "signed_l1": "",
+    "signed_l2": "",
+    "signed_l3": "",
+    "signed_l4": "",
+    "signed_l5": "",
+    "signed_l6": "",
+    "signed_l7": "",
+
+    "below_showed_sets": "",
+
+    "tuto_unsigned_user": "For unsigned user",
+    "unsigned_l1": "",
+    "unsigned_l2": "",
+    "unsigned_l3": "",
+    
+    "tuto_admin": "For admin"
 }

@@ -73,6 +73,7 @@
     "confirm_password_label": "Potvrdiť Nové Heslo:",
     "change_password_submit_button": "ZMENIŤ HESLO",
     "empty_old_password": "",
+    "wrong_old_password": "Zadané staré heslo je nesprávne",
     "empty_new_password": "",
     "empty_confirm_password": "",
     "passwords_not_matching": "",
@@ -83,5 +84,23 @@
     "poll_warning": "(Pozor, otázka môže mať viacero správnych odpovedí)",
     "question_404": "Neexistuje alebo nie je aktivovaná!",
     "show_correct_answers": "Zobraziť správne odpovede",
-    "show_results": "Zobraziť výsledky"
+    "show_results": "Zobraziť výsledky",
+
+    "tuto_signed_user": "Pre prihláseného používateľa v sekcii Konzola:",
+    "signed_l1": "Používateľ môže listovať a prehliadať otázky vo svojich setoch.",
+    "signed_l2": "Používateľ môže otázku spustiť zeleným tlačidlom \"Start\".",
+    "signed_l3": "Používateľ môže otázku deaktivovať červeným tlačidlom \"Stop\".",
+    "signed_l4": "Používateľ si môže informatívne pozrieť otázku modrým tlačidlom \"Info\". Môže vidieť text otázky. Rovnako kliknutím na \"Štatistiky\" môže vidieť výsledky hlasovania za minulé roky.",
+    "signed_l5": "Používateľ si môže nakopírovať otázku do iného setu, kliknutím na sivé tlačidlo \"Kópia\", zvolením setu, kam chce otázku nakopírovať a nasledným potvrdením operácie.",
+    "signed_l6": "Používateľ môže editovať otázku kliknutím na \"Edit\". Zmení zvolené informácie a potvrdí operáciu.",
+    "signed_l7": "Používateľ môže kliknutím na červené tlačidlo vymazať otázku. Rozhodnutie musí ešte raz potvrdiť, následne sa otázka navždy vymaže.",
+    
+    "below_showed_sets": "Pod zobrazenými setmi má používateľ možnosť:",
+
+    "tuto_unsigned_user": "Pre odlháseného používateľa",
+    "unsigned_l1": "Používateľ sa môže zaregistrovať.",
+    "unsigned_l2": "Používateľ sa môže prihlásiť.",
+    "unsigned_l3": "Po vložení QR kódu alebo číselného kódu má používateľ možnosť pristúpiť k otázke.",
+    
+    "tuto_admin": "Pre administrátora"
 }

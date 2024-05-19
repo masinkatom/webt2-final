@@ -156,7 +156,7 @@ echo $output;
                     <div id="changePasswordModal" class="modal2 hidden">
                         <div class="info-modal-password">
                             <div class="modal-data">
-                                <h2>Zadané staré heslo je nesprávne</h2>
+                                <h2 data-i18n="wrong_old_password"></h2>
                             </div>
                             <img id="close-modal" src="images/close-icon.svg" alt="close">
                         </div>
