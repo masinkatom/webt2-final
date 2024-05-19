@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("location: myAdmin.php");
                     exit;
                 } else {
-                    header("location: index.php");
+                    header("location: myConsole.php");
                     exit;
                 }
             } else {

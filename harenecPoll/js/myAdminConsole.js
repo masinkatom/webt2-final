@@ -1,31 +1,6 @@
-function clickButton() {
-    let langBtn = document.getElementById('sk_btn');
-
-    if (langBtn) {
-        langBtn.click();
-        console.log("button should have been clicked");
-    } else {
-        console.log("button not found");
-    }
-}
-
-clickButton();
-
-console.log("Hallo world admin!");
-
 let btnModalClose = document.getElementById("close-modal");
 let modalQR = document.getElementById("modalQR");
-window.onclick = function (event) {
-    if (event.target == modalQR || event.target == btnModalClose) {
-        modalQR.classList.add("hidden");
-    }
-
-}
-
 let flag = 0;
-
-console.log("PICI JA SOM GENIUS", sessionLoginID)
-
 var testDataDelete = `[
     {
       "id_question": 1,
@@ -89,7 +64,272 @@ var globalUsers = JSON.parse(`[
 
 var tmpSessLogin = sessionLogin;
 var tmpSessLogiID = sessionLoginID;
+var mainCtn = document.getElementById("main-ctn");
+var container = document.getElementById("button-container");
 
+
+window.addEventListener('DOMContentLoaded', function() {
+    clickButton();
+
+console.log("Hallo world admin!");
+
+
+
+
+
+
+getGlobalUsers().then(data => {
+    globalUsers = data;
+
+    //var mainCtn = document.getElementById("main-ctn");
+    //var container = document.getElementById("button-container");
+    
+    globalUsers.forEach(function(user) {
+        
+        getGlobalSets(user.nick).then(data => {
+
+            sessionLogin = user.nick;
+            getIdByName().then(data=>{
+
+                sessionLoginID = data;
+
+            })
+            globalSets = data;
+            console.log(globalSets);
+            var button = document.createElement("button");
+            button.setAttribute("type", "button");
+            button.setAttribute("data-bs-toggle", "collapse");
+            button.setAttribute("data-bs-target", `#X${user.nick}`);
+            button.setAttribute("aria-expanded", "false");
+            button.textContent = user.nick;
+
+            //var container = document.getElementById("button-container");
+            console.log(container);
+            container.appendChild(button);//DDD
+            container.appendChild(createButtonsOfSets(user.nick));
+
+            var collapseDiv = document.createElement("div");
+            collapseDiv.classList.add("collapse");
+            collapseDiv.id = "X"+user.nick;
+            collapseDiv.classList.add("in-row");
+            collapseDiv.classList.add("centered-v");
+
+
+            var CRUDuserDiv = document.createElement("div");
+            CRUDuserDiv.textContent = "DDDDDD";
+            CRUDuserDiv.classList.add("in-row");
+            CRUDuserDiv.classList.add("centered-v");
+
+            var cardBodyDiv = document.createElement("div");
+            cardBodyDiv.classList.add("card", "card-body");
+            cardBodyDiv.classList.add("collapse-set");
+            cardBodyDiv.id = "X"+user.nick + "Div";
+            cardBodyDiv.appendChild(createCRUDdiv(user.nick));
+            collapseDiv.appendChild(cardBodyDiv);
+
+            container.appendChild(collapseDiv);
+            //createButtonsOfSets();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        globalSets = getAllSetsExisting().then( data =>{
+            globalSets = data;
+        })
+
+    });
+    mainCtn.appendChild(container);
+
+    sessionLogin = tmpSessLogin;
+}
+)
+
+
+});
+
+
+async function getAllSetsExisting(){
+        try {
+            const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    
+}
+
+function callWhenWholeRecall(){
+
+    getGlobalUsers().then(data => {
+        globalUsers = data;
+        //var mainCtn = document.getElementById("main-ctn");
+        //var container = document.getElementById("button-container");
+        
+        globalUsers.forEach(function(user) {
+            
+            getGlobalSets(user.nick).then(data => {
+
+                sessionLogin = user.nick;
+                getIdByName().then(data=>{
+
+                    sessionLoginID = data;
+
+                })
+                globalSets = data;
+
+                var button = document.createElement("button");
+                button.setAttribute("type", "button");
+                button.setAttribute("data-bs-toggle", "collapse");
+                button.setAttribute("data-bs-target", `#X${user.nick}`);
+                button.setAttribute("aria-expanded", "false");
+                button.textContent = user.nick;
+    
+                //var container = document.getElementById("button-container");
+                console.log(container);
+                container.appendChild(button);//DDD
+                container.appendChild(createButtonsOfSets(user.nick));
+    
+                var collapseDiv = document.createElement("div");
+                collapseDiv.classList.add("collapse");
+                collapseDiv.id = "X"+user.nick;
+                collapseDiv.classList.add("in-row");
+                collapseDiv.classList.add("centered-v");
+    
+    
+                var CRUDuserDiv = document.createElement("div");
+                CRUDuserDiv.textContent = "DDDDDD";
+                CRUDuserDiv.classList.add("in-row");
+                CRUDuserDiv.classList.add("centered-v");
+    
+                var cardBodyDiv = document.createElement("div");
+                cardBodyDiv.classList.add("card", "card-body");
+                cardBodyDiv.classList.add("collapse-set");
+                cardBodyDiv.id = "X"+user.nick + "Div";
+                cardBodyDiv.appendChild(createCRUDdiv(user.nick));
+                collapseDiv.appendChild(cardBodyDiv);
+    
+                container.appendChild(collapseDiv);
+                //createButtonsOfSets();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    
+            globalSets = getAllSetsExisting().then( data =>{
+                globalSets = data;
+                console.log("TU SU VSETKY", globalSets);
+            })
+    
+        });
+        mainCtn.appendChild(container);
+    
+        sessionLogin = tmpSessLogin;
+    }
+    )
+
+
+}
+    
+
+
+
+function clickButton() {
+    let langBtn = document.getElementById('sk_btn');
+
+    if (langBtn) {
+        langBtn.click();
+        console.log("button should have been clicked");
+    } else {
+        console.log("button not found");
+    }
+}
+
+//clickButton();
+
+
+
+//let btnModalClose = document.getElementById("close-modal");
+//let modalQR = document.getElementById("modalQR");
+window.onclick = function (event) {
+    if (event.target == modalQR || event.target == btnModalClose) {
+        modalQR.classList.add("hidden");
+    }
+
+}
+/*
+let flag = 0;
+
+
+
+var testDataDelete = `[
+    {
+      "id_question": 1,
+      "text_q": "SI KOKOT",
+      "active": 1,
+      "open": 0,
+      "id_set": 1,
+      "creationDate": "2024-05-01",
+      "code": null
+    }
+  ]`;
+
+
+var jsonData = `[
+    {
+        "id_question": "1",
+        "text_q": "What is capital os GER?",
+        "active": "0",
+        "open": "0",
+        "creationDate": "2024-05-02"
+    },
+    {
+        "id_question": "2",
+        "text_q": "What is capital of SK?",
+        "active": "0",
+        "open": "1",
+        "creationDate": "2024-05-02"
+    },
+    {
+        "id_question": "3",
+        "text_q": "What is capital of ZCE?",
+        "active": "0",
+        "open": "0",
+        "creationDate": "2024-05-02"
+    }
+]`;
+
+
+
+
+var globalSets = `[
+    {
+        "name_set": "Math"
+    },
+    {
+        "name_set": "English"
+    }
+]`;
+
+var globalUsers = JSON.parse(`[
+    {
+        "nick": "aaaaaa"
+    },
+    {
+        "nick": "Joseph"
+    },
+    {
+        "nick": "semirgerkan"
+    }
+]`);
+
+var tmpSessLogin = sessionLogin;
+var tmpSessLogiID = sessionLoginID;*/
+
+
+/*
 getGlobalUsers().then(data => {
     globalUsers = data;
     console.log(globalUsers);
@@ -99,10 +339,10 @@ getGlobalUsers().then(data => {
     globalUsers.forEach(function(user) {
         
         getGlobalSets(user.nick).then(data => {
-            console.log(user.nick, "JOJ DORITI");
+
             sessionLogin = user.nick;
             getIdByName().then(data=>{
-                console.log("HIRA HIRA", data);
+    
                 sessionLoginID = data;
                 console.log(sessionLoginID, "DDD");
             })
@@ -150,7 +390,7 @@ getGlobalUsers().then(data => {
 
     sessionLogin = tmpSessLogin;
 }
-)
+)*/
 
 
 function createCRUDdiv(userName) {
@@ -161,8 +401,8 @@ function createCRUDdiv(userName) {
     var buttonDel = document.createElement("button");
     buttonDel.setAttribute("type", "button");
     buttonDel.className = "btn btn-danger";
-    buttonDel.setAttribute("data-i18n", "admin_delete_user_button");
-    // buttonDel.innerText = "XXXDelete User";
+    //buttonDel.setAttribute("data-i18n", "admin_delete_user_button");
+    buttonDel.innerText = "Delete User"; //KKKKKKKK bolo zakomentovane
     buttonDel.style.fontSize = "1.6rem";
     buttonDel.addEventListener("click", function() {
         deleteUser(userName);
@@ -192,14 +432,14 @@ button.setAttribute("data-bs-target", "#collapseExample");
 button.setAttribute("aria-expanded", "false");
 button.style.fontSize = "1.6rem";
 button.setAttribute("aria-controls", "collapseExample");
-button.setAttribute("data-i18n", "admin_edit_user_collapse");
-// button.innerText = "XXXEdit";
+//button.setAttribute("data-i18n", "admin_edit_user_collapse");
+button.innerText = "Edit"; //KKKKKKKK bolo zakomentovane
 
     var buttonSU = document.createElement("button");
     buttonSU.setAttribute("type", "button");
     buttonSU.className = "btn btn-primary";
-    buttonSU.setAttribute("data-i18n", "admin_set_user_button");
-    // buttonSU.innerText = "XXXSet user";
+    //buttonSU.setAttribute("data-i18n", "admin_set_user_button");
+    buttonSU.innerText = "Set to user"; //KKKKKKKK bolo zakomentovane
     buttonSU.style.fontSize = "1.6rem";
     buttonSU.addEventListener("click", function() {
         setUserRole(userName, 0);
@@ -208,8 +448,8 @@ button.setAttribute("data-i18n", "admin_edit_user_collapse");
     var buttonSA = document.createElement("button");
     buttonSA.setAttribute("type", "button");
     buttonSA.className = "btn btn-primary";
-    buttonSA.setAttribute("data-i18n", "admin_set_admin_button");
-    // buttonSA.innerText = "XXXSet admin";
+    //buttonSA.setAttribute("data-i18n", "admin_set_admin_button");
+    buttonSA.innerText = "Set to admin"; //KKKKKKKK bolo zakomentovane
     buttonSA.style.fontSize = "1.6rem";
     buttonSA.addEventListener("click", function() {
         setUserRole(userName, 1);
@@ -227,7 +467,7 @@ button.setAttribute("data-i18n", "admin_edit_user_collapse");
     cardBodyDiv.style.marginBottom = "0rem";
     cardBodyDiv.classList.add("card-body");
     // cardBodyDiv.innerText = "V tomto divku a bude editovat user";
-    console.log(userName, " <<< S TYMTO USOROM PRACUJES")
+
     
     //TODO JOZKO TU IDES ROBIT EDIT USERA HEJ
     var editUserDiv = document.createElement("div");
@@ -240,8 +480,8 @@ button.setAttribute("data-i18n", "admin_edit_user_collapse");
     var buttonEditUser = document.createElement("button");
     buttonEditUser.setAttribute("type", "button");
     buttonEditUser.className = "btn btn-primary";
-    buttonEditUser.setAttribute("data-i18n", "admin_edit_user_button");
-    // buttonEditUser.innerText = "XXXEdit user";
+    //buttonEditUser.setAttribute("data-i18n", "admin_edit_user_button");
+    buttonEditUser.innerText = "Edit user"; //KKKKKKKK bolo zakomentovane
 
     editUserDiv.appendChild(editUserField);
     editUserDiv.appendChild(buttonEditUser);
@@ -287,6 +527,11 @@ function deleteUser(userName) {
             // Check if the request was successful
             if (response.ok) {
                 console.log('User deleted successfully');
+                showToast();
+                var container = document.getElementById("button-container");
+                container.innerHTML = "";
+                callWhenWholeRecall();
+                //TU DAVAM
                 // Handle further actions if needed
             } else {
                 console.error('Failed to delete user');
@@ -325,6 +570,7 @@ function setUserRole(userName, role) {
             // Check if the request was successful
             if (response.ok) {
                 console.log('User flag updated successfully');
+                showToast();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update user flag');
@@ -376,7 +622,7 @@ function createButtonsOfSets(user) {
 
 
     //var container = document.getElementById("button-container");
-    console.log("ROBIM PRE USERA", user)
+
     var container = document.createElement("div");
     container.classList.add("content-outline");
 
@@ -388,8 +634,8 @@ function createButtonsOfSets(user) {
     container.appendChild(createNewQuestionCollapse())
     container.appendChild(createNewSetButton());
     container.appendChild(createNewSetCollapse());
-    container.appendChild(createSeeAllQuestionButton());
-    container.appendChild(createSeeAllQuestionCollapse());
+    //container.appendChild(createSeeAllQuestionButton());
+    //container.appendChild(createSeeAllQuestionCollapse());
     //container.appendChild(createStatsButton());
     //container.appendChild(creatseeStatsCollapse())
     
@@ -411,7 +657,7 @@ function createStatsButton() {
     statsButton.setAttribute("aria-controls", "seeStatsCollapse");
     statsButton.setAttribute("data-i18n", "see_stats_collapse");
     statsButton.style.fontSize = "1.6rem";
-    // statsButton.textContent = "SEE STATSXXX";
+     //statsButton.textContent = "SEE STATSXXX";
     return statsButton;
 }
 
@@ -424,7 +670,7 @@ function createSeeAllQuestionButton() {
     newQButton.setAttribute("aria-controls", "seeAllQuestionCollapse");
     newQButton.setAttribute("data-i18n", "see_all_questions");
     newQButton.style.fontSize = "1.6rem";
-    // newQButton.textContent = "SEE ALL QUESTIONXXX";
+     //newQButton.textContent = "SEE ALL QUESTIONXXX";
     return newQButton;
 }
 
@@ -436,7 +682,7 @@ function createButton() {
     newQButton.setAttribute("aria-controls", "newQuestionCollapse"); // Set aria-controls attribute
     newQButton.setAttribute("data-i18n", "new_question_collapse");
     newQButton.style.fontSize = "1.6rem";
-    // newQButton.textContent = "NEW QUESTIONWTFXXX";
+     //newQButton.textContent = "NEW QUESTIONWTFXXX";
     return newQButton;
 }
 
@@ -507,7 +753,7 @@ function createSeeAllQuestionCollapse() {
             var allQbyName;
             console.log(data);
             allQbyName = data;
-            console.log("HJIJI");
+   
             console.log(allQbyName);
             //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
             console.log(allQbyName);
@@ -529,13 +775,13 @@ function createSeeAllQuestionCollapse() {
 
 async function getAllQuestionByName() {
     //TU DURI UPRAVIS SPOJAZDNIS BOROVE API A VRATIS DATA
-    console.log("DOPICI>> ",sessionLoginID);
+
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?userId=${sessionLoginID}`,{
             method: 'GET'
         }); /*FFF*/
         const data = await response.json();
-        console.log("REALSHIT VO VYPISE DATA", data, sessionLoginID);
+       
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -599,13 +845,14 @@ function createNewQuestionCollapse() {
 
     var newQuestionLabel = document.createElement("label");
     newQuestionLabel.setAttribute("data-i18n", "new_question_label");
+    //newQuestionLabel.textContent = "New"
     // text otazky
     var questionInput = document.createElement("input");
     questionInput.setAttribute("type", "text");
 
     var selectSetLabel = document.createElement("label");
     selectSetLabel.setAttribute("data-i18n", "choose_set_label");
-    // selectSetLabel.innerHTML = "Choose setXXX: ";
+     //selectSetLabel.innerHTML = "Choose setXXX: ";
     var setSelectBox = document.createElement("select");
 
     // INFORMACIA PRE JURAJA
@@ -622,7 +869,7 @@ function createNewQuestionCollapse() {
     // otvorena otazka? + checkbox
     var labelOpen = document.createElement("label");
     labelOpen.setAttribute("data-i18n", "open_question_checkbox");
-    // labelOpen.innerHTML = "Open questionXXX: ";
+     //labelOpen.innerHTML = "Open questionXXX: ";
     var openQuestionCheckbox = document.createElement("input");
     openQuestionCheckbox.setAttribute("type", "checkbox");
     divkoDoKtorehoBudeJozkoRobit.appendChild(newQuestionLabel);
@@ -634,13 +881,13 @@ function createNewQuestionCollapse() {
 
     var labelCloudmap = document.createElement("label");
     labelCloudmap.setAttribute("data-i18n", "cloudmap_checkbox");
-    // labelCloudmap.innerHTML = "Cloudmap?XXX: ";
+     //labelCloudmap.innerHTML = "Cloudmap?XXX: ";
     var cloudmapCheckbox = document.createElement("input");
     cloudmapCheckbox.setAttribute("type", "checkbox");
 
     var labelAdminOwner = document.createElement("label");
     labelAdminOwner.setAttribute("data-i18n", "admin_new_question_admin_owner_checkox");
-    // labelAdminOwner.innerHTML = "AdminOwnerXXX: ";
+     //labelAdminOwner.innerHTML = "AdminOwnerXXX: ";
     var adminOwnerCheckbox = document.createElement("input");
     adminOwnerCheckbox.setAttribute("type", "checkbox");
 
@@ -662,7 +909,7 @@ function createNewQuestionCollapse() {
     // input number - pocet odpovedi na otazku
     var numberOptionsLabel = document.createElement("label");
     numberOptionsLabel.setAttribute("data-i18n", "num_of_options_label");
-    // numberOptionsLabel.innerHTML = "Number of optionsXXX: ";
+     //numberOptionsLabel.innerHTML = "Number of optionsXXX: ";
     var numOfOptions = document.createElement("input");
     numOfOptions.setAttribute("type", "number");
     numOfOptions.setAttribute("min", 1);
@@ -673,7 +920,7 @@ function createNewQuestionCollapse() {
     var setOptionsBtn = document.createElement("button");
     setOptionsBtn.classList.add("btn", "btn-danger");
     setOptionsBtn.setAttribute("data-i18n", "add_option_button");
-    // setOptionsBtn.textContent = "Add optionsXXX";
+     //setOptionsBtn.textContent = "Add optionsXXX";
 
     var divkoMoznosti = document.createElement("div");
     divkoMoznosti.id = "newQuestionOptions";
@@ -758,7 +1005,7 @@ function createNewQuestionCollapse() {
     var createQuestionButton = document.createElement("button");
     createQuestionButton.classList.add("btn", "btn-primary");
     createQuestionButton.setAttribute("data-i18n", "new_question_create_button");
-    // createQuestionButton.textContent = "Create QuestionXXX";
+     //createQuestionButton.textContent = "Create QuestionXXX";
     divkoDoKtorehoBudeJozkoRobit.appendChild(createQuestionButton);
 
     createQuestionButton.addEventListener('click', function () {
@@ -810,12 +1057,13 @@ function createNewQuestionCollapse() {
 
 function findIdByName(name) {
     // Iterate through the globalSets array
-    console.log(globalSets.length, name);
+    console.log(globalSets.length, name, "TU JE ERROR", globalSets);
     for (let i = 0; i < globalSets.length; i++) {
         console.log(globalSets[i].name_set, globalSets[i].name_set === name);
         // If the name_set matches, return the corresponding id_set
         if (globalSets[i].name_set === name) {
             console.log(globalSets[i].id_set);
+            console.log(globalSets[i].id_set, "TU PRESNEJSIE")
             return globalSets[i].id_set;
         }
     }
@@ -840,6 +1088,9 @@ async function createNewQuestionDatabase(dataToSend) {
             if (response.ok) {
                 showToast();
                 console.log('Question updated successfully');
+                var container = document.getElementById("button-container");
+                container.innerHTML = "";
+                callWhenWholeRecall();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update question');
@@ -869,7 +1120,7 @@ function createNewSetCollapse() {
     tuRobis.id = "newSetCreateInputs";
     var newSetLabel = document.createElement("label");
     newSetLabel.setAttribute("data-i18n", "new_set_label");
-
+    //newSetLabel.textContent = "New Set";
     var newSetInput = document.createElement("input");
     newSetInput.setAttribute("type", "text");
     tuRobis.appendChild(newSetLabel);
@@ -878,7 +1129,7 @@ function createNewSetCollapse() {
     var createSetButton = document.createElement("button");
     createSetButton.classList.add("btn", "btn-primary");
     createSetButton.setAttribute("data-i18n", "new_set_create_button");
-    // createSetButton.textContent = "Create SetXXX";
+     //createSetButton.textContent = "Create SetXXX";
     tuRobis.appendChild(createSetButton);
 
     createSetButton.addEventListener('click', function () {
@@ -889,7 +1140,7 @@ function createNewSetCollapse() {
         console.log(createdSet);
         let createdSetToSend = { 
             setName: createdSet,
-            userName: sessionLoginID
+            userName: sessionLoginID 
         }; 
         createNewSetDatabase(createdSetToSend); //********
         console.log("CREATE SET DONE");
@@ -905,7 +1156,7 @@ function createNewSetCollapse() {
 async function createNewSetDatabase(dataToSend) {
 
     
-    console.log(dataToSend);
+    console.log(dataToSend, "CREATE NEW SET");
     fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createSet`, {
         method: 'POST',
         headers: {
@@ -936,7 +1187,7 @@ async function createNewSetDatabase(dataToSend) {
 function createOption(parentDiv) {
     var optionLabel = document.createElement("label");
     optionLabel.setAttribute("data-i18n", "option_label");
-    // optionLabel.innerHTML = "OptionXXX: ";
+     //optionLabel.innerHTML = "OptionXXX: ";
     var answerText = document.createElement("input");
     answerText.setAttribute("type", "text");
     parentDiv.appendChild(optionLabel);
@@ -949,7 +1200,7 @@ function createButtonForOption(parentDiv) {
     var correctAnswerBtn = document.createElement("button");
     correctAnswerBtn.classList.add("btn", "btn-secondary");
     correctAnswerBtn.setAttribute("data-i18n", "correct_option_button");
-    // correctAnswerBtn.textContent = "CorrectXXX";
+     //correctAnswerBtn.textContent = "CorrectXXX";
     parentDiv.appendChild(correctAnswerBtn);
     clickButton(); // tu problem
     return correctAnswerBtn;
@@ -976,7 +1227,37 @@ function createSetSection(item, container) {
     cardBodyDiv.id = item + "Div";
     collapseDiv.appendChild(cardBodyDiv);
 
-    insertQuestions(cardBodyDiv, item);
+    insertQuestions(cardBodyDiv, item).then(()=>{
+
+        var exportButton = document.createElement("button");
+    exportButton.classList.add("btn", "btn-warning");
+    exportButton.style.fontSize = "1.6rem";
+    exportButton.textContent = "export"
+
+    exportButton.addEventListener('click', function() {
+        getQuestionsBySet(item).then(data => {
+            questions = data;
+            console.log("EXPORT", questions)
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(questions));
+        
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", item+"-questions.json");
+        
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+        
+            // Odstránenie odkazu z dokumentu
+            downloadAnchorNode.remove();
+        
+        });
+    });
+
+    cardBodyDiv.appendChild(exportButton);
+    });
+
+    
+    
 
     container.appendChild(collapseDiv);
 }
@@ -999,7 +1280,7 @@ async function getQuestionsBySet(setname) {
 
 
 
-function insertQuestions(cardBodyDiv, item) {
+async function insertQuestions(cardBodyDiv, item) {
 
     //questions = getQuestionsBySet(item); //TODO
 
@@ -1063,7 +1344,7 @@ function insertQuestions(cardBodyDiv, item) {
             infoButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             infoButton.style.fontSize = "1.6rem";
             infoButton.setAttribute("data-i18n", "info_collapse");
-            // infoButton.textContent = "InfoXXX";
+             //infoButton.textContent = "InfoXXX";
 
             //InfoModal
             collapseDiv.appendChild(createInfoCollapse(question.id_question, question));
@@ -1075,7 +1356,7 @@ function insertQuestions(cardBodyDiv, item) {
             copyButton.setAttribute("data-bs-target", `#${question.id_question}CopyCollapse`);
             copyButton.style.fontSize = "1.6rem";
             copyButton.setAttribute("data-i18n", "copy_collapse");
-            // copyButton.textContent = "CopyXXX";
+             //copyButton.textContent = "CopyXXX";
 
             //CopyModal
             collapseDiv.appendChild(createCopyCollapse(question.id_question, question));
@@ -1087,7 +1368,7 @@ function insertQuestions(cardBodyDiv, item) {
             editButton.setAttribute("data-bs-target", `#${question.id_question}EditCollapse`);
             editButton.style.fontSize = "1.6rem";
             editButton.setAttribute("data-i18n", "edit_collapse");
-            // editButton.textContent = "EditXXX";
+             //editButton.textContent = "EditXXX";
 
             //EditModal
             collapseDiv.appendChild(createEditCollapse(question.id_question, question));
@@ -1104,7 +1385,7 @@ function insertQuestions(cardBodyDiv, item) {
             deleteButton.setAttribute("data-bs-target", `#${question.id_question}DeleteCollapse`);
             deleteButton.style.fontSize = "1.6rem";
             deleteButton.setAttribute("data-i18n", "delete_collapse");
-            // deleteButton.textContent = "DeleteXXX";
+             //deleteButton.textContent = "DeleteXXX";
 
             //DeleteModal
             collapseDiv.appendChild(createDeleteCollapse(question.id_question, question.text_q));
@@ -1191,7 +1472,7 @@ function playQuestionWithQR(question){
     setActiveFlagToOne(question.id_question);
     question.code = generateRandomWord();
     editQFLAG(question.text_q, question, question.id_question);
-    // console.log(generateRandomWord(), "RANDOM HESLIELKO");
+
 
     //vygeneruj QR kod
     var qrcode = new QRCode(divWithGQ, {
@@ -1371,7 +1652,7 @@ function createCopyForm(questionFull) {
     copyButt.classList.add("btn", "btn-success");
     copyButt.classList.add("bigger-button-font");
     copyButt.setAttribute("data-i18n", "copy_submit_button");
-    // copyButt.textContent = "CopyXXX";
+     //copyButt.textContent = "CopyXXX";
     copyButt.addEventListener("click", function () {
         copyQ(questionFull, selectElement.value);
     });
@@ -1394,7 +1675,7 @@ function createDeleteCollapse(questionId, questionName) {
     cardElement.classList.add("centered");
     var italicText = document.createElement("h4");
     italicText.setAttribute("data-i18n", "delete_you_sure");
-    // italicText.textContent = "Are you sure?XXX";
+     //italicText.textContent = "Are you sure?XXX";
     italicText.classList.add("centered");
     cardElement.appendChild(italicText);
    collapseContainer.appendChild(cardElement);
@@ -1404,7 +1685,7 @@ function createDeleteCollapse(questionId, questionName) {
     deleteReally.type = "button";
     deleteReally.classList.add("btn", "btn-danger");
     deleteReally.setAttribute("data-i18n", "delete_button");
-    // deleteReally.textContent = "DeleteXXX";
+     //deleteReally.textContent = "DeleteXXX";
     deleteReally.classList.add("bigger-button-font");
     deleteReally.addEventListener("click", function () {
         deleteQ(questionId, questionName)
@@ -1426,6 +1707,10 @@ async function deleteQ(questionId, questionName) { //TODO BORO Dokoncit aby islo
             method: 'DELETE'
         });
         const data = await response.json();
+        var container = document.getElementById("button-container");
+                container.innerHTML = "";
+                callWhenWholeRecall();
+                showToast();
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -1613,7 +1898,7 @@ function copyQ(questionFull, whereToCopy) {
     createNewQuestionDatabase(dataToSend)
 
 
-    console.log("TOTO JEBNEM DO API CALLU")
+
     console.log("KOPIROVANIE OTAZKY DO NOVEHO SETU")
     console.log(mergedObject); //TODO JURAJ DOKONCI API CALL NA COPY
     console.log("KOPIROVANIE OTAZKY DO NOVEHO SETU")

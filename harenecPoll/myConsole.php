@@ -11,12 +11,12 @@ $output = '';
 if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     $_SESSION["logged"] = false;
     $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar" data-i18n="snackbar_message></div>';
+    $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
 } elseif (isset($_SESSION["loggedout"]) && $_SESSION["loggedout"] === true) {
     $_SESSION["loggedout"] = false;
     $_SESSION["loggedin"] = false;
     $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar" data-i18n="snackbar_message></div>';
+    $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
 }
 
 
@@ -50,9 +50,7 @@ echo $output;
             <ul class="nav-list">
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-                    echo '<li class="nav-item">
-                        <a class="nav-item" href="index.php" data-i18n="homepage_nav"></a>
-                        </li>
+                    echo '
                         <li class="nav-item">
                             <a class="nav-item nav-item-current" href="#" data-i18n="my_console_page_nav"></a>
                         </li>
