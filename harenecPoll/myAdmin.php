@@ -14,7 +14,7 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
         echo '<script src="js/setLocalStorage.js"></script>';
     }
     $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar" data-i18n="snackbar_message></div>';
+    $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
 } elseif (isset($_SESSION["loggedout"]) && $_SESSION["loggedout"] === true) {
     $_SESSION["loggedout"] = false;
     $_SESSION["loggedin"] = false;
@@ -22,7 +22,7 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
         echo '<script src="js/setLocalStorageFalse.js"></script>';
     }
     $output .= '<script src="js/scriptToast.js"></script>';
-    $output .= '<div id="snackbar" data-i18n="snackbar_message></div>';
+    $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
 }
 
 

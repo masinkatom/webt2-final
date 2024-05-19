@@ -524,7 +524,7 @@ async function createNewQuestionDatabase(dataToSend) {
                 console.log('Question updated successfully');
                 //TU PRIDAL BORO
                 var container = document.getElementById("button-container");
-                container.inn = "";
+                container.innerHTML = "";
                 createButtonsOfSets();
                 // Handle further actions if needed
             } else {
@@ -608,8 +608,14 @@ async function createNewSetDatabase(dataToSend) {
                 //TU PRIDAL BORO
                 showToast();
                 var container = document.getElementById("button-container");
-                container.inn = "";
-                createButtonsOfSets();
+                container.innerHTML = "";
+                console.log("BOHA PICI NEDELA")
+                getGlobalSets().then(data => {
+                    globalSets = data;
+                    console.log(globalSets);
+                    createButtonsOfSets();
+                })
+                //createButtonsOfSets();
             } else {
                 console.error('Failed to update set');
                 // Handle errors if needed
@@ -664,7 +670,37 @@ function createSetSection(item, container) {
     cardBodyDiv.id = item + "Div";
     collapseDiv.appendChild(cardBodyDiv);
 
-    insertQuestions(cardBodyDiv, item);
+    insertQuestions(cardBodyDiv, item).then(()=>{
+
+        var exportButton = document.createElement("button");
+    exportButton.classList.add("btn", "btn-warning");
+    exportButton.style.fontSize = "1.6rem";
+    exportButton.textContent = "export"
+
+    exportButton.addEventListener('click', function() {
+        getQuestionsBySet(item).then(data => {
+            questions = data;
+            console.log("EXPORT", questions)
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(questions));
+        
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", item+"-questions.json");
+        
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+        
+            // Odstránenie odkazu z dokumentu
+            downloadAnchorNode.remove();
+        
+        });
+    });
+
+    cardBodyDiv.appendChild(exportButton);
+    });
+
+    
+    
 
     container.appendChild(collapseDiv);
 }
@@ -687,7 +723,7 @@ async function getQuestionsBySet(setname) {
 
 
 
-function insertQuestions(cardBodyDiv, item) {
+async function insertQuestions(cardBodyDiv, item) {
 
     //questions = getQuestionsBySet(item); //TODO
 
@@ -728,18 +764,18 @@ function insertQuestions(cardBodyDiv, item) {
             //playButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             playButton.style.fontSize = "1.6rem";
             // .setAttribute("data-i18n", "");
-            playButton.textContent = "ONXXX";
+            playButton.textContent = "ON";
             playButton.addEventListener("click", () => {
                 if(question.active === 0){
                     question.active = 1;
                     // .setAttribute("data-i18n", "");
-                    playButton.textContent = "STOPXXX";
+                    playButton.textContent = "STOP";
                     playButton.style.backgroundColor = "red";
                     playQuestionWithQR(question);
                 }else{
                     question.active = 0;
                     // .setAttribute("data-i18n", "");
-                    playButton.textContent = "STARTXXX";
+                    playButton.textContent = "START";
                     playButton.style.backgroundColor = "green";
                     stopQuestionWithQR(question);
                 }
@@ -833,7 +869,11 @@ function generateRandomWord() {
     for (let i = 0; i < 5; i++) {
         const randomIndex = Math.floor(Math.random() * letters.length);
         word += letters[randomIndex];
-    }   
+    }
+    
+    var codeDiv = document.getElementById("thesis-name-modal");
+    codeDiv.textContent = " - "+word+" - ";
+
 
     return word;
 }
@@ -1107,7 +1147,7 @@ function createDeleteCollapse(questionId, questionName) {
                 //TU PRIDAL BORO
                 showToast();
                 var container = document.getElementById("button-container");
-                container.inn = "";
+                container.innerHTML = "";
                 createButtonsOfSets();
                 //TODO ADAMKO SHOW DAJAKY OZNAM MODAL INFO ZE BOLO VYMAZANE
             })
@@ -1189,7 +1229,7 @@ function showQuestionsWithAnswers(question) {
                 liElement.textContent = answer.text_a;
                 liElement.classList.add("bigger-font");
                 // .setAttribute("data-i18n", "");
-                var correctness = answer.correct === 1 ? "correctXXX" : "incorectXXX";
+                var correctness = answer.correct === 1 ? "OK" : "X";
                 liElement.textContent += " (" + correctness + ")";
 
                 ulElement.appendChild(liElement);
