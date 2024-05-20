@@ -3,7 +3,7 @@
 session_start();
 
 $content_signed = '<h2 class="hover-underline" data-i18n="tuto_signed_user">Pre prihláseného používateľa v sekcii Konzola:</h2>
-        <ul>
+        <ul class="px-4">
             <li data-i18n="signed_l1">Používateľ môže listovať a prehliadať otázky vo svojich setoch.</li>
             <li data-i18n="signed_l2">Používateľ môže otázku spustiť zeleným tlačidlom "Start".</li>
             <li data-i18n="signed_l3">Používateľ môže otázku deaktivovať červeným tlačidlom "Stop".</li>
@@ -13,21 +13,23 @@ $content_signed = '<h2 class="hover-underline" data-i18n="tuto_signed_user">Pre 
             <li data-i18n="signed_l7">Používateľ môže kliknutím na červené tlačidlo vymazať otázku. Rozhodnutie musí ešte raz potvrdiť, následne sa otázka navždy vymaže.</li>
         </ul>
         <h3 class="hover-underline">Pod zobrazenými setmi má používateľ možnosť:</h3>
-        <ul>
-            <li>Vytvoriť novú otázku, používateľ si bude môcť vybrať z možnosti otvorenej otázky bez možnosti, v takom prípade si bude môcť používateľ zvoliť, ako sa mu budú zobrazovať výsledky, či cez zoznam alebo tzv. "cloudmap"-y. Používateľ môže zvoliť možnosť zatvorenej otázky, kde používateľ vytvorí možnosti.</li>
-            <li>Vytvoriť nový set, kde zadá meno nového setu a potvrdí vytvorenie.</li>
-            <li>Prezerať si všetky používateľove otázky, filtrovať v tabuľke a vyhľadávať podľa konkrétnych otázok, dátumov vytvorenia atď...</li>
+        <ul class="px-4">
+            <li data-i18n="below_sets_l1">Vytvoriť novú otázku, používateľ si bude môcť vybrať z možnosti otvorenej otázky bez možnosti, v takom prípade si bude môcť používateľ zvoliť, ako sa mu budú zobrazovať výsledky, či cez zoznam alebo tzv. "cloudmap"-y. Používateľ môže zvoliť možnosť zatvorenej otázky, kde používateľ vytvorí možnosti.</li>
+            <li data-i18n="below_sets_l2">Vytvoriť nový set, kde zadá meno nového setu a potvrdí vytvorenie.</li>
+            <li data-i18n="below_sets_l3">Prezerať si všetky používateľove otázky, filtrovať v tabuľke a vyhľadávať podľa konkrétnych otázok, dátumov vytvorenia atď...</li>
         </ul>';
 
-$content_unsigned = '<h2 class="hover-underline" data-i18n="tuto_unsigned_user">Pre odlháseného používateľa</h2>
-        <ul>
-            <li>Používateľ sa môže zaregistrovať.</li>
-            <li>Používateľ sa môže prihlásiť.</li>
-            <li>Po vložení QR kódu alebo číselného kódu má používateľ možnosť pristúpiť k otázke.</li>
+$content_unsigned = '<h2 class="hover-underline" data-i18n="tuto_unsigned_user">Pre neprihláseného používateľa:</h2>
+        <ul class="px-4">
+            <li data-i18n="unsigned_l1">Používateľ sa môže zaregistrovať.</li>
+            <li data-i18n="unsigned_l2">Používateľ sa môže prihlásiť.</li>
+            <li data-i18n="unsigned_l3">Po vložení QR kódu alebo číselného kódu má používateľ možnosť pristúpiť k otázke.</li>
         </ul>
-        <h2 class="hover-underline" data-i18n="tuto_admin">Pre administrátora</h2>
-        <ul>
-            <li></li>
+        <h2 class="hover-underline" data-i18n="tuto_admin">Pre administrátora:</h2>
+        <ul class="px-4">
+            <li data-i18n="admin_l1">Administrátor má tú istú funkcionalitu ako prihlásený používateľ.</li>
+            <li data-i18n="admin_l2">Administrátor má správu nad všetkými používateľmi - CRUD operície, meniť im rolu.</li>
+            <li data-i18n="admin_l3">Administrátor má prístup ku všetkým otázkam od všetkých používateľov.</li>
         </ul>';
  
 $content .= $content_signed;
@@ -51,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css">
 
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -97,7 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <div class="container-two-colums">
+    <h2 class="text-center my-1" data-i18n="tuto_header"></h2>
+
+    <div class="container-two-colums px-5">
         <div class="column">
             <?php echo $content_signed; ?>
         </div>
@@ -105,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php echo $content_unsigned; ?>
             <form action="tuto.php" method="POST">
                 <input type="hidden" name="export_to_pdf" value="PDF">
-                <button type="submit" class="btn btn-primary btn-lg fs-3 w-50 p-3">Export PDF</button>
+                <button type="submit" class="btn btn-primary btn-lg fs-3 w-50 my-5 p-3">Export PDF</button>
             </form>
         </div>
     <div>
@@ -113,9 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
-<script src="js/myAdminConsole.js"></script>
+
 <script src="js/languageScript.js"></script>
 
 </html>

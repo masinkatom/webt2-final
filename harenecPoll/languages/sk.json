@@ -89,6 +89,7 @@
     "historical_res": "Predošlé výsledky hlasovania:",
     "q_notActive": "Nie je aktivovaná!",
 
+    "tuto_header": "Používateľská príručka",
     "tuto_signed_user": "Pre prihláseného používateľa v sekcii Konzola:",
     "signed_l1": "Používateľ môže listovať a prehliadať otázky vo svojich setoch.",
     "signed_l2": "Používateľ môže otázku spustiť zeleným tlačidlom \"Start\".",
@@ -99,11 +100,17 @@
     "signed_l7": "Používateľ môže kliknutím na červené tlačidlo vymazať otázku. Rozhodnutie musí ešte raz potvrdiť, následne sa otázka navždy vymaže.",
     
     "below_showed_sets": "Pod zobrazenými setmi má používateľ možnosť:",
+    "below_sets_l1":"Vytvoriť novú otázku, používateľ si bude môcť vybrať z možnosti otvorenej otázky bez možnosti, v takom prípade si bude môcť používateľ zvoliť, ako sa mu budú zobrazovať výsledky, či cez zoznam alebo tzv. \"cloudmap\"-y. Používateľ môže zvoliť možnosť zatvorenej otázky, kde používateľ vytvorí možnosti.",
+    "below_sets_l2":"Vytvoriť nový set, kde zadá meno nového setu a potvrdí vytvorenie.",
+    "below_sets_l3":"Prezerať si všetky používateľove otázky, filtrovať v tabuľke a vyhľadávať podľa konkrétnych otázok, dátumov vytvorenia atď...",
 
-    "tuto_unsigned_user": "Pre odlháseného používateľa",
+    "tuto_unsigned_user": "Pre neprihláseného používateľa:",
     "unsigned_l1": "Používateľ sa môže zaregistrovať.",
     "unsigned_l2": "Používateľ sa môže prihlásiť.",
     "unsigned_l3": "Po vložení QR kódu alebo číselného kódu má používateľ možnosť pristúpiť k otázke.",
     
-    "tuto_admin": "Pre administrátora"
+    "tuto_admin": "Pre administrátora:",
+    "admin_l1": "Administrátor má tú istú funkcionalitu ako prihlásený používateľ.",
+    "admin_l2": "Administrátor má správu nad všetkými používateľmi - CRUD operície, meniť im rolu.",
+    "admin_l3": "Administrátor má prístup ku všetkým otázkam od všetkých používateľov, môže ich upravovať."
 }

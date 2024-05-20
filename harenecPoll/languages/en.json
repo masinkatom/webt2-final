@@ -89,21 +89,28 @@
     "polling_res" : "Previous polling results:",
     "q_notActive": "Not activated!",
 
+    "tuto_header": "User manual",
     "tuto_signed_user": "Console for signed user:",
-    "signed_l1": "",
-    "signed_l2": "",
-    "signed_l3": "",
-    "signed_l4": "",
-    "signed_l5": "",
-    "signed_l6": "",
-    "signed_l7": "",
+    "signed_l1": "The user can browse and view questions in their sets.",
+    "signed_l2": "The user can start a question with the green \"Start\" button.",
+    "signed_l3": "The user can deactivate a question with the red \"Stop\" button.",
+    "signed_l4": "The user can view information about the question with the blue \"Info\" button. They can see the text of the question. Similarly, by clicking on \"Statistics\", they can see the voting results from previous years.",
+    "signed_l5": "The user can copy a question to another set by clicking the gray \"Copy\" button, selecting the set to which they want to copy the question, and then confirming the operation.",
+    "signed_l6": "The user can edit a question by clicking \"Edit.\" They change the selected information and confirm the operation.",
+    "signed_l7": "The user can delete a question by clicking the red button. The decision must be confirmed again, and then the question will be permanently deleted.",
 
-    "below_showed_sets": "",
+    "below_showed_sets": "Under the displayed sets, the user has the option to:",
+    "below_sets_l1":"Create a new question; the user will be able to choose an open-ended question without options. In this case, the user can choose how the results will be displayed, either as a list or as so-called \"cloud maps.\" The user can also choose a closed-ended question, where the user creates the options.",
+    "below_sets_l2":"Create a new set by entering the name of the new set and confirming the creation.",
+    "below_sets_l3":"Browse all the user's questions, filter in a table, and search by specific questions, creation dates, etc.",
 
-    "tuto_unsigned_user": "For unsigned user",
-    "unsigned_l1": "",
-    "unsigned_l2": "",
-    "unsigned_l3": "",
+    "tuto_unsigned_user": "For unsigned user:",
+    "unsigned_l1": "The user can register.",
+    "unsigned_l2": "The user can log in.",
+    "unsigned_l3": "After entering a QR code or numeric code, the user has the option to access the question.",
     
-    "tuto_admin": "For admin"
+    "tuto_admin": "For admin:",
+    "admin_l1": "The administrator has the same functionality as a logged-in user.",
+    "admin_l2": "The administrator has management over all users - CRUD operations, changing their roles.",
+    "admin_l3": "The administrator has access to all questions from all users and can edit user's questions."
 }
