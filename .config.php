@@ -1,5 +1,5 @@
 <?php
-$host = 'node24.webte.fei.stuba.sk';
+$host = 'localhost';
 $username = 'xbrilla';
 $password = 'presovskaBorka22';
 $dbname = 'WIAH';

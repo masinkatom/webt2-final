@@ -13,7 +13,7 @@ $answers = [];
 $ws_worker->onConnect = function ($connection) use ($ws_worker) {
     // $connection->closed = false;
     // $connection->send(prepareData("enemiesOnServer", $game->getPlayers()));
-
+    var_dump("connected USER");
 
 
 };
@@ -21,6 +21,7 @@ $ws_worker->onConnect = function ($connection) use ($ws_worker) {
 // receiving data from the client
 $ws_worker->onMessage = function (TcpConnection $connection, $data) use ($ws_worker, &$answers) {
     $dataRcv = json_decode($data, true);
+    var_dump($dataRcv);
     if ($dataRcv["type"] === "choices") {
         $connection->qId = $dataRcv["payload"]["questionId"];
         addQuestionAnswers($dataRcv["payload"]["questionId"], $dataRcv["payload"]["answers"]);
@@ -35,9 +36,12 @@ $ws_worker->onMessage = function (TcpConnection $connection, $data) use ($ws_wor
     }
     if ($dataRcv["type"] === "deactivate") {
         $qRemoveId = $dataRcv["payload"];
-
+        $connection->qId = $qRemoveId;
         foreach ($answers as $key => $ans) {
             if ($ans["qId"] == $qRemoveId) {
+                echo "ANS: ";
+                var_dump($ans);
+                sendDataToAll($ws_worker, "userAnswers", $ans, $qRemoveId);
                 unset ($answers[$key]);
                 break;
             }
