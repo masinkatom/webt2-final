@@ -827,14 +827,92 @@ function creatseeStatsCollapse(question) {
     cardElement.classList.add("collapse-set");
     cardElement.textContent = "STATS";
 
-    var divkoDoKtorehoBudeAdamkoStatsRobit = document.createElement("div") //TODO ADAMKO STATS DIV
-    divkoDoKtorehoBudeAdamkoStatsRobit.textContent = JSON.stringify(question)
+    var divkoDoKtorehoBudeAdamkoStatsRobit = document.createElement("div"); //TODO ADAMKO STATS DIV
+    //divkoDoKtorehoBudeAdamkoStatsRobit.textContent = "";
+    console.log("TOTO TU JE QUESTION", question)
+    console.log("TOTO TU JE IDECKO ",question.id_question)
     //tvoja robota v divku pojde tu
-    divkoDoKtorehoBudeAdamkoStatsRobit.id = "statsDiv";
+
+    divkoDoKtorehoBudeAdamkoStatsRobit.id = "statsDiv"+question.id_question;
     cardElement.appendChild(divkoDoKtorehoBudeAdamkoStatsRobit);
     collapseContainer.appendChild(cardElement);
-
+    generateList(question.id_question, "statsDiv"+question.id_question);
+    
     return collapseContainer;
+}
+
+async function callApi(method, url, data = []) {
+    let options = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    if (method === "GET") {
+        options = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok, code:' + response.statusText);
+        }
+        const responseData = await response.json();
+        return responseData; // Return the JSON data
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // Re-throw the error to be caught by the caller
+    }
+}
+
+
+async function generateList(qId, divId) {
+    let response = await callApi("GET", `https://node24.webte.fei.stuba.sk/harenecPoll/api.php/stats?questionId=${qId}`);
+    const container = document.getElementById(divId);
+    console.log("CONTAINER", container)
+    const ul = document.createElement('ul');
+    ul.classList.add("in-row");
+
+    for (const year in response) {
+        if (response.hasOwnProperty(year)) {
+            const yearLi = document.createElement('li');
+            yearLi.classList.add('year');
+            yearLi.textContent = year;
+            ul.appendChild(yearLi);
+
+            console.log();
+
+            let yearCounter = countAllResponses(response[year]);
+
+            const answersUl = document.createElement('ul');
+            for (const answer in response[year]) {
+                if (response[year].hasOwnProperty(answer)) {
+
+                    const answerLi = document.createElement('li');
+                    answerLi.classList.add('answer');
+                    answerLi.textContent = `${answer}: ${Math.floor((response[year][answer] / yearCounter) * 100)}%`;
+                    answersUl.appendChild(answerLi);
+                }
+            }
+            yearLi.appendChild(answersUl);
+        }
+    }
+    container.appendChild(ul);
+}
+
+function countAllResponses(data) {
+    let counter = 0;
+    for (const ans in data) {
+        counter += data[ans];
+    }
+    return counter;
 }
 
 function createNewQuestionCollapse() {
