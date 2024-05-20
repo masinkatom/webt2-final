@@ -3,9 +3,7 @@ function clickButton() {
 
     if (langBtn) {
         langBtn.click();
-        console.log("button should have been clicked");
     } else {
-        console.log("button not found");
     }
 }
 
@@ -18,7 +16,7 @@ let startedQuestion = new Map();
 var testDataDelete = `[
     {
       "id_question": 1,
-      "text_q": "SI KOKOT",
+      "text_q": "SI Hlupak",
       "active": 1,
       "open": 0,
       "id_set": 1,
@@ -91,7 +89,6 @@ var container = document.getElementById("button-container");
 window.addEventListener('DOMContentLoaded', function() {
     clickButton();
 
-console.log("Hallo world admin!");
 
 
 
@@ -115,7 +112,6 @@ getGlobalUsers().then(data => {
 
             })
             globalSets = data;
-            console.log(globalSets);
             var button = document.createElement("button");
             button.setAttribute("type", "button");
             button.setAttribute("data-bs-toggle", "collapse");
@@ -123,8 +119,7 @@ getGlobalUsers().then(data => {
             button.setAttribute("aria-expanded", "false");
             button.textContent = user.nick;
 
-            //var container = document.getElementById("button-container");
-            console.log(container);
+           
             container.appendChild(button);//DDD
             container.appendChild(createButtonsOfSets(user.nick));
 
@@ -207,8 +202,6 @@ function callWhenWholeRecall(){
                 button.setAttribute("aria-expanded", "false");
                 button.textContent = user.nick;
     
-                //var container = document.getElementById("button-container");
-                console.log(container);
                 container.appendChild(button);//DDD
                 container.appendChild(createButtonsOfSets(user.nick));
     
@@ -240,7 +233,6 @@ function callWhenWholeRecall(){
     
             globalSets = getAllSetsExisting().then( data =>{
                 globalSets = data;
-                console.log("TU SU VSETKY", globalSets);
             })
     
         });
@@ -261,9 +253,7 @@ function clickButton() {
 
     if (langBtn) {
         langBtn.click();
-        console.log("button should have been clicked");
     } else {
-        console.log("button not found");
     }
 }
 
@@ -284,17 +274,6 @@ let flag = 0;
 
 
 
-var testDataDelete = `[
-    {
-      "id_question": 1,
-      "text_q": "SI KOKOT",
-      "active": 1,
-      "open": 0,
-      "id_set": 1,
-      "creationDate": "2024-05-01",
-      "code": null
-    }
-  ]`;
 
 
 var jsonData = `[
@@ -438,7 +417,7 @@ function createCRUDdiv(userName) {
     buttonE.setAttribute("aria-expanded", "false");
     buttonE.setAttribute("aria-controls", "collapseDiv" + userName);
     buttonE.addEventListener("click", function() {
-        console.log("sddssdsddsds");
+        
         });
 
         var button = document.createElement("button");
@@ -496,6 +475,7 @@ button.innerText = "Edit"; //KKKKKKKK bolo zakomentovane
     var editUserField = document.createElement("input");
     editUserField.setAttribute("type", "text");
     editUserField.value = userName;
+    oldname = userName;
     
     var buttonEditUser = document.createElement("button");
     buttonEditUser.setAttribute("type", "button");
@@ -510,9 +490,10 @@ button.innerText = "Edit"; //KKKKKKKK bolo zakomentovane
         // DATA NA ODOSLANIE
         // zmenene meno usera
         var editedUserToSend = {
+            oldname: oldname,
             username: editUserField.value
         }
-        console.log(editedUserToSend);
+        editUserHotFix(editedUserToSend);
     })
     editUserDiv.appendChild(buttonEditUser);
     cardBodyDiv.appendChild(editUserDiv);
@@ -533,8 +514,32 @@ collapseDiv.appendChild(cardBodyDiv);
     return crudCuserDiv;
 }
 
+function editUserHotFix(data){
+
+
+    fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/editUser`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (response.ok) {
+                showToast();
+                var container = document.getElementById("button-container");
+                container.innerHTML = "";
+                callWhenWholeRecall();
+            } else {
+                console.error('Failed to update user flag');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+}
+
 function deleteUser(userName) {
-    console.log("Deleting user with sessionLoginID: " + userName);
     fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/deleteUser?userName=${userName}`, {
         method: 'DELETE',
         headers: {
@@ -546,7 +551,6 @@ function deleteUser(userName) {
         .then(response => {
             // Check if the request was successful
             if (response.ok) {
-                console.log('User deleted successfully');
                 showToast();
                 var container = document.getElementById("button-container");
                 container.innerHTML = "";
@@ -566,7 +570,6 @@ function deleteUser(userName) {
 
 // Function to handle edit user button click
 function editUser(userName) {
-    console.log("Editing user with sessionLoginID: " + userName);
 }
 
 // Function to handle set user role button click
@@ -577,7 +580,6 @@ function setUserRole(userName, role) {
         adminValue: role,
     }
 
-    console.log("Setting user role with sessionLoginID: " + userName + " to role: " + role);
     fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/updateUserFlag?userName=${userName}`, {
         method: 'PUT',
         headers: {
@@ -589,7 +591,6 @@ function setUserRole(userName, role) {
         .then(response => {
             // Check if the request was successful
             if (response.ok) {
-                console.log('User flag updated successfully');
                 showToast();
                 // Handle further actions if needed
             } else {
@@ -604,7 +605,7 @@ function setUserRole(userName, role) {
 }
 
     async function getGlobalUsers() {
-        //TODO TU KURVA
+       
         try {
             const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/users`,{
                 method: 'GET'
@@ -620,11 +621,9 @@ function setUserRole(userName, role) {
 
 
 async function getGlobalSets(user) {
-    console.log(user);
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/sets?username=${user}`);
         const data = await response.json();
-        console.log(data);
         return data;
         
     } catch (error) {
@@ -658,6 +657,7 @@ function createButtonsOfSets(user) {
     //container.appendChild(createSeeAllQuestionCollapse());
     //container.appendChild(createStatsButton());
     //container.appendChild(creatseeStatsCollapse())
+    clickButton();
     
     var cardBodyDiv = document.createElement("div");
     cardBodyDiv.classList.add("card", "card-body");
@@ -771,14 +771,9 @@ function createSeeAllQuestionCollapse() {
             var allQuestionJozkoDivko = document.createElement("div")
             allQuestionJozkoDivko.id = "allQuestionJozkoDivko";
             var allQbyName;
-            console.log(data);
             allQbyName = data;
    
-            console.log(allQbyName);
-            //TU JOZKO ROBIS S allQByName DATAMI do divka  allQuestionJozkoDivko
-            console.log(allQbyName);
 
-            console.log(allQbyName.length, "WTF");
             if(allQbyName.length != 0){
                 var myTable = createDatatable(allQbyName);
                 allQuestionJozkoDivko.appendChild(myTable);
@@ -1231,7 +1226,7 @@ function createNewSetCollapse() {
     tuRobis.appendChild(createSetButton);
 
     createSetButton.addEventListener('click', function () {
-        // ODTIALTO SA BUDU ODOSIELAT DATADOPICI
+        
         var createdSet = newSetInput.value; // NOVY SET
         console.log("CREATE SET DONE");
         createdSet = createdSet.replace(/\s+/g, '_')
@@ -1267,6 +1262,9 @@ async function createNewSetDatabase(dataToSend) {
             // Check if the request was successful
             if (response.ok) {
                 console.log('Question updated successfully');
+                var container = document.getElementById("button-container");
+                container.innerHTML = "";
+                callWhenWholeRecall();
                 // Handle further actions if needed
             } else {
                 console.error('Failed to update question');

@@ -194,11 +194,10 @@ switch ($method) {
                 }
                 break;
             case 'editUser':
-                if (isset($_GET['userName'])) {
-                    $userName = urldecode($_GET['userName']);
-                    $updateUser = $UserObj->editUserByName($userName, $data);
+               
+                    $updateUser = $UserObj->editUserByName($data);
                     echo json_encode($updateUser);
-                }
+                
                 break;
             default:
                 break;

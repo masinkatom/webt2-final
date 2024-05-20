@@ -31,12 +31,11 @@ function removeByKey(key) {
 }
 
 
-console.log("PICI JA SOM GENIUS", sessionLoginID)
 
 var testDataDelete = `[
     {
       "id_question": 1,
-      "text_q": "SI KOKOT",
+      "text_q": "SI Hlupak",
       "active": 1,
       "open": 0,
       "id_set": 1,
@@ -267,7 +266,7 @@ function createSeeAllQuestionCollapse() {
 
 async function getAllQuestionByName(user) {
     //TU DURI UPRAVIS SPOJAZDNIS BOROVE API A VRATIS DATA
-    console.log("DOPICI",user);
+    
     try {
         const response = await fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?userId=${sessionLoginID}`,{
             method: 'GET'
@@ -653,7 +652,7 @@ function createNewSetCollapse() {
     tuRobis.appendChild(createSetButton);
 
     createSetButton.addEventListener('click', function () {
-        // ODTIALTO SA BUDU ODOSIELAT DATADOPICI
+       
         var createdSet = newSetInput.value; // NOVY SET
         console.log("CREATE SET DONE");
         createdSet = createdSet.replace(/\s+/g, '_')
@@ -694,7 +693,6 @@ async function createNewSetDatabase(dataToSend) {
                 showToast();
                 var container = document.getElementById("button-container");
                 container.innerHTML = "";
-                console.log("BOHA PICI NEDELA")
                 getGlobalSets().then(data => {
                     globalSets = data;
                     console.log(globalSets);
