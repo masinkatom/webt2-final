@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     echo '
                         <li class="nav-item">
-                            <a class="nav-item nav-item-current" href="#" data-i18n="my_console_page_nav"></a>
+                            <a class="nav-item nav-item-current" href="myConsole.php" data-i18n="my_console_page_nav"></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="logout.php" data-i18n="logout_page_nav"></a>
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo '<script>var sessionLoginID = "' . $_SESSION["loginID"] . '";</script>';
                 } else {
                     echo '<li class="nav-item">
-                            <a class="nav-item" href="#" data-i18n="homepage_nav"></a>
+                            <a class="nav-item" href="index.php" data-i18n="homepage_nav"></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item" href="login.php" data-i18n="login_page_nav"></a>
