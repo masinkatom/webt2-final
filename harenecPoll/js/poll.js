@@ -51,6 +51,7 @@ let answers;
 let corrects = [];
 let userChoices = [];
 let otherUserChoices = [];
+let logged = localStorage.getItem("isIn");
 
 showAnswers();
 
@@ -58,7 +59,7 @@ async function loadQuestion() {
     let response = await callApi("GET", `https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?questionCode=${questionCode}`);
     try {
         question = response[0];
-        if (question.active == 0) {
+        if (question.active == 0 && (logged === null || logged === "false")) {
             showError("question-notActive");
             return;
         }
@@ -83,9 +84,7 @@ async function loadAnswers() {
 async function showAnswers() {
     await loadQuestion();
 
-    let logged = localStorage.getItem("isIn");
-
-    if (question.active == 0 && logged === null && logged === "false") {
+    if (question.active == 0 && (logged === null || logged === "false")) {
         return;
     }
     questionBtnsDiv.classList.remove("hidden");
@@ -114,9 +113,12 @@ async function showAnswers() {
 
     if (logged !== null && logged === "true") {
         hideAnswering();
-        sendUserChoices();
-        showResults();
-        sendDeactivate();
+        ws.addEventListener("open" , () => {
+            sendUserChoices();
+            showResults();
+            sendDeactivate();
+
+        })
     }
 
 }
@@ -199,9 +201,11 @@ function showResults() {
     // redirect to results
     questionBtnsDiv.classList.add("hidden");
     currentStatsDiv.classList.remove("hidden");
-    Plotly.Plots.resize('currents-plot');
-    // Generate the list
-    generateList();
+    if (question.open == 0) {
+        Plotly.Plots.resize('currents-plot');
+        // Generate the list
+        generateList();
+    }
 }
 
 function hideAnswering() {

@@ -1509,13 +1509,13 @@ function stopQuestionWithQR(question){
     console.log(question); ///333
     console.log("STOP NA OTAZKU");
     setActiveFlagToZero(question.id_question);
-    question.code = "";
+    //question.code = "";
     editQFLAG(question.text_q, question, question.id_question);
     //dajak vysledky riesit este neviem
 
     var questionCODE = startedQuestion.get(question.id_question);
     console.log("POZOR PES");
-    questionCODE==null?console.log("ZLE JE"):window.open("https://node24.webte.fei.stuba.sk/"+questionCODE, "_blank");
+    questionCODE==null?console.log("ZLE JE"):window.open("https://node24.webte.fei.stuba.sk/"+questionCODE, "_blank")/*window.location.assign("https://node24.webte.fei.stuba.sk/"+questionCODE*/;
     removeByKey(question.id_question)
 
 

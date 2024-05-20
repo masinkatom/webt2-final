@@ -1,5 +1,7 @@
 <?php
 
+
+session_start();
 // use BaconQrCode\Renderer\GDLibRenderer;
 // use BaconQrCode\Writer;
 
@@ -31,19 +33,7 @@ require_once "server/curlHelper.php";
             <ul class="nav-list">
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-                    echo '<li class="nav-item">
-                        <a class="nav-item" href="index.php">DomXXX</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-item" href="myConsole.php">KonzXXX</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-item" href="logout.php">OdhláseXXX</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-item" href="changePassword.php">zmenaHeslaXXX</a>
-                        </li>
-                        ';
+                    
                     //echo $_SESSION["login"], $_SESSION["loginID"];
                     echo '<script>var sessionLogin = "' . $_SESSION['login'] . '";</script>';
                     echo '<script>var sessionLoginID = "' . $_SESSION["loginID"] . '";</script>';

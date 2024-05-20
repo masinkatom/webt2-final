@@ -93,6 +93,7 @@ echo $output;
                         <input type="text" id="bigger-input-height" class="margin-y" name="code" placeholder=". . .">
                         <button type="submit" class="margin-y" data-i18n="code_button"></button>
                     </form>
+                    <a href="tuto.php"><button class="lang_btn">Manual</button></a>
                 </div>
             </div>';
     }

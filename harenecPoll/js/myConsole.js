@@ -967,7 +967,7 @@ function stopQuestionWithQR(question){
     console.log(question)
     console.log("STOP NA OTAZKU");
     setActiveFlagToZero(question.id_question);
-    question.code = "";
+    //question.code = "";
     editQFLAG(question.text_q, question, question.id_question);
     
     var questionCODE = startedQuestion.get(question.id_question);

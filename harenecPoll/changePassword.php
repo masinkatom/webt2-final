@@ -103,9 +103,7 @@ echo $output;
             <ul class="nav-list">
                 <?php
                 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-                    echo '<li class="nav-item">
-                        <a class="nav-item nav-item-current" href="index.php" data-i18n="homepage_nav"></a>
-                        </li>
+                    echo '
                         <li class="nav-item">
                             <a class="nav-item" href="myConsole.php" data-i18n="my_console_page_nav"></a>
                         </li>
