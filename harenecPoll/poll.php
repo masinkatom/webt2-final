@@ -1,5 +1,12 @@
 <?php
 
+// use BaconQrCode\Renderer\GDLibRenderer;
+// use BaconQrCode\Writer;
+
+// $renderer = new GDLibRenderer(400);
+// $writer = new Writer($renderer);
+// $writer->writeFile('Hello World!', 'qrcode.png');
+
 require_once "server/curlHelper.php";
 
 // $response = json_decode(sendRequest("https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?questionCode=". $_GET['code'], "GET"), true);
@@ -70,22 +77,23 @@ require_once "server/curlHelper.php";
                 <h2 id="question-element" class="spacer-b"></h2>
                 <div id="answer-element" class="in-column"></div>
                 <h2 id="question-404" class="fail hidden" data-i18n="question_404"></h2>
+                <h2 id="question-notActive" class="fail hidden">Nie je aktivovaná!XXX</h2>
             </div>
-            <div id="question-buttons" class="in-row spaced-between spacer-t">
+            <div id="question-buttons" class="in-row spaced-between spacer-t hidden">
                 <button id="results-send" class="btn-compact centered" data-i18n="show_correct_answers"></button>
-                <button id="results-redirect" class="btn-compact centered hidden" data-i18n="show_results">></button>
+                <button id="results-redirect" class="btn-compact centered hidden" data-i18n="show_results"></button>
             </div>
 
             <div id="current-stats" class="in-column spacer-t hidden">
-                <h2>Aktuálne výsledky hlasovania:</h2>
+                <h2>Aktuálne výsledky hlasovaniaXXX:</h2>
 
-                <div id="currents-plot"></div>
+                <div id="currents-plot" class="hidden"></div>
+                <ul id="dynamicList" class="in-row centered hidden"></ul>
             </div>
         </div>
         
     </main>
 
-    <script src="js/poll.js"></script>
 </body>
 <script src="js/poll.js"></script>
 <script src="js/languageScript.js"></script>

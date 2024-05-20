@@ -50,6 +50,7 @@ let questionId;
 let answers;
 let corrects = [];
 let userChoices = [];
+let otherUserChoices = [];
 
 showAnswers();
 
@@ -57,6 +58,10 @@ async function loadQuestion() {
     let response = await callApi("GET", `https://node24.webte.fei.stuba.sk/harenecPoll/api.php/question?questionCode=${questionCode}`);
     try {
         question = response[0];
+        if (question.active == 0) {
+            showError("question-notActive");
+            return;
+        }
         questionId = question.id_question;
         questionElm.textContent = question.text_q;
     } catch (error) {
@@ -77,6 +82,13 @@ async function loadAnswers() {
 
 async function showAnswers() {
     await loadQuestion();
+
+    let logged = localStorage.getItem("isIn");
+
+    if (question.active == 0 && logged === null && logged === "false") {
+        return;
+    }
+    questionBtnsDiv.classList.remove("hidden");
 
     if (question.open == 1) {
         correctsBtn.innerText = "Odoslať odpoveď";
@@ -100,8 +112,16 @@ async function showAnswers() {
         });
     }
 
+    if (logged !== null && logged === "true") {
+        hideAnswering();
+        sendUserChoices();
+        showResults();
+        sendDeactivate();
+    }
+
 }
 
+// ans btn clicked
 function answerHandler(e) {
     let clickedAnsId = e.target.getAttribute("ans-id");
     corrects.every(correct => {
@@ -117,25 +137,27 @@ function answerHandler(e) {
     });
     e.target.removeEventListener("click", answerHandler);
 
-    showResultsBtn();
+    let data = {
+        "id_answer": clickedAnsId,
+        "year": new Date().getFullYear()
+    };
+    callApi("POST", "https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createStat", data);
 
     userChoices.push(clickedAnsId);
     console.log(userChoices);
 }
 
+// showAns btn clicked
 function showCorrectAnswers(e) {
     if (question.open == 1) {
         let ansInput = document.getElementById("answer-input");
         ansInput.disabled = true;
         ansInput.style.border = "5px solid green";
         e.target.classList.add("invisible");
-        let data = {
-            "id_answer": "2",
-            "year": "2022"
-        };
+
         userChoices.push(ansInput.value);
         console.log(userChoices);
-        // callApi("POST", "https://node24.webte.fei.stuba.sk/harenecPoll/api.php/createStat", data);
+
     }
     else if (question.open == 0) {
         Array.from(answerDiv.children).every(btn => {
@@ -155,12 +177,15 @@ function showCorrectAnswers(e) {
         });
 
     }
-
+    sendUserChoices();
     showResultsBtn();
 }
 
 function showError(errId) {
     if (errId == "question-404") {
+        document.getElementById(errId).classList.remove("hidden");
+    }
+    if (errId == "question-notActive") {
         document.getElementById(errId).classList.remove("hidden");
     }
 }
@@ -169,12 +194,14 @@ function showResultsBtn() {
     resultsBtn.classList.remove("hidden");
 }
 
-function showResults(e) {
-    // TODO redirect to results site
+function showResults() {
+    // redirect to results
     questionBtnsDiv.classList.add("hidden");
     currentStatsDiv.classList.remove("hidden");
-    sendUserChoices();
-    showGraph();
+}
+
+function hideAnswering() {
+    answerDiv.classList.add("hidden");
 }
 
 async function callApi(method, url, data = []) {
@@ -210,71 +237,107 @@ async function callApi(method, url, data = []) {
 
 
 // Plotly to show results
-function showGraph() {
+
+let xAxis = [];
+let yAxis = [];
+
+async function fillXYData() {
+    xAxis = [];
+    yAxis = [];
+    answers.forEach(answer => {
+        xAxis.push(answer.text_a);
+        let ansCount = 0;
+        otherUserChoices.forEach(ansId => {
+            if (answer.id_answer == ansId) {
+                ansCount++;
+            }
+        });
+        yAxis.push(ansCount)
+    });
+}
+
+async function showGraph() {
+    await fillXYData();
     let dataPlot = [
         {
-            x: ['giraffes', 'orangutans', 'monkeys'],
-            y: [20, 14, 23],
+            x: xAxis,
+            y: yAxis,
             type: 'bar',
             marker: {
-    
                 color: 'rgb(191, 175, 0)',
-            
                 line: {
-            
-                  color: 'rgb(255, 255, 255)',
-            
-                  width: 3
-            
+                    color: 'rgb(255, 255, 255)',
+                    width: 3
                 }
-            
-              }
+
+            }
         }
     ];
-    
+
     let layout = {
         xaxis: {
             tickfont: {
                 family: 'Anta, monospace',
-                size: 14,
+                size: 12,
                 color: 'white'  // X axis tick labels font color
             }
         },
         yaxis: {
-            title: {
-                text: 'Počet odpovedí',
-                font: {
-                    family: 'Anta, monospace',
-                    size: 18,
-                    color: 'white'  // Y axis label font color
-                }
-            },
+            // title: {
+            //     text: 'Počet odpovedí',
+            //     font: {
+            //         family: 'Anta, monospace',
+            //         size: 18,
+            //         color: 'white'  // Y axis label font color
+            //     }
+            // },
             tickfont: {
                 family: 'Anta, monospace',
                 size: 14,
                 color: 'white'  // Y axis tick labels font color
-            }
+            },
+            dtick: 1
         },
         margin: {
             l: 50,   // left margin
             r: 50,   // right margin
-            b: 50,   // bottom margin
+            b: 150,   // bottom margin
             t: 10,   // top margin
-            pad: 4   // padding
+            pad: 2   // padding
         },
         plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot area
         paper_bgcolor: 'rgba(0,0,0,0)'  // Transparent paper area
     };
-    
-    let config = { 
+
+    let config = {
         responsive: true,
         displayModeBar: false
     };
-    
-    Plotly.newPlot('currents-plot', dataPlot, layout, config).then( () => {
+    document.getElementById("currents-plot").classList.remove("hidden");
+    Plotly.newPlot('currents-plot', dataPlot, layout, config).then(() => {
         window.dispatchEvent(new Event('resize'));
     });
 
+}
+
+function showCloud() {
+    const listContainer = document.getElementById('dynamicList');
+    listContainer.classList.remove("hidden");
+    listContainer.innerHTML = '';
+
+    // Count the occurrences of each item
+    const itemCounts = {};
+    otherUserChoices.forEach(item => {
+        itemCounts[item] = (itemCounts[item] || 0) + 1;
+    });
+
+    // Create a list item for each unique item
+    for (const [item, count] of Object.entries(itemCounts)) {
+        const listItem = document.createElement('li');
+        listItem.textContent = item + " (" + count + "x)";
+        listItem.style.fontSize = (22 + (count - 1) * 4) + 'px'; // Base font size 16px, increase by 4px for each additional occurrence
+        listContainer.appendChild(listItem);
+    }
 }
 
 
@@ -285,7 +348,7 @@ const heartbeatInterval = setInterval(() => {
     if (ws.readyState === WebSocket.OPEN) {
         ws.send(prepareData("ping"));
     }
-}, 20000);
+}, 15000);
 
 
 ws.onopen = function (e) {
@@ -294,11 +357,20 @@ ws.onopen = function (e) {
 
 ws.onmessage = function (e) {
     let data = JSON.parse(e.data);
+    if (data.type == "userAnswers") {
+        otherUserChoices = data.payload.answers;
+        if (question.open == 0) {
+            showGraph();
+        }
+        else if (question.open == 1) {
+            showCloud();
+        }
+    }
     console.log(data);
 }
 
 function sendUserChoices() {
-    if (userChoices !== null) {
+    if (userChoices !== null && userChoices[0] != "") {
         let toSend;
         if (question.open == 0) {
             toSend = {
@@ -317,6 +389,12 @@ function sendUserChoices() {
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(prepareData("choices", toSend));
         }
+    }
+}
+
+function sendDeactivate() {
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(prepareData("deactivate", questionId));
     }
 }
 
