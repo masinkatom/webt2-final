@@ -10,16 +10,16 @@ $ws_worker->count = 4; // 1 proces
 
 $answers = [];
 
-$ws_worker->onConnect = function($connection) use ($ws_worker){
+$ws_worker->onConnect = function ($connection) use ($ws_worker) {
     // $connection->closed = false;
     // $connection->send(prepareData("enemiesOnServer", $game->getPlayers()));
-    
 
-    
+
+
 };
 
 // receiving data from the client
-$ws_worker->onMessage = function(TcpConnection $connection, $data) use ($ws_worker, &$answers) {
+$ws_worker->onMessage = function (TcpConnection $connection, $data) use ($ws_worker, &$answers) {
     $dataRcv = json_decode($data, true);
     if ($dataRcv["type"] === "choices") {
         $connection->qId = $dataRcv["payload"]["questionId"];
@@ -33,21 +33,36 @@ $ws_worker->onMessage = function(TcpConnection $connection, $data) use ($ws_work
             }
         }
     }
-    
+    if ($dataRcv["type"] === "deactivate") {
+        $qRemoveId = $dataRcv["payload"];
+
+        foreach ($answers as $key => $ans) {
+            if ($ans["qId"] == $qRemoveId) {
+                unset ($answers[$key]);
+                break;
+            }
+        }
+
+        // Reindex the array to ensure the indexes are continuous
+        $answers = array_values($answers);
+        var_dump($answers);
+    }
+
     // $player->update($dataRcv["payload"]["x"], $dataRcv["payload"]["y"]);
     // sendDataToAll($ws_worker, "endGame", $player->getUuid());
     // if ($dataRcv["type"] === "message") {
     //     sendDataToAll($ws_worker, "message", [$dataRcv["sender"], $dataRcv["payload"]]);
     // }
-     
-};
-
-
-$ws_worker->onClose = function($connection) use (&$game, $ws_worker){
 
 };
 
-function prepareData($type, $data) {
+
+$ws_worker->onClose = function ($connection) use (&$game, $ws_worker) {
+
+};
+
+function prepareData($type, $data)
+{
     $toSend = [
         "type" => $type,
         "payload" => $data
@@ -58,12 +73,13 @@ function prepareData($type, $data) {
 
 // userSpecifier (basically qId) is used in case of wanting to send data to only some users
 // in out case we want that cuz we send to user only data with some question id 
-function sendDataToAll($ws_worker, $type, $data, $userSpecifier = "") {
+function sendDataToAll($ws_worker, $type, $data, $userSpecifier = "")
+{
     // echo "\n";
     $toSend = prepareData($type, $data);
     var_dump($toSend);
     //echo "\n" . $toSend;
-    
+
     foreach ($ws_worker->connections as $conn) {
         //$conn->send($data);
         if ($userSpecifier != "") {
@@ -71,14 +87,14 @@ function sendDataToAll($ws_worker, $type, $data, $userSpecifier = "") {
                 echo "sendin";
                 $conn->send($toSend);
             }
-        }
-        else {
+        } else {
             $conn->send($toSend);
         }
     }
 }
 
-function addQuestionAnswers($qid, $anss) {
+function addQuestionAnswers($qid, $anss)
+{
     global $answers;
     foreach ($answers as &$answer) {
         if ($answer["qId"] == $qid) {

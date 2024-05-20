@@ -81,7 +81,7 @@ require_once "server/curlHelper.php";
             </div>
             <div id="question-buttons" class="in-row spaced-between spacer-t hidden">
                 <button id="results-send" class="btn-compact centered" data-i18n="show_correct_answers"></button>
-                <button id="results-redirect" class="btn-compact centered hidden" data-i18n="show_results">></button>
+                <button id="results-redirect" class="btn-compact centered hidden" data-i18n="show_results"></button>
             </div>
 
             <div id="current-stats" class="in-column spacer-t hidden">

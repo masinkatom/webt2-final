@@ -83,7 +83,9 @@ async function loadAnswers() {
 async function showAnswers() {
     await loadQuestion();
 
-    if (question.active == 0) {
+    let logged = localStorage.getItem("isIn");
+
+    if (question.active == 0 && logged === null && logged === "false") {
         return;
     }
     questionBtnsDiv.classList.remove("hidden");
@@ -108,6 +110,13 @@ async function showAnswers() {
             answerDiv.appendChild(ansBtn)
 
         });
+    }
+
+    if (logged !== null && logged === "true") {
+        hideAnswering();
+        sendUserChoices();
+        showResults();
+        sendDeactivate();
     }
 
 }
@@ -168,7 +177,7 @@ function showCorrectAnswers(e) {
         });
 
     }
-
+    sendUserChoices();
     showResultsBtn();
 }
 
@@ -185,17 +194,14 @@ function showResultsBtn() {
     resultsBtn.classList.remove("hidden");
 }
 
-function showResults(e) {
+function showResults() {
     // redirect to results
     questionBtnsDiv.classList.add("hidden");
     currentStatsDiv.classList.remove("hidden");
-    sendUserChoices();
-    if (question.open == 0) {
+}
 
-    }
-    else {
-        // TODO vysledky pre otvorenu otazku
-    }
+function hideAnswering() {
+    answerDiv.classList.add("hidden");
 }
 
 async function callApi(method, url, data = []) {
@@ -342,7 +348,7 @@ const heartbeatInterval = setInterval(() => {
     if (ws.readyState === WebSocket.OPEN) {
         ws.send(prepareData("ping"));
     }
-}, 20000);
+}, 15000);
 
 
 ws.onopen = function (e) {
@@ -383,6 +389,12 @@ function sendUserChoices() {
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(prepareData("choices", toSend));
         }
+    }
+}
+
+function sendDeactivate() {
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(prepareData("deactivate", questionId));
     }
 }
 
