@@ -40,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["logged"] = true;
 
                 $_SESSION['isIn'] = true;
+                echo '<script src="js/setLocalStorage.js"></script>';
 
                 $_SESSION["isAdmin"] = $isAdmin;
                 if ($isAdmin ==  1) {

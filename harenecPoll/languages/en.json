@@ -82,7 +82,7 @@
 
     "poll_header": "QUESTION:",
     "poll_warning": "(Warning, the question might have multiple correct answers)",
-    "question_404": "The question does not exist or is not activated!",
+    "question_404": "Doesn't exist!",
     "show_correct_answers": "Show correct answers",
     "show_results": "Show results >",
     "historical_res" : "Current polling results:",

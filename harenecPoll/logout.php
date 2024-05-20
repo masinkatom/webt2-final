@@ -8,7 +8,7 @@
     if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         $_SESSION["loggedout"] = true;
         $_SESSION['isIn'] = false;
-       // echo '<script src="js/setLocalStorageFalse.js"></script>';
+        echo '<script src="js/setLocalStorageFalse.js"></script>';
         header("location: index.php");
     }else{
         header('location: index.php');
