@@ -85,8 +85,8 @@
     "question_404": "Doesn't exist!",
     "show_correct_answers": "Show correct answers",
     "show_results": "Show results >",
-    "historical_res" : "Current polling results:",
-    "polling_res" : "Previous polling results:",
+    "historical_res" : "Previous polling results:",
+    "polling_res" : "Current polling results:",
     "q_notActive": "Not activated!",
 
     "tuto_header": "User manual",
