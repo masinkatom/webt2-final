@@ -489,6 +489,15 @@ ul {
     border-bottom: 2px solid var(--webte-color-yellow);
 }
 
+.year {
+    font-size: 4rem;
+    margin: 0 2.5rem 2.5rem 0;
+}
+
+.year ul li{
+    font-size: 1.8rem;
+}
+
 .hidden {
     display: none;
 }

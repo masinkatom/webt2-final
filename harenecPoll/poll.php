@@ -77,7 +77,7 @@ require_once "server/curlHelper.php";
                 <h2 id="question-element" class="spacer-b"></h2>
                 <div id="answer-element" class="in-column"></div>
                 <h2 id="question-404" class="fail hidden" data-i18n="question_404"></h2>
-                <h2 id="question-notActive" class="fail hidden">Nie je aktivovaná!XXX</h2>
+                <h2 id="question-notActive" class="fail hidden" data-i18n="q_notActive"></h2>
             </div>
             <div id="question-buttons" class="in-row spaced-between spacer-t hidden">
                 <button id="results-send" class="btn-compact centered" data-i18n="show_correct_answers"></button>
@@ -85,10 +85,18 @@ require_once "server/curlHelper.php";
             </div>
 
             <div id="current-stats" class="in-column spacer-t hidden">
-                <h2>Aktuálne výsledky hlasovaniaXXX:</h2>
+                <h2 data-i18n="polling_res"></h2>
 
                 <div id="currents-plot" class="hidden"></div>
                 <ul id="dynamicList" class="in-row centered hidden"></ul>
+            </div>
+
+            <div id="historical-stats" class="in-column spacer-t hidden">
+                <h2 data-i18n="historical_res"></h2>
+                <div id="historical-years" class="in-row">
+
+                </div>
+                
             </div>
         </div>
         

@@ -83,5 +83,8 @@
     "poll_warning": "(Warning, the question might have multiple correct answers)",
     "question_404": "The question does not exist or is not activated!",
     "show_correct_answers": "Show correct answers",
-    "show_results": "Show results"
+    "show_results": "Show results >",
+    "historical_res" : "Current polling results:",
+    "polling_res" : "Previous polling results:",
+    "q_notActive": "Not activated!"
 }

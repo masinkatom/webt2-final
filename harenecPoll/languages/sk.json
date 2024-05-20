@@ -83,5 +83,8 @@
     "poll_warning": "(Pozor, otázka môže mať viacero správnych odpovedí)",
     "question_404": "Neexistuje!",
     "show_correct_answers": "Zobraziť správne odpovede",
-    "show_results": "Zobraziť výsledky"
+    "show_results": "Zobraziť výsledky >",
+    "polling_res": "Aktuálne výsledky hlasovania:",
+    "historical_res": "Predošlé výsledky hlasovania:",
+    "q_notActive": "Nie je aktivovaná!"
 }

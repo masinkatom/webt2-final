@@ -192,12 +192,16 @@ function showError(errId) {
 
 function showResultsBtn() {
     resultsBtn.classList.remove("hidden");
+
 }
 
 function showResults() {
     // redirect to results
     questionBtnsDiv.classList.add("hidden");
     currentStatsDiv.classList.remove("hidden");
+    Plotly.Plots.resize('currents-plot');
+    // Generate the list
+    generateList();
 }
 
 function hideAnswering() {
@@ -318,6 +322,7 @@ async function showGraph() {
         window.dispatchEvent(new Event('resize'));
     });
 
+
 }
 
 function showCloud() {
@@ -335,9 +340,54 @@ function showCloud() {
     for (const [item, count] of Object.entries(itemCounts)) {
         const listItem = document.createElement('li');
         listItem.textContent = item + " (" + count + "x)";
-        listItem.style.fontSize = (22 + (count - 1) * 4) + 'px'; // Base font size 16px, increase by 4px for each additional occurrence
+        if (listItem.style.fontSize < 40) {
+            listItem.style.fontSize = (22 + (count - 1) * 4) + 'px'; // Base font size 16px, increase by 4px for each additional occurrence
+        }
         listContainer.appendChild(listItem);
     }
+}
+
+
+async function generateList() {
+    let response = await callApi("GET", `https://node24.webte.fei.stuba.sk/harenecPoll/api.php/stats?questionId=${questionId}`);
+    const container = document.getElementById('historical-years');
+    const ul = document.createElement('ul');
+    ul.classList.add("in-row");
+
+    for (const year in response) {
+        if (response.hasOwnProperty(year)) {
+            const yearLi = document.createElement('li');
+            yearLi.classList.add('year');
+            yearLi.textContent = year;
+            ul.appendChild(yearLi);
+
+            console.log();
+
+            let yearCounter = countAllResponses(response[year]);
+
+            const answersUl = document.createElement('ul');
+            for (const answer in response[year]) {
+                if (response[year].hasOwnProperty(answer)) {
+
+                    const answerLi = document.createElement('li');
+                    answerLi.classList.add('answer');
+                    answerLi.textContent = `${answer}: ${Math.floor((response[year][answer] / yearCounter) * 100)}%`;
+                    answersUl.appendChild(answerLi);
+                }
+            }
+            yearLi.appendChild(answersUl);
+        }
+    }
+    container.appendChild(ul);
+    document.getElementById("historical-stats").classList.remove("hidden");
+}
+
+function countAllResponses(data) {
+    let counter = 0;
+    for (const ans in data) {
+        counter += data[ans];
+    }
+    return counter;
 }
 
 
