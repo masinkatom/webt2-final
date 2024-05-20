@@ -12,6 +12,9 @@ function clickButton() {
 let btnModalClose = document.getElementById("close-modal");
 let modalQR = document.getElementById("modalQR");
 let flag = 0;
+
+let startedQuestion = new Map();
+
 var testDataDelete = `[
     {
       "id_question": 1,
@@ -23,6 +26,12 @@ var testDataDelete = `[
       "code": null
     }
   ]`;
+
+  function removeByKey(key) {
+    if (startedQuestion.has(key)) {
+        startedQuestion.delete(key);
+    }
+}
 
 
 var jsonData = `[
@@ -829,14 +838,92 @@ function creatseeStatsCollapse(question) {
     cardElement.classList.add("collapse-set");
     cardElement.textContent = "STATS";
 
-    var divkoDoKtorehoBudeAdamkoStatsRobit = document.createElement("div") //TODO ADAMKO STATS DIV
-    divkoDoKtorehoBudeAdamkoStatsRobit.textContent = JSON.stringify(question)
+    var divkoDoKtorehoBudeAdamkoStatsRobit = document.createElement("div"); //TODO ADAMKO STATS DIV
+    //divkoDoKtorehoBudeAdamkoStatsRobit.textContent = "";
+    console.log("TOTO TU JE QUESTION", question)
+    console.log("TOTO TU JE IDECKO ",question.id_question)
     //tvoja robota v divku pojde tu
-    divkoDoKtorehoBudeAdamkoStatsRobit.id = "statsDiv";
+
+    divkoDoKtorehoBudeAdamkoStatsRobit.id = "statsDiv"+question.id_question;
     cardElement.appendChild(divkoDoKtorehoBudeAdamkoStatsRobit);
     collapseContainer.appendChild(cardElement);
-
+    generateList(question.id_question, "statsDiv"+question.id_question);
+    
     return collapseContainer;
+}
+
+async function callApi(method, url, data = []) {
+    let options = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    if (method === "GET") {
+        options = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok, code:' + response.statusText);
+        }
+        const responseData = await response.json();
+        return responseData; // Return the JSON data
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // Re-throw the error to be caught by the caller
+    }
+}
+
+
+async function generateList(qId, divId) {
+    let response = await callApi("GET", `https://node24.webte.fei.stuba.sk/harenecPoll/api.php/stats?questionId=${qId}`);
+    const container = document.getElementById(divId);
+    console.log("CONTAINER", container)
+    const ul = document.createElement('ul');
+    ul.classList.add("in-row");
+
+    for (const year in response) {
+        if (response.hasOwnProperty(year)) {
+            const yearLi = document.createElement('li');
+            yearLi.classList.add('year');
+            yearLi.textContent = year;
+            ul.appendChild(yearLi);
+
+            console.log();
+
+            let yearCounter = countAllResponses(response[year]);
+
+            const answersUl = document.createElement('ul');
+            for (const answer in response[year]) {
+                if (response[year].hasOwnProperty(answer)) {
+
+                    const answerLi = document.createElement('li');
+                    answerLi.classList.add('answer');
+                    answerLi.textContent = `${answer}: ${Math.floor((response[year][answer] / yearCounter) * 100)}%`;
+                    answersUl.appendChild(answerLi);
+                }
+            }
+            yearLi.appendChild(answersUl);
+        }
+    }
+    container.appendChild(ul);
+}
+
+function countAllResponses(data) {
+    let counter = 0;
+    for (const ans in data) {
+        counter += data[ans];
+    }
+    return counter;
 }
 
 function createNewQuestionCollapse() {
@@ -1331,16 +1418,16 @@ async function insertQuestions(cardBodyDiv, item) {
             //playButton.setAttribute("data-bs-toggle", "collapse");
             //playButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             playButton.style.fontSize = "1.6rem";
-            playButton.textContent = "ONXXX";
+            playButton.textContent = question.active === 0?"START":"STOP";
             playButton.addEventListener("click", () => {
                 if(question.active === 0){
                     question.active = 1;
-                    playButton.textContent = "STOPXXX";
+                    playButton.textContent = "STOP";
                     playButton.style.backgroundColor = "red";
                     playQuestionWithQR(question);
                 }else{
                     question.active = 0;
-                    playButton.textContent = "STARTXXX";
+                    playButton.textContent = "START";
                     playButton.style.backgroundColor = "green";
                     stopQuestionWithQR(question);
                 }
@@ -1429,14 +1516,24 @@ async function insertQuestions(cardBodyDiv, item) {
 }
 
 function stopQuestionWithQR(question){
-    console.log("STOP NA OTAZKU");
-    console.log(question); 333
+    console.log("STOP NA OTAZKU POZOR PES");
+    console.log(question); ///333
     console.log("STOP NA OTAZKU");
     setActiveFlagToZero(question.id_question);
     question.code = "";
     editQFLAG(question.text_q, question, question.id_question);
     //dajak vysledky riesit este neviem
+
+    var questionCODE = startedQuestion.get(question.id_question);
+    console.log("POZOR PES");
+    questionCODE==null?console.log("ZLE JE"):window.open("https://node24.webte.fei.stuba.sk/"+questionCODE, "_blank");
+    removeByKey(question.id_question)
+
+
+
 }
+
+
 
 async function setActiveFlagToZero(questionId){ 
     fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionActiveUpdateZero=${questionId}`, {
@@ -1467,6 +1564,8 @@ function generateRandomWord() {
         word += letters[randomIndex];
     }   
 
+    var codeDiv = document.getElementById("thesis-name-modal");
+    codeDiv.textContent = " - "+word+" - ";
     return word;
 }
 
@@ -1483,6 +1582,8 @@ function playQuestionWithQR(question){
     setActiveFlagToOne(question.id_question);
     question.code = generateRandomWord();
     editQFLAG(question.text_q, question, question.id_question);
+
+    startedQuestion.set(question.id_question, question.code);
 
 
     //vygeneruj QR kod
@@ -1784,7 +1885,7 @@ function showQuestionsWithAnswers(question) {
                 var liElement = document.createElement("li");
                 liElement.textContent = answer.text_a;
                 liElement.classList.add("bigger-font");
-                var correctness = answer.correct === 1 ? "correctXXX" : "incorectXXX";
+                var correctness = answer.correct === 1 ? "OK" : "X";
                 liElement.textContent += " (" + correctness + ")";
 
                 ulElement.appendChild(liElement);

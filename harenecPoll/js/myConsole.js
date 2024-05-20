@@ -22,6 +22,15 @@ window.onclick = function (event) {
 
 let flag = 0;
 
+let startedQuestion = new Map();
+
+function removeByKey(key) {
+    if (startedQuestion.has(key)) {
+        startedQuestion.delete(key);
+    }
+}
+
+
 console.log("PICI JA SOM GENIUS", sessionLoginID)
 
 var testDataDelete = `[
@@ -283,13 +292,88 @@ function creatseeStatsCollapse(question) {
     cardElement.textContent = "STATS";
 
     var divkoDoKtorehoBudeAdamkoStatsRobit = document.createElement("div") //TODO ADAMKO STATS DIV
-    divkoDoKtorehoBudeAdamkoStatsRobit.textContent = JSON.stringify(question)
+    //divkoDoKtorehoBudeAdamkoStatsRobit.textContent = JSON.stringify(question)
     //tvoja robota v divku pojde tu
-    divkoDoKtorehoBudeAdamkoStatsRobit.id = "statsDiv";
+    divkoDoKtorehoBudeAdamkoStatsRobit.id = "statsDiv"+question.id_question;
     cardElement.appendChild(divkoDoKtorehoBudeAdamkoStatsRobit);
     collapseContainer.appendChild(cardElement);
-
+    generateList(question.id_question, "statsDiv"+question.id_question);
+    
     return collapseContainer;
+}
+
+async function callApi(method, url, data = []) {
+    let options = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    if (method === "GET") {
+        options = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok, code:' + response.statusText);
+        }
+        const responseData = await response.json();
+        return responseData; // Return the JSON data
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // Re-throw the error to be caught by the caller
+    }
+}
+
+
+async function generateList(qId, divId) {
+    let response = await callApi("GET", `https://node24.webte.fei.stuba.sk/harenecPoll/api.php/stats?questionId=${qId}`);
+    const container = document.getElementById(divId);
+    console.log("CONTAINER", container)
+    const ul = document.createElement('ul');
+    ul.classList.add("in-row");
+
+    for (const year in response) {
+        if (response.hasOwnProperty(year)) {
+            const yearLi = document.createElement('li');
+            yearLi.classList.add('year');
+            yearLi.textContent = year;
+            ul.appendChild(yearLi);
+
+            console.log();
+
+            let yearCounter = countAllResponses(response[year]);
+
+            const answersUl = document.createElement('ul');
+            for (const answer in response[year]) {
+                if (response[year].hasOwnProperty(answer)) {
+
+                    const answerLi = document.createElement('li');
+                    answerLi.classList.add('answer');
+                    answerLi.textContent = `${answer}: ${Math.floor((response[year][answer] / yearCounter) * 100)}%`;
+                    answersUl.appendChild(answerLi);
+                }
+            }
+            yearLi.appendChild(answersUl);
+        }
+    }
+    container.appendChild(ul);
+}
+
+function countAllResponses(data) {
+    let counter = 0;
+    for (const ans in data) {
+        counter += data[ans];
+    }
+    return counter;
 }
 
 function createNewQuestionCollapse() {
@@ -765,7 +849,7 @@ async function insertQuestions(cardBodyDiv, item) {
             //playButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             playButton.style.fontSize = "1.6rem";
             // .setAttribute("data-i18n", "");
-            playButton.textContent = "ON";
+            playButton.textContent = question.active === 0?"START":"STOP";
             playButton.addEventListener("click", () => {
                 if(question.active === 0){
                     question.active = 1;
@@ -886,6 +970,15 @@ function stopQuestionWithQR(question){
     setActiveFlagToZero(question.id_question);
     question.code = "";
     editQFLAG(question.text_q, question, question.id_question);
+    
+    var questionCODE = startedQuestion.get(question.id_question);
+    console.log("POZOR PES");
+    questionCODE==null?console.log("ZLE JE"):window.open("https://node24.webte.fei.stuba.sk/"+questionCODE, "_blank");
+   
+    removeByKey(question.id_question)
+
+
+
     //dajak vysledky riesit este neviem
 }
 
@@ -924,6 +1017,8 @@ function playQuestionWithQR(question){
     question.code = generateRandomWord();
     editQFLAG(question.text_q, question, question.id_question);
     //setQuestionCode(generateRandomWord()); //????????
+
+    startedQuestion.set(question.id_question, question.code);
 
     
     //vygeneruj QR kod

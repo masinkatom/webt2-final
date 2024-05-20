@@ -225,6 +225,21 @@ button:hover {
     color: white;
 }
 
+ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+#dynamicList li {
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 20px;
+    background-color: var(--webte-color-yellow);
+    border: 4px solid white;
+    color: black;
+}
+
 .btn-compact {
     padding: .5rem 1.5rem;
     height: 5.5rem;
@@ -472,6 +487,15 @@ button:hover {
     font-size: 2rem;
     border-top: 2px solid var(--webte-color-yellow);
     border-bottom: 2px solid var(--webte-color-yellow);
+}
+
+.year {
+    font-size: 4rem;
+    margin: 0 2.5rem 2.5rem 0;
+}
+
+.year ul li{
+    font-size: 1.8rem;
 }
 
 .hidden {
