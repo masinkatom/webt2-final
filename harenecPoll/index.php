@@ -20,16 +20,12 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     $_SESSION["loggedin"] = false;
     if (isset($_SESSION["isIn"]) && $_SESSION["isIn"] === false) {
         echo '<script src="js/setLocalStorageFalse.js"></script>';
-    }elseif(isset($_SESSION["isIn"]) && $_SESSION["isIn"] === true){
-        echo '<script src="js/setLocalStorage.js"></script>';
     }
     $output .= '<script src="js/scriptToast.js"></script>';
     $output .= '<div id="snackbar" data-i18n="snackbar_message"></div>';
 }
 
 echo $output;
-echo
-'<script src="js/setLocalStorageFalse.js"></script>';
 ?>
 
 <!DOCTYPE html>
