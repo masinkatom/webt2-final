@@ -22,6 +22,15 @@ window.onclick = function (event) {
 
 let flag = 0;
 
+let startedQuestion = new Map();
+
+function removeByKey(key) {
+    if (startedQuestion.has(key)) {
+        startedQuestion.delete(key);
+    }
+}
+
+
 console.log("PICI JA SOM GENIUS", sessionLoginID)
 
 var testDataDelete = `[
@@ -764,7 +773,7 @@ async function insertQuestions(cardBodyDiv, item) {
             //playButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             playButton.style.fontSize = "1.6rem";
             // .setAttribute("data-i18n", "");
-            playButton.textContent = "ON";
+            playButton.textContent = question.active === 0?"START":"STOP";
             playButton.addEventListener("click", () => {
                 if(question.active === 0){
                     question.active = 1;
@@ -885,6 +894,15 @@ function stopQuestionWithQR(question){
     setActiveFlagToZero(question.id_question);
     question.code = "";
     editQFLAG(question.text_q, question, question.id_question);
+    
+    var questionCODE = startedQuestion.get(question.id_question);
+    console.log("POZOR PES");
+    questionCODE==null?console.log("ZLE JE"):window.open("https://node24.webte.fei.stuba.sk/"+questionCODE, "_blank");
+   
+    removeByKey(question.id_question)
+
+
+
     //dajak vysledky riesit este neviem
 }
 
@@ -923,6 +941,8 @@ function playQuestionWithQR(question){
     question.code = generateRandomWord();
     editQFLAG(question.text_q, question, question.id_question);
     //setQuestionCode(generateRandomWord()); //????????
+
+    startedQuestion.set(question.id_question, question.code);
 
     
     //vygeneruj QR kod

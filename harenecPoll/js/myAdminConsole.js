@@ -1,6 +1,9 @@
 let btnModalClose = document.getElementById("close-modal");
 let modalQR = document.getElementById("modalQR");
 let flag = 0;
+
+let startedQuestion = new Map();
+
 var testDataDelete = `[
     {
       "id_question": 1,
@@ -12,6 +15,12 @@ var testDataDelete = `[
       "code": null
     }
   ]`;
+
+  function removeByKey(key) {
+    if (startedQuestion.has(key)) {
+        startedQuestion.delete(key);
+    }
+}
 
 
 var jsonData = `[
@@ -1320,16 +1329,16 @@ async function insertQuestions(cardBodyDiv, item) {
             //playButton.setAttribute("data-bs-toggle", "collapse");
             //playButton.setAttribute("data-bs-target", `#${question.id_question}InfoCollapse`);
             playButton.style.fontSize = "1.6rem";
-            playButton.textContent = "ONXXX";
+            playButton.textContent = question.active === 0?"START":"STOP";
             playButton.addEventListener("click", () => {
                 if(question.active === 0){
                     question.active = 1;
-                    playButton.textContent = "STOPXXX";
+                    playButton.textContent = "STOP";
                     playButton.style.backgroundColor = "red";
                     playQuestionWithQR(question);
                 }else{
                     question.active = 0;
-                    playButton.textContent = "STARTXXX";
+                    playButton.textContent = "START";
                     playButton.style.backgroundColor = "green";
                     stopQuestionWithQR(question);
                 }
@@ -1418,14 +1427,24 @@ async function insertQuestions(cardBodyDiv, item) {
 }
 
 function stopQuestionWithQR(question){
-    console.log("STOP NA OTAZKU");
-    console.log(question); 333
+    console.log("STOP NA OTAZKU POZOR PES");
+    console.log(question); ///333
     console.log("STOP NA OTAZKU");
     setActiveFlagToZero(question.id_question);
     question.code = "";
     editQFLAG(question.text_q, question, question.id_question);
     //dajak vysledky riesit este neviem
+
+    var questionCODE = startedQuestion.get(question.id_question);
+    console.log("POZOR PES");
+    questionCODE==null?console.log("ZLE JE"):window.open("https://node24.webte.fei.stuba.sk/"+questionCODE, "_blank");
+    removeByKey(question.id_question)
+
+
+
 }
+
+
 
 async function setActiveFlagToZero(questionId){ 
     fetch(`https://node24.webte.fei.stuba.sk/harenecPoll/api.php/update?questionActiveUpdateZero=${questionId}`, {
@@ -1456,6 +1475,8 @@ function generateRandomWord() {
         word += letters[randomIndex];
     }   
 
+    var codeDiv = document.getElementById("thesis-name-modal");
+    codeDiv.textContent = " - "+word+" - ";
     return word;
 }
 
@@ -1472,6 +1493,8 @@ function playQuestionWithQR(question){
     setActiveFlagToOne(question.id_question);
     question.code = generateRandomWord();
     editQFLAG(question.text_q, question, question.id_question);
+
+    startedQuestion.set(question.id_question, question.code);
 
 
     //vygeneruj QR kod
@@ -1773,7 +1796,7 @@ function showQuestionsWithAnswers(question) {
                 var liElement = document.createElement("li");
                 liElement.textContent = answer.text_a;
                 liElement.classList.add("bigger-font");
-                var correctness = answer.correct === 1 ? "correctXXX" : "incorectXXX";
+                var correctness = answer.correct === 1 ? "OK" : "X";
                 liElement.textContent += " (" + correctness + ")";
 
                 ulElement.appendChild(liElement);
