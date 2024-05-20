@@ -9,7 +9,7 @@ function clickButton() {
     }
 }
 
-clickButton(); 
+
 
 let btnModalClose = document.getElementById("close-modal");
 let modalQR = document.getElementById("modalQR");
@@ -118,6 +118,7 @@ function createButtonsOfSets() {
     container.appendChild(createSeeAllQuestionCollapse());
     //container.appendChild(createStatsButton());
     //container.appendChild(creatseeStatsCollapse())
+    clickButton();
 
 }
 

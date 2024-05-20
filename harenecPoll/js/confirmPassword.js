@@ -1,17 +1,17 @@
 let oldPassword = document.getElementById("old-password");
 oldPassword.addEventListener("focusout", function() {
-    validatePassword("old-password", "Zadajte stare hesloXXX", "err-old-password");    
+    validatePassword("old-password", "Zadajte staré heslo", "err-old-password");    
 });
 
 let newPassword = document.getElementById("new-password");
 newPassword.addEventListener("focusout", function() {
-    validatePassword("new-password", "Zadajte nove hesloXXX", "err-new-password");    
+    validatePassword("new-password", "Zadajte nové heslo", "err-new-password");    
 });
 newPassword.addEventListener("input", countPasswordLen);
 
 let confirmNewPassword = document.getElementById("confirm-new-password");
 confirmNewPassword.addEventListener("focusout", function() {
-    validatePassword("confirm-new-password", "Potvrdte nove hesloXXX", "err-confirm-new-password");
+    validatePassword("confirm-new-password", "Potvrďte nové heslo", "err-confirm-new-password");
 });
 
 document.getElementById("submit-btn").addEventListener("click", checkValues);

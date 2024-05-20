@@ -7,7 +7,7 @@ document.getElementById("submit-btn").addEventListener("click", checkValues);
 
 function displayError(input, msg, errInput) {
     errInput.style.display = 'block';
-    // errInput.innerHTML = msg;
+    errInput.innerHTML = msg;
     input.style.border = '3px solid red';
 }
 
@@ -31,12 +31,12 @@ function validateInput(inputId, errMessage, errInputId) {
 }
 
 function validateLogin() {
-    let output = validateInput("username", "Zadajte loginXXX", "err-login");
+    let output = validateInput("username", "Zadajte login", "err-login");
     return output;
 }
 
 function validatePassword() {
-    let output = validateInput("password", "Zadajte hesloXXX", "err-password");
+    let output = validateInput("password", "Zadajte heslo", "err-password");
     return output;
 }
 

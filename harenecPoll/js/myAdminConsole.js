@@ -1,3 +1,14 @@
+function clickButton() {
+    let langBtn = document.getElementById('sk_btn');
+
+    if (langBtn) {
+        langBtn.click();
+        console.log("button should have been clicked");
+    } else {
+        console.log("button not found");
+    }
+}
+
 let btnModalClose = document.getElementById("close-modal");
 let modalQR = document.getElementById("modalQR");
 let flag = 0;

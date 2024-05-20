@@ -119,15 +119,15 @@ function validateLogin() {
     let errInput = document.getElementById("err-login");
 
     hideCharCounter(input.nextElementSibling);
-    let output = validateInput("login", "Zadajte loginXXX", "err-login");
+    let output = validateInput("login", "Zadajte login", "err-login");
 
     if (output == 0) {
         if (input.value.length < 6 || input.value.length > 32) {
-            displayError(input, "XXXLogin musi mat min. 6 a max. 32 znakov.", errInput);
+            displayError(input, "Login musi mat min. 6 a max. 32 znakov.", errInput);
             return 1;
         } 
         if (!checkChars(input.value)) {
-            displayError(input, "XXXLogin môže obsahovať iba veľké, malé písmená, číslice a podtržník.", errInput);
+            displayError(input, "Login môže obsahovať iba veľké, malé písmená, číslice a podtržník.", errInput);
             return 1;
         }
     }
@@ -141,13 +141,17 @@ function validatePassword() {
     let input = document.getElementById("password");
     let errInput = document.getElementById("err-password");
 
-    let output = validateInput("password", "Zadajte hesloXXX", "err-password");
+    let output = validateInput("password", "Zadajte heslo", "err-password");
 
     if (output == 0) {
         if (input.value.length < 6 || input.value.length > 255) {
-            displayError(input, "XXXHeslo musí mať min. 6 a max. 255 znakov.", errInput);
+            displayError(input, "Heslo musí mať min. 6 a max. 255 znakov.", errInput);
             return 1;
         } 
+        if (!checkChars(input.value)) {
+            displayError(input, "Heslo môže obsahovať iba veľké, malé písmená, číslice a podtržník.", errInput);
+            return 1;
+        }
     }
 
     return output;
